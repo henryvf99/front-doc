@@ -1,0 +1,134 @@
+<div class="page-wrapper">
+    <div class="content">
+    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a routerLink="/practicantes/list-practicantes">Practicantes </a></li>
+                        <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
+                        <li class="breadcrumb-item active">Agregar Practicante</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="row">
+            <div class="col-sm-12">
+            
+                <div class="card">
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                            
+                                <div class="col-12 col-md-6 col-xl-4">  
+                                    <div class="form-group local-forms">
+                                        <label >Nombres <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="nombres" name="nombres" type="text"  >
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label >Apellidos <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="apellidos" name="apellidos" type="text"  >
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label >Universidad <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="universidad" name="universidad" type="text"  >
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label >Hora Prácticas <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="horapracticas" name="horapracticas" type="text"  >
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label >Área <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="area" name="area" type="text"  >
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label >Carrera <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="carrera" name="carrera" type="text"  >
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-6">
+                                    <div class="form-group local-forms">
+                                        <label >Fecha Ingreso  <span class="login-danger">*</span></label>
+                                        <input class="form-control datetimepicker" [(ngModel)]="fingreso" name="fingreso" type="text" matInput [matDatepicker]="picker"  >
+                                        <mat-datepicker #picker></mat-datepicker>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-6">
+                                    <div class="form-group local-forms">
+                                        <label >Fecha Salida  <span class="login-danger">*</span></label>
+                                        <input class="form-control datetimepicker" [(ngModel)]="fsalida" name="fsalida" type="text" matInput [matDatepicker]="picker"  >
+                                        <mat-datepicker #picker></mat-datepicker>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 col-md-6 col-xl-6">
+                                    <div class="form-group local-top-form">
+                                        <label class="local-top">Carta de aceptación <span class="login-danger">*</span></label>
+                                        <div class="settings-btn upload-files-avator">
+                                            <input type="file" accept=".doc, .docx, .pdf, .xls, .xlsx" name="aceptacion"
+                                                id="file-aceptacion" (change)="loadFile($event, 'aceptacion')" class="hide-input" multiple>
+                                            <label for="file-aceptacion" class="upload">Subir Documento</label>
+                                            <span *ngIf="file" class="selected-file">{{ file.name}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 col-md-6 col-xl-6">
+                                    <div class="form-group local-top-form">
+                                        <label class="local-top">Certificado <span class="login-danger">*</span></label>
+                                        <div class="settings-btn upload-files-avator">
+                                            <input type="file" accept=".doc, .docx, .pdf, .xls, .xlsx" name="certificado"
+                                                id="file-certificado" (change)="loadFile($event, 'certificado')" class="hide-input" multiple>
+                                            <label for="file-certificado" class="upload">Subir Documento</label>
+                                            <span *ngIf="file2" class="selected-file">{{ file2.name}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+
+                                <div class="col-12">
+                                    <div class="form-group row my-4" *ngIf="text_validation">
+                                        <div class="col-md-8">
+                                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                <strong>!</strong> {{ text_validation }}.
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true"> </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="doctor-submit text-end">
+                                        <button 
+                                        type="button" (click)="save()" 
+                                        class="btn btn-primary submit-form me-2" 
+                                        routerLink="/practicantes/list-practicantes">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>							
+            </div>					
+        </div>
+    </div>
+</div>
+ 

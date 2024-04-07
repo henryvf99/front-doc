@@ -1,0 +1,95 @@
+<div class="page-wrapper">
+    <div class="content">
+    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">CAS Directivos </a></li>
+                        <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
+                        <li class="breadcrumb-item active">Editar CAS Directivos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="row">
+            <div class="col-sm-12">
+            
+                <div class="card">
+                    <div class="card-body" *ngIf="casdirectivosb_selected">
+                        <form>
+                            <div class="row">
+                                
+                                <div class="col-12 col-md-6 col-xl-4">  
+                                    <div class="form-group local-forms">
+                                        <label >Año <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="anio" name="anio" type="text"  >
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label >Mes <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="mes" name="mes" type="text"  >
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label >Trabajador <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="tipotrabajador" name="tipotrabajador" type="text"  >
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label >Regimen <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="regimen" name="regimen" type="text"  >
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 col-md-6 col-xl-6">
+                                    <div class="form-group local-top-form">
+                                        <label class="local-top">Avatar <span class="login-danger">*</span></label>
+                                        <div class="settings-btn upload-files-avator">
+                                            <input type="file" accept="image/*" name="image" id="file" (change)="loadFile($event)" class="hide-input">
+                                            <label for="file" class="upload">Choose File</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group row my-4" *ngIf="text_success">
+                                        <div class="col-md-8">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <strong>Exito!</strong> {{ text_success }}.
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true"> </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group row my-4" *ngIf="text_validation">
+                                        <div class="col-md-8">
+                                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                <strong>!</strong> {{ text_validation }}.
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true"> </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="doctor-submit text-end">
+                                        <button type="button" (click)="save()" class="btn btn-primary submit-form me-2">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>							
+            </div>					
+        </div>
+    </div>
+</div>
+ 

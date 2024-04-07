@@ -1,0 +1,100 @@
+<div class="page-wrapper">
+    <div class="content">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a routerLink="/casdirectivosb/list-casdirectivosb">CAS DIRECTIVOS
+                            </a></li>
+                        <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
+                        <li class="breadcrumb-item active">Agregar CAS DIRECTIVOS</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Año <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedYear" name="selectedYear">
+                                            <option value="" disabled selected>Selecciona un año</option> 
+                                            <option *ngFor="let year of years" [value]="year.id">{{ year.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Mes <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedMonth" name="selectedMonth">
+                                            <option value="" disabled selected>Selecciona un mes</option> 
+                                            <option *ngFor="let month of months" [value]="month.id">{{ month.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Tipo de trabajador <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedtipotrabajador" name="selectedtipotrabajador">
+                                            <option value="" disabled selected>Selecciona un tipo de trabajador</option> 
+                                            <option *ngFor="let tipotrabajador of tipotrabajadores" [value]="tipotrabajador.id">{{ tipotrabajador.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Regimen <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="regimen" name="regimen" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-6">
+                                    <div class="form-group local-top-form">
+                                        <label class="local-top">Archivo <span class="login-danger">*</span></label>
+                                        <div class="settings-btn upload-files-avator">
+                                            <input type="text" style="border: none; position: relative; top: -6px;" [value]="selectedFileName" readonly>
+                                            <input type="file" accept=".pdf" name="pdfFile" (change)="loadFile($event)" id="pdfFile" class="hide-input">
+                                            <label for="pdfFile" class="upload">Choose PDF File</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group row my-4" *ngIf="text_validation">
+                                        <div class="col-md-8">
+                                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                <strong>!</strong> {{ text_validation }}.
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true"> </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="doctor-submit text-end">
+                                        <button type="button" (click)="save()"
+                                            class="btn btn-primary submit-form me-2">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
