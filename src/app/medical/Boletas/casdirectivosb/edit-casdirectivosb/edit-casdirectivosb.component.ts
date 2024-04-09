@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CasdirectivosbService } from '../service/casdirectivosb.service';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,11 +11,32 @@ import Swal from 'sweetalert2';
 })
 export class EditCasdirectivosbComponent {
 
-  public selectedValue !: string  ;
-  public anio:string = '';
-  public mes:string = '';
-  public tipotrabajador:string = '';
-  public regimen:string = '';
+  public years: any[] = [];
+  public selectedYear: any = "";
+
+  public months: any[] = [];
+  public selectedMonth: any = "";
+
+  public tipotrabajadores: any[] = [];
+  public selectedtipotrabajador: any = "";
+
+  public selectedFileName: string = ''; 
+  public buffer: ArrayBuffer | null = null;
+
+  public regimenes: any[] = [
+    {
+      nombre: "276"
+    },
+    {
+      nombre: "728"
+    },
+    {
+      nombre: "1057"
+    }
+  ]
+  public selectedregimen: any = "";
+
+  public selectedValue !: string ;
 
   public FILE_AVATAR:any;
 
@@ -25,84 +47,114 @@ export class EditCasdirectivosbComponent {
   public casdirectivosb_selected:any;
   constructor(
     public casdirectivosbService: CasdirectivosbService,
-    public activedRoute: ActivatedRoute
+    public activedRoute: ActivatedRoute,
+    private router: Router
   ) {
     
   }
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+    
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
       this.casdirectivosb_id = resp.id;
     })
+
+    this.casdirectivosbService.listYears().subscribe((resp:any) => {
+      this.years = resp.data;
+    })
+
+    this.casdirectivosbService.listMonths().subscribe((resp:any) => {
+      this.months = resp.data;
+    })
+
+    this.casdirectivosbService.listTipoTrabajador().subscribe((resp:any) => {
+      this.tipotrabajadores = resp.data;
+    })
+
+    this.casdirectivosbService.listBoletaById(this.casdirectivosb_id).subscribe((resp:any) => {
+      console.log(resp);
+      this.casdirectivosb_selected = resp.data;
+      this.selectedYear = this.casdirectivosb_selected.anio.id;
+      this.selectedMonth = this.casdirectivosb_selected.mes.id;
+      this.selectedtipotrabajador = this.casdirectivosb_selected.tipotrabajador.id;
+      this.selectedregimen = this.casdirectivosb_selected.regimen ;
+    })
     
-    this.casdirectivosb_selected.showUser(this.casdirectivosb_id).subscribe((resp:any) => {
-      console.log(resp);
-      this.casdirectivosb_selected = resp.user;
+  }
 
-      this.selectedValue = this.casdirectivosb_selected.role.id;
-      this.anio = this.casdirectivosb_selected.anio ;
-      this.mes = this.casdirectivosb_selected.mes ;
-      this.tipotrabajador = this.casdirectivosb_selected.tipotrabajador ;
-      this.regimen = this.casdirectivosb_selected.regimen ;
+  loadFile($event: any) {
+    if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
+        this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
+        return;
+    }
+    this.text_validation = '';
+    
+    const file = $event.target.files[0];
+    this.selectedFileName = file.name;
 
-    })
-
-    this.casdirectivosb_selected.listConfig().subscribe((resp:any) => {
-      console.log(resp);
-    })
+    let reader = new FileReader();
+    reader.onload = (event) => {
+        const arrayBuffer = (event.target as FileReader).result as ArrayBuffer;
+        this.buffer = arrayBuffer;
+    };
+    reader.readAsArrayBuffer(file);
   }
 
   save(){
     this.text_validation = '';
-    if(!this.anio || !this.regimen || !this.mes){
+    if(!this.selectedYear || !this.selectedMonth || !this.selectedregimen){
       this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen)";
       return;
     }
 
-    console.log(this.selectedValue);
-
     let formData = new FormData();
-    formData.append("anio",this.anio);
-    formData.append("mes",this.mes);
-    formData.append("regimen",this.regimen);
-    formData.append("tipotrabajador",this.tipotrabajador);
-    
-    formData.append("role_id",this.selectedValue);
-    if(this.FILE_AVATAR){
-      formData.append("imagen",this.FILE_AVATAR);
+    formData.append("anio",this.selectedYear);
+    formData.append("mes",this.selectedMonth);
+    formData.append("tipotrabajador",this.selectedtipotrabajador);
+    formData.append("regimen",this.selectedregimen);
+    if (this.buffer !== null) {
+      formData.append("file", new Blob([this.buffer]));
     }
     
-    this.casdirectivosb_selected.updateUser(this.casdirectivosb_id,formData).subscribe((resp:any) => {
+    this.casdirectivosbService.updateBoleta(this.casdirectivosb_id,formData).subscribe((resp:any) => {
       console.log(resp);
 
-      if(resp.message == 403){
+      if(resp.success){
         this.text_validation = resp.message_text;
+        this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'El usuario ha editado correctamente';
+        this.text_success = 'La boleta no se registro correctamente';
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'La boleta no se registro correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
 
-    });
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Se modificó Correctamente',
-      showConfirmButton: false,
-      timer: 1500
+    },
+    (err: any) => {
+      var msj = err.error.message;
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: msj,
+        showConfirmButton: true
+      });
     });
   }
 
-  loadFile($event:any){
-    if($event.target.files[0].type.indexOf("image") < 0){
-      // alert("SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO IMAGEN");
-      this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO IMAGEN";
-      return;
-    }
-    this.text_validation = '';
-    this.FILE_AVATAR = $event.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(this.FILE_AVATAR);
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'La boleta se agregó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      this.router.navigateByUrl('/casdirectivosb/list-casdirectivosb');
+    });
   }
 
 }

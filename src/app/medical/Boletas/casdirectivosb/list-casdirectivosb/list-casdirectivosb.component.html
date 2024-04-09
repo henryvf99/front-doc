@@ -76,8 +76,9 @@
 
                                         <td>{{data.anio.nombre }}</td>
                                         <td>{{data.mes.nombre}}</td>
-                                        <td>{{data.tipotrabajador.nombre}}</td>
                                         <td>{{data.regimen }}</td>
+                                        <td>{{data.tipotrabajador.nombre}}</td>
+                                        
                                         <td>
                                             <a href="javascript:;" class="me-2" (click)="mostrarFile(data.file.data)">
                                                 <img src="assets/img/icons/pdf-icon-01.svg" alt="">
@@ -92,10 +93,10 @@
                                                     <!--  -->
                                                     <a class="dropdown-item" *ngIf="isPermision('edit_casdirectivosb')"
                                                         [routerLink]="[ '/casdirectivosb/list-casdirectivosb/edit-casdirectivosb/', data.id ]"><i
-                                                            class="fa-solid fa-pen-to-square m-r-5"></i> Edit</a>
+                                                            class="fa-solid fa-pen-to-square m-r-5"></i>Editar</a>
                                                     <a class="dropdown-item" *ngIf="isPermision('delete_casdirectivosb')"
                                                         href="javascript:void(0);" (click)="deleteBoleta(data.id)">
-                                                        <i class="fa fa-trash-alt m-r-5"></i> Delete</a>
+                                                        <i class="fa fa-trash-alt m-r-5"></i>Eliminar</a>
                                                 </div>
                                             </div>
                                         </td>

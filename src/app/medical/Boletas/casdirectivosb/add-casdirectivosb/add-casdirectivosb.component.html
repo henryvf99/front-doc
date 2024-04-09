@@ -56,7 +56,10 @@
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
                                         <label>Regimen <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="regimen" name="regimen" type="text" autocomplete="off">
+                                        <select class="form-control" [(ngModel)]="selectedregimen" name="selectedregimen">
+                                            <option value="" disabled selected>Selecciona un regimen</option> 
+                                            <option *ngFor="let regimen of regimenes" [value]="regimen.nombre">{{ regimen.nombre }}</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -66,7 +69,7 @@
                                         <div class="settings-btn upload-files-avator">
                                             <input type="text" style="border: none; position: relative; top: -6px;" [value]="selectedFileName" readonly>
                                             <input type="file" accept=".pdf" name="pdfFile" (change)="loadFile($event)" id="pdfFile" class="hide-input">
-                                            <label for="pdfFile" class="upload">Choose PDF File</label>
+                                            <label for="pdfFile" class="upload">Escoge un archivo</label>
                                         </div>
                                     </div>
                                 </div>

@@ -11,10 +11,6 @@ import Swal from 'sweetalert2';
 })
 export class AddCasdirectivosbComponent implements OnInit{
 
-  public regimen:string = '';
-
-  public archivo:any;
-
   public selectedFileName: string = ''; 
   public buffer: ArrayBuffer | null = null;
 
@@ -26,6 +22,19 @@ export class AddCasdirectivosbComponent implements OnInit{
 
   public tipotrabajadores: any[] = [];
   public selectedtipotrabajador: any = "";
+
+  public regimenes: any[] = [
+    {
+      nombre: "276"
+    },
+    {
+      nombre: "728"
+    },
+    {
+      nombre: "1057"
+    }
+  ]
+  public selectedregimen: any = "";
 
   public text_success:string = '';
   public text_validation:string = '';
@@ -80,7 +89,7 @@ export class AddCasdirectivosbComponent implements OnInit{
     formData.append("anio",this.selectedYear);
     formData.append("mes",this.selectedMonth);
     formData.append("tipotrabajador",this.selectedtipotrabajador);
-    formData.append("regimen",this.regimen);
+    formData.append("regimen",this.selectedregimen);
     if (this.buffer !== null) {
       formData.append("file", new Blob([this.buffer]));
     }

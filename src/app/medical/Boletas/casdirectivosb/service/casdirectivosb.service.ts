@@ -34,6 +34,18 @@ export class CasdirectivosbService {
     return this.http.get(url_mes, { headers: headers });
   }
 
+  listBoletaById(boleta_id: string){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
+    const url_boleta = URL_BACKEND + "/boleta/" + boleta_id;
+    return this.http.get(url_boleta, {headers: headers});
+  }
+
+  updateBoleta(boleta_id: string, data:any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
+    const url_boleta = URL_BACKEND + "/boleta/" + boleta_id;
+    return this.http.put(url_boleta, data, {headers: headers});
+  }
+
   deleteBoleta(casdirectivosb_id: string):Observable<any> {
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
     const url_boleta = URL_BACKEND + "/boleta/" + casdirectivosb_id;

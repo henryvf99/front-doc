@@ -18,44 +18,61 @@
             <div class="col-sm-12">
             
                 <div class="card">
-                    <div class="card-body" *ngIf="casdirectivosb_selected">
+                    <div class="card-body" >
                         <form>
                             <div class="row">
-                                
-                                <div class="col-12 col-md-6 col-xl-4">  
-                                    <div class="form-group local-forms">
-                                        <label >Año <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="anio" name="anio" type="text"  >
-                                    </div>
-                                </div>
+
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >Mes <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="mes" name="mes" type="text"  >
+                                        <label>Año <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedYear" name="selectedYear">
+                                            <option value="" disabled selected>Selecciona un año</option> 
+                                            <option *ngFor="let year of years" [value]="year.id">{{ year.nombre }}</option>
+                                        </select>
                                     </div>
                                 </div>
+
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >Trabajador <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="tipotrabajador" name="tipotrabajador" type="text"  >
+                                        <label>Mes <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedMonth" name="selectedMonth">
+                                            <option value="" disabled selected>Selecciona un mes</option> 
+                                            <option *ngFor="let month of months" [value]="month.id">{{ month.nombre }}</option>
+                                        </select>
                                     </div>
                                 </div>
+
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >Regimen <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="regimen" name="regimen" type="text"  >
+                                        <label>Tipo de trabajador <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedtipotrabajador" name="selectedtipotrabajador">
+                                            <option value="" disabled selected>Selecciona un tipo de trabajador</option> 
+                                            <option *ngFor="let tipotrabajador of tipotrabajadores" [value]="tipotrabajador.id">{{ tipotrabajador.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Regimen <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedregimen" name="selectedregimen">
+                                            <option value="" disabled selected>Selecciona un regimen</option> 
+                                            <option *ngFor="let regimen of regimenes" [value]="regimen.nombre">{{ regimen.nombre }}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 
                                 <div class="col-12 col-md-6 col-xl-6">
                                     <div class="form-group local-top-form">
-                                        <label class="local-top">Avatar <span class="login-danger">*</span></label>
+                                        <label class="local-top">Archivo <span class="login-danger">*</span></label>
                                         <div class="settings-btn upload-files-avator">
-                                            <input type="file" accept="image/*" name="image" id="file" (change)="loadFile($event)" class="hide-input">
-                                            <label for="file" class="upload">Choose File</label>
+                                            <input type="text" style="border: none; position: relative; top: -6px;" [value]="selectedFileName" readonly>
+                                            <input type="file" accept=".pdf" name="pdfFile" (change)="loadFile($event)" id="pdfFile" class="hide-input">
+                                            <label for="pdfFile" class="upload">Escoge un archivo</label>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-12">
                                     <div class="form-group row my-4" *ngIf="text_success">
                                         <div class="col-md-8">
@@ -79,6 +96,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-12">
                                     <div class="doctor-submit text-end">
                                         <button type="button" (click)="save()" class="btn btn-primary submit-form me-2">Guardar</button>
