@@ -54,6 +54,16 @@
 
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
+                                        <label>Trabajador <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedtrabajador" name="selectedtrabajador">
+                                            <option value="" disabled selected>Selecciona un trabajador</option> 
+                                            <option *ngFor="let trabajador of trabajadores" [value]="trabajador.id">{{ trabajador.nombres }} {{ trabajador.apellidos }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
                                         <label>Regimen <span class="login-danger">*</span></label>
                                         <select class="form-control" [(ngModel)]="selectedregimen" name="selectedregimen">
                                             <option value="" disabled selected>Selecciona un regimen</option> 
@@ -62,11 +72,11 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-12 col-md-6 col-xl-6">
+                                <div class="col-12 col-md-12 col-xl-12">
                                     <div class="form-group local-top-form">
                                         <label class="local-top">Archivo <span class="login-danger">*</span></label>
                                         <div class="settings-btn upload-files-avator">
-                                            <input type="text" style="border: none; position: relative; top: -6px;" [value]="selectedFileName" readonly>
+                                            <input type="text" style="border: none; position: relative; top: -6px; width: 86%;" [value]="selectedFileName" readonly>
                                             <input type="file" accept=".pdf" name="pdfFile" (change)="loadFile($event)" id="pdfFile" class="hide-input">
                                             <label for="pdfFile" class="upload">Escoge un archivo</label>
                                         </div>

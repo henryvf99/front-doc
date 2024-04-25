@@ -23,6 +23,9 @@ export class AddCasdirectivosbComponent implements OnInit{
   public tipotrabajadores: any[] = [];
   public selectedtipotrabajador: any = "";
 
+  public trabajadores: any[] = [];
+  public selectedtrabajador: any = "";
+
   public regimenes: any[] = [
     {
       nombre: "276"
@@ -35,6 +38,8 @@ export class AddCasdirectivosbComponent implements OnInit{
     }
   ]
   public selectedregimen: any = "";
+
+  public nombrearchivo: string = "";
 
   public text_success:string = '';
   public text_validation:string = '';
@@ -56,6 +61,10 @@ export class AddCasdirectivosbComponent implements OnInit{
 
     this.casdirectivosbService.listTipoTrabajador().subscribe((resp:any) => {
       this.tipotrabajadores = resp.data;
+    })
+
+    this.casdirectivosbService.listTrabajador().subscribe((resp:any) => {
+      this.trabajadores = resp.data;
     })
 
   }
@@ -89,12 +98,14 @@ export class AddCasdirectivosbComponent implements OnInit{
     formData.append("anio",this.selectedYear);
     formData.append("mes",this.selectedMonth);
     formData.append("tipotrabajador",this.selectedtipotrabajador);
+    formData.append("trabajador",this.selectedtrabajador);
     formData.append("regimen",this.selectedregimen);
+    formData.append("nombrearchivo",this.selectedFileName);
     if (this.buffer !== null) {
       formData.append("file", new Blob([this.buffer]));
     }
 
-    this.casdirectivosbService.registerUser(formData).subscribe((res:any) => {
+    this.casdirectivosbService.registrarBoleta(formData).subscribe((res:any) => {
 
       if(res.success){
         this.text_validation = res.message_text;

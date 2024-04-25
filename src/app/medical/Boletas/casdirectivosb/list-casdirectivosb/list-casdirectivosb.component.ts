@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 })
 export class ListCasdirectivosbComponent {
 
+  private idtipotrabajador = "6614ddc772fa497e6831fdba";
+
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
@@ -45,12 +47,11 @@ export class ListCasdirectivosbComponent {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.casdirectivosbService.listUsers().subscribe((resp:any) => {
+    this.casdirectivosbService.getBoletaTipoTrabajador(this.idtipotrabajador).subscribe((resp:any) => {
       this.totalData = resp.data.length;
       this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
 
   }
   isPermision(permission:string){
@@ -169,11 +170,6 @@ export class ListCasdirectivosbComponent {
     this.searchDataValue = '';
     this.getTableDataGeneral();
   }
-
-  public refresh(): void {
-    window.location.reload();
-  }
-
   private calculateTotalPages(totalData: number, pageSize: number): void {
     this.pageNumberArray = [];
     this.totalPages = totalData / pageSize;
@@ -191,6 +187,10 @@ export class ListCasdirectivosbComponent {
       // 2
       // 10 - 20
     }
+  }
+
+  public refresh(): void {
+    window.location.reload();
   }
 
   public mostrarFile(file: any[]){

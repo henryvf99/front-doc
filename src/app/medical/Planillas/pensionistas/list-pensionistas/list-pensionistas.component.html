@@ -37,7 +37,7 @@
                                                 <a routerLink="/pensionistas/add-pensionistas"
                                                     class="btn btn-primary add-pluss ms-2"><img
                                                         src="assets/img/icons/plus.svg" alt=""></a>
-                                                <a href="javascript:;" (click)="PageSize()"
+                                                <a href="javascript:;" (click)="refresh()"
                                                     class="btn btn-primary doctor-refresh ms-2"><img
                                                         src="assets/img/icons/re-fresh.svg" alt=""></a>
                                             </div>
@@ -63,24 +63,32 @@
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
                                     <tr>
-                                        <th mat-sort-header="name">Nombres y Apellidos</th>
-                                        <th mat-sort-header="email">Email</th>
-                                        <th mat-sort-header="mobile">Telefono</th>
-                                        <th mat-sort-header="birth_date">Fecha de cumpleaños</th>
-                                        <th mat-sort-header="role">Rol</th>
-                                        <th mat-sort-header="created_at">Fecha de registro</th>
+                                        <th mat-sort-header="anio">Año</th>
+                                        <th mat-sort-header="mes">Mes</th>
+                                        <th mat-sort-header="regimen">Regimen</th>
+                                        <th mat-sort-header="tipotrabajador">Tipo</th>
+                                        <th mat-sort-header="observacion">Observacion</th>
+                                        <th mat-sort-header="nombrearchivo">Nombre</th>
+                                        <th mat-sort-header="file">Archivo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let data of usersList">
 
-                                        <td>{{data.name + ' ' + (data.surname ? data.surname : '')}}</td>
-                                        <td>{{data.email}}</td>
-                                        <td>{{data.mobile}}</td>
-                                        <td>{{ data.birth_date }}</td>
-                                        <td>{{data.role.name }}</td>
-                                        <td>{{data.created_at }}</td>
+                                        <td>{{data.anio.nombre }}</td>
+                                        <td>{{data.mes.nombre}}</td>
+                                        <td>{{data.regimen }}</td>
+                                        <td>{{data.tipotrabajador.nombre}}</td>
+                                        <td>{{data.observacion || '-'}}</td>
+                                        <td>{{data.nombrearchivo}}</td>
+                                        
+                                        <td>
+                                            <a href="javascript:;" class="me-2" (click)="mostrarFile(data.file.data)">
+                                                <img src="assets/img/icons/pdf-icon-01.svg" alt="">
+                                            </a>
+                                        </td>
+
                                         <td class="text-end">
                                             <div class="dropdown dropdown-action" *ngIf="data.id != 1">
                                                 <a href="javascript:void(0);" class="action-icon dropdown-toggle"
@@ -90,12 +98,10 @@
                                                     <!--  -->
                                                     <a class="dropdown-item" *ngIf="isPermision('edit_pensionistas')"
                                                         [routerLink]="[ '/pensionistas/list-pensionistas/edit-pensionistas/', data.id ]"><i
-                                                            class="fa-solid fa-pen-to-square m-r-5"></i> Edit</a>
+                                                            class="fa-solid fa-pen-to-square m-r-5"></i>Editar</a>
                                                     <a class="dropdown-item" *ngIf="isPermision('delete_pensionistas')"
-                                                        href="javascript:void(0);" (click)="selectUser(data)"
-                                                        data-bs-toggle="modal"
-                                                        [attr.data-bs-target]="'#delete_pensionistas-'+data.id"><i
-                                                            class="fa fa-trash-alt m-r-5"></i> Delete</a>
+                                                        href="javascript:void(0);" (click)="deletePlanilla(data.id)">
+                                                        <i class="fa fa-trash-alt m-r-5"></i>Eliminar</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -112,7 +118,7 @@
                                                                 class="btn btn-white me-1"
                                                                 data-bs-dismiss="modal">Close</a>
                                                             <button type="submit" class="btn btn-danger"
-                                                                (click)="deleteUser()">Delete</button>
+                                                                (click)="deletePlanilla(data.id)">Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>

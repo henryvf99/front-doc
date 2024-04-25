@@ -34,10 +34,28 @@ export class CasdirectivosbService {
     return this.http.get(url_mes, { headers: headers });
   }
 
+  listTrabajador() {
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
+    const url_mes = URL_BACKEND + "/trabajador";
+    return this.http.get(url_mes, { headers: headers });
+  }
+
   listBoletaById(boleta_id: string){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
     const url_boleta = URL_BACKEND + "/boleta/" + boleta_id;
     return this.http.get(url_boleta, {headers: headers});
+  }
+
+  getBoletaTipoTrabajador(idtipotrabajador: string){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
+    const url_boleta = URL_BACKEND + "/boleta/tipotrabajador/" + idtipotrabajador;
+    return this.http.get(url_boleta, {headers: headers});
+  }
+
+  registrarBoleta(data:any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
+    const url_boleta = URL_BACKEND + "/boleta";
+    return this.http.post(url_boleta,data,{headers: headers});
   }
 
   updateBoleta(boleta_id: string, data:any){
@@ -60,11 +78,6 @@ export class CasdirectivosbService {
   listConfig(){
     const headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
     return this.http.get(this.url,{headers: headers});
-  }
-
-  registerUser(data:any){
-    const headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
-    return this.http.post(this.url,data,{headers: headers});
   }
 
   showUser(){

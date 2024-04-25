@@ -9,6 +9,9 @@ import Swal from 'sweetalert2';
   styleUrl: './list-escalafonarios.component.scss'
 })
 export class ListEscalafonariosComponent {
+
+  private idtipodocumento = "6614e0e772fa497e6831fdf2";
+
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
@@ -42,15 +45,11 @@ export class ListEscalafonariosComponent {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.escalafonariosService.listUsers().subscribe((resp:any) => {
-
-      console.log(resp);
-
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
+    this.escalafonariosService.getEmitidosTipoDocumento(this.idtipodocumento).subscribe((resp:any) => {
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
 
   }
   isPermision(permission:string){
@@ -82,31 +81,35 @@ export class ListEscalafonariosComponent {
     this.escalafonarios_selected = rol;
   }
 
-  deleteUser() {
-    this.escalafonariosService.deleteUser(this.escalafonarios_selected.id).subscribe((resp: any) => {
-      console.log(resp);
-      let INDEX = this.usersList.findIndex((item: any) => item.id == this.escalafonarios_selected.id);
-      if (INDEX != -1) {
-        this.usersList.splice(INDEX, 1);
-  
+  deleteDocumento(documento_id: string) {
+    this.escalafonariosService.deleteEmitidos(documento_id).subscribe((res: any) => {
+      console.log(res);
+      if(res.success){
+        this.mostrarMensajeDeExito();
+      }else{
         Swal.fire({
           position: 'center',
-          icon: 'success',
-          title: 'Se eliminó correctamente',
+          icon: 'error',
+          title: 'El documento no se elimino correctamente',
           showConfirmButton: false,
           timer: 1500
         });
-  
-        $('#delete_patient').hide();
-        $('#delete_patient').removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass();
-        $('body').removeAttr('style');
-  
-        this.escalafonarios_selected = null;
       }
     })
   }
+
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'El documento se eliminó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      window.location.reload();
+    });
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
@@ -183,6 +186,28 @@ export class ListEscalafonariosComponent {
       // 2
       // 10 - 20
     }
+  }
+
+  public refresh(): void {
+    window.location.reload();
+  }
+
+  public mostrarFile(file: any[]){
+
+    if(file.length === 0){
+      console.log("vacio");
+      Swal.fire({
+        title: '¡Advertencia!',
+        text: 'No se ha agregado un documento de referencia.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+    });
+      return
+    }
+
+    const blob = new Blob([new Uint8Array(file)], { type: 'application/pdf' });
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, '_blank');
   }
 
 }

@@ -66,7 +66,9 @@
                                         <th mat-sort-header="anio">Año</th>
                                         <th mat-sort-header="mes">Mes</th>
                                         <th mat-sort-header="regimen">Regimen</th>
-                                        <th mat-sort-header="tipotrabajador">Trabajador</th>
+                                        <th mat-sort-header="tipotrabajador">Tipo</th>
+                                        <th mat-sort-header="trabajador">Trabajador</th>
+                                        <th mat-sort-header="observacion">Observacion</th>
                                         <th mat-sort-header="file">Archivo</th>
                                         <th></th>
                                     </tr>
@@ -78,12 +80,15 @@
                                         <td>{{data.mes.nombre}}</td>
                                         <td>{{data.regimen }}</td>
                                         <td>{{data.tipotrabajador.nombre}}</td>
+                                        <td>{{data.trabajador.nombres}} {{data.trabajador.apellidos}}</td>
+                                        <td>{{data.observacion || '-'}}</td>
                                         
                                         <td>
                                             <a href="javascript:;" class="me-2" (click)="mostrarFile(data.file.data)">
                                                 <img src="assets/img/icons/pdf-icon-01.svg" alt="">
                                             </a>
                                         </td>
+                                        
                                         <td class="text-end">
                                             <div class="dropdown dropdown-action" *ngIf="data.id != 1">
                                                 <a href="javascript:void(0);" class="action-icon dropdown-toggle"

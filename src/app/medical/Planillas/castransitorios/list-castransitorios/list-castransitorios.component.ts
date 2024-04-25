@@ -9,6 +9,9 @@ import Swal from 'sweetalert2';
   styleUrl: './list-castransitorios.component.scss'
 })
 export class ListCastransitoriosComponent {
+
+  private idtipotrabajador = "6614dde872fa497e6831fdc2";
+
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
@@ -42,15 +45,11 @@ export class ListCastransitoriosComponent {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.castransitoriosService.listUsers().subscribe((resp:any) => {
-
-      console.log(resp);
-
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
+    this.castransitoriosService.getPlanillaTipoTrabajador(this.idtipotrabajador).subscribe((resp:any) => {
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
 
   }
   isPermision(permission:string){
@@ -82,31 +81,35 @@ export class ListCastransitoriosComponent {
     this.castransitorios_selected = rol;
   }
 
-  deleteUser() {
-    this.castransitoriosService.deleteUser(this.castransitorios_selected.id).subscribe((resp: any) => {
-      console.log(resp);
-      let INDEX = this.usersList.findIndex((item: any) => item.id == this.castransitorios_selected.id);
-      if (INDEX != -1) {
-        this.usersList.splice(INDEX, 1);
-  
+  deletePlanilla(casdirectivosb_id: string) {
+    this.castransitoriosService.deletePlanilla(casdirectivosb_id).subscribe((res: any) => {
+      console.log(res);
+      if(res.success){
+        this.mostrarMensajeDeExito();
+      }else{
         Swal.fire({
           position: 'center',
-          icon: 'success',
-          title: 'Se eliminó correctamente',
+          icon: 'error',
+          title: 'La planilla no se elimino correctamente',
           showConfirmButton: false,
           timer: 1500
         });
-  
-        $('#delete_patient').hide();
-        $('#delete_patient').removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass();
-        $('body').removeAttr('style');
-  
-        this.castransitorios_selected = null;
       }
     })
   }
+
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'La planilla se eliminó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      window.location.reload();
+    });
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
@@ -183,6 +186,16 @@ export class ListCastransitoriosComponent {
       // 2
       // 10 - 20
     }
+  }
+
+  public refresh(): void {
+    window.location.reload();
+  }
+
+  public mostrarFile(file: any[]){
+    const blob = new Blob([new Uint8Array(file)], { type: 'application/pdf' });
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, '_blank');
   }
 
 }

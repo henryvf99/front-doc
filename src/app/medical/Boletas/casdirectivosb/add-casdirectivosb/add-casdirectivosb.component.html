@@ -55,6 +55,16 @@
 
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
+                                        <label>Trabajador <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedtrabajador" name="selectedtrabajador">
+                                            <option value="" disabled selected>Selecciona un trabajador</option> 
+                                            <option *ngFor="let trabajador of trabajadores" [value]="trabajador.id">{{ trabajador.nombres }} {{ trabajador.apellidos }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
                                         <label>Regimen <span class="login-danger">*</span></label>
                                         <select class="form-control" [(ngModel)]="selectedregimen" name="selectedregimen">
                                             <option value="" disabled selected>Selecciona un regimen</option> 
