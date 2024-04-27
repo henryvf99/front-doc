@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CasdirectivosbService } from '../service/casdirectivosb.service';
 import { Router } from '@angular/router';
+import { CasdirectivosbService } from '../service/casdirectivosb.service';
 import Swal from 'sweetalert2';
 
 
@@ -37,8 +37,9 @@ export class AddCasdirectivosbComponent implements OnInit{
       nombre: "1057"
     }
   ]
+  
   public selectedregimen: any = "";
-
+  private idtipotrabajador = "6614ddc772fa497e6831fdba";
   public nombrearchivo: string = "";
 
   public text_success:string = '';
@@ -66,6 +67,8 @@ export class AddCasdirectivosbComponent implements OnInit{
     this.casdirectivosbService.listTrabajador().subscribe((resp:any) => {
       this.trabajadores = resp.data;
     })
+
+    this.selectedtipotrabajador = this.idtipotrabajador;
 
   }
 

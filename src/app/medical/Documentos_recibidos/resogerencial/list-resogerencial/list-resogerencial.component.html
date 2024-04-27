@@ -37,7 +37,7 @@
                                                 <a routerLink="/resogerencial/add-resogerencial"
                                                     class="btn btn-primary add-pluss ms-2"><img
                                                         src="assets/img/icons/plus.svg" alt=""></a>
-                                                <a href="javascript:;" (click)="PageSize()"
+                                                <a href="javascript:;" (click)="refresh()"
                                                     class="btn btn-primary doctor-refresh ms-2"><img
                                                         src="assets/img/icons/re-fresh.svg" alt=""></a>
                                             </div>
@@ -63,21 +63,34 @@
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
                                     <tr>
-                                        <th mat-sort-header="ninforme">N° Informe</th>
-                                        <th mat-sort-header="destinatario">Destinatario</th>
+                                        <th mat-sort-header="anio">Año</th>
+                                        <th mat-sort-header="mes">Mes</th>
+                                        <th mat-sort-header="tipodocumento">Tipo</th>
+                                        <th mat-sort-header="codigo">Código</th>
                                         <th mat-sort-header="asunto">Asunto</th>
-                                        <th mat-sort-header="fecha_emision">Fecha de Emisión</th>
+                                        <th mat-sort-header="fecharecepcion">Recepción</th>
+                                        <th mat-sort-header="nombrearchivo">Nombre</th>
+                                        <th mat-sort-header="file">Archivo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let data of usersList">
 
-                                        <td>{{data.ninforme}}</td>
-                                        <td>{{data.destinatario}}</td>
+                                        <td>{{data.anio.nombre }}</td>
+                                        <td>{{data.mes.nombre}}</td>
+                                        <td>{{data.tipodocumento.nombre}}</td>
+                                        <td>{{data.codigo }}</td>
                                         <td>{{data.asunto}}</td>
-                                        <td>{{ data.fecha_emision }}</td>
-                                        <td>{{data.created_at }}</td>
+                                        <td>{{data.fecharecepcion }}</td>
+                                        
+                                        <td>{{data.nombrearchivo || '-'}}</td>
+                                        <td>
+                                            <a href="javascript:;" class="me-2" (click)="mostrarFile(data.file?.data || [])">
+                                                <img src="assets/img/icons/pdf-icon-01.svg" alt="">
+                                            </a>
+                                        </td>
+
                                         <td class="text-end">
                                             <div class="dropdown dropdown-action" *ngIf="data.id != 1">
                                                 <a href="javascript:void(0);" class="action-icon dropdown-toggle"
@@ -89,10 +102,8 @@
                                                         [routerLink]="[ '/resogerencial/list-resogerencial/edit-resogerencial/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i> Editar</a>
                                                     <a class="dropdown-item" *ngIf="isPermision('delete_resogerencial')"
-                                                        href="javascript:void(0);" (click)="selectUser(data)"
-                                                        data-bs-toggle="modal"
-                                                        [attr.data-bs-target]="'#delete_resogerencial-'+data.id"><i
-                                                            class="fa fa-trash-alt m-r-5"></i> Eliminar</a>
+                                                        href="javascript:void(0);" (click)="deleteDocumento(data.id)">
+                                                    <i class="fa fa-trash-alt m-r-5"></i>Eliminar</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -109,7 +120,7 @@
                                                                 class="btn btn-white me-1"
                                                                 data-bs-dismiss="modal">Cancelar</a>
                                                             <button type="submit" class="btn btn-danger"
-                                                                (click)="deleteUser()">Eliminar</button>
+                                                                (click)="deleteDocumento(data.id)">Eliminar</button>
                                                         </div>
                                                     </div>
                                                 </div>

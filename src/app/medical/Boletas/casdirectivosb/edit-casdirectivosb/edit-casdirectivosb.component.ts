@@ -37,17 +37,15 @@ export class EditCasdirectivosbComponent {
       nombre: "1057"
     }
   ]
+  
   public selectedregimen: any = "";
-
+  public boleta_id:any;
+  public casdirectivosb_selected:any;
   public selectedValue !: string ;
-
-  public FILE_AVATAR:any;
 
   public text_success:string = '';
   public text_validation:string = '';
 
-  public casdirectivosb_id:any;
-  public casdirectivosb_selected:any;
   constructor(
     public casdirectivosbService: CasdirectivosbService,
     public activedRoute: ActivatedRoute,
@@ -59,7 +57,7 @@ export class EditCasdirectivosbComponent {
     
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
-      this.casdirectivosb_id = resp.id;
+      this.boleta_id = resp.id;
     })
 
     this.casdirectivosbService.listYears().subscribe((resp:any) => {
@@ -78,7 +76,7 @@ export class EditCasdirectivosbComponent {
       this.trabajadores = resp.data;
     })
 
-    this.casdirectivosbService.listBoletaById(this.casdirectivosb_id).subscribe((resp:any) => {
+    this.casdirectivosbService.listBoletaById(this.boleta_id).subscribe((resp:any) => {
       console.log(resp);
       this.casdirectivosb_selected = resp.data;
       this.selectedYear = this.casdirectivosb_selected.anio.id;
@@ -127,7 +125,7 @@ export class EditCasdirectivosbComponent {
       formData.append("file", new Blob([this.buffer]));
     }
     
-    this.casdirectivosbService.updateBoleta(this.casdirectivosb_id,formData).subscribe((resp:any) => {
+    this.casdirectivosbService.updateBoleta(this.boleta_id,formData).subscribe((resp:any) => {
       console.log(resp);
 
       if(resp.success){

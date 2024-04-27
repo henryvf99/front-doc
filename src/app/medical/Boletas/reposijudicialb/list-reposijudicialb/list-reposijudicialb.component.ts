@@ -41,6 +41,7 @@ export class ListReposijudicialbComponent {
     this.getTableData();
     this.user = this.reposijudicialbService.authService.user;
   }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -51,8 +52,8 @@ export class ListReposijudicialbComponent {
       this.getTableDataGeneral();
     })
 
-
   }
+
   isPermision(permission:string){
     if(this.user.rol.nombre.includes("ADMIN")){
       return true;

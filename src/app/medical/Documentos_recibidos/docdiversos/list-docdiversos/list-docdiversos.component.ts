@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 })
 export class ListDocdiversosComponent {
 
+  private idtipodocumento = "6614e1a272fa497e6831fe12";
+
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
@@ -43,15 +45,11 @@ export class ListDocdiversosComponent {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.docdiversosService.listUsers().subscribe((resp:any) => {
-
-      console.log(resp);
-
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
+    this.docdiversosService.getRecibidosTipoDocumento(this.idtipodocumento).subscribe((resp:any) => {
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
 
   }
   isPermision(permission:string){
@@ -83,31 +81,57 @@ export class ListDocdiversosComponent {
     this.docdiversos_selected = rol;
   }
 
-  deleteUser() {
-    this.docdiversosService.deleteUser(this.docdiversos_selected.id).subscribe((resp: any) => {
-      console.log(resp);
-      let INDEX = this.usersList.findIndex((item: any) => item.id == this.docdiversos_selected.id);
-      if (INDEX != -1) {
-        this.usersList.splice(INDEX, 1);
-  
+  deleteDocumento(documento_id: string) {
+    this.docdiversosService.deleteRecibidos(documento_id).subscribe((res: any) => {
+      console.log(res);
+      if(res.success){
+        this.mostrarMensajeDeExito();
+      }else{
         Swal.fire({
           position: 'center',
-          icon: 'success',
-          title: 'Se eliminó correctamente',
+          icon: 'error',
+          title: 'El documento no se elimino correctamente',
           showConfirmButton: false,
           timer: 1500
         });
-  
-        $('#delete_patient').hide();
-        $('#delete_patient').removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass();
-        $('body').removeAttr('style');
-  
-        this.docdiversos_selected = null;
       }
     })
   }
+
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'El documento se eliminó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      window.location.reload();
+    });
+  }
+
+  public refresh(): void {
+    window.location.reload();
+  }
+
+  public mostrarFile(file: any[]){
+
+    if(file.length === 0){
+      console.log("vacio");
+      Swal.fire({
+        title: '¡Advertencia!',
+        text: 'No se ha agregado un documento de referencia.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+    });
+      return
+    }
+
+    const blob = new Blob([new Uint8Array(file)], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank');
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
