@@ -133,11 +133,11 @@ export class EditCautelaresComponent {
         this.text_validation = resp.message_text;
         this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'La boleta no se registro correctamente';
+        this.text_success = 'La boleta no se actualizó correctamente';
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'La boleta no se registro correctamente',
+          title: 'La boleta no se actualizó correctamente',
           showConfirmButton: false,
           timer: 1500
         });
@@ -159,11 +159,11 @@ export class EditCautelaresComponent {
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'La boleta se agregó correctamente',
+      title: 'La boleta se actualizó correctamente',
       showConfirmButton: false,
       timer: 1000
     }).then(() => {
-      this.router.navigateByUrl('/casdirectivosb/list-casdirectivosb');
+      this.router.navigateByUrl('/cautelares/list-cautelares');
     });
   }
 

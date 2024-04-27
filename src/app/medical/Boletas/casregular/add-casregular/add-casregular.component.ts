@@ -113,11 +113,11 @@ export class AddCasregularComponent implements OnInit{
         this.text_validation = res.message_text;
         this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'La boleta no se registro correctamente';
+        this.text_success = 'La boleta no se registró correctamente';
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'La boleta no se registro correctamente',
+          title: 'La boleta no se registró correctamente',
           showConfirmButton: false,
           timer: 1500
         });
@@ -140,7 +140,7 @@ export class AddCasregularComponent implements OnInit{
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'La boleta se agregó correctamente',
+      title: 'La boleta se registró correctamente',
       showConfirmButton: false,
       timer: 1000
     }).then(() => {
