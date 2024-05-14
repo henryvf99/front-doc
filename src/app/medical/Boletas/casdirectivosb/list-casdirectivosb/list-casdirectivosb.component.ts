@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CasdirectivosbService } from '../service/casdirectivosb.service';
+import { AuthService } from '../../../../shared/auth/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -11,7 +13,16 @@ import { Router } from '@angular/router';
 })
 export class ListCasdirectivosbComponent {
 
+  @ViewChild('contenidoModal') contenidoModal!: TemplateRef<any>;
+  dialogRef: MatDialogRef<any> | undefined;
+
+  public modal_txtarea = false;
+  public modal_loading = false;
+
   private idtipotrabajador = "6614ddc772fa497e6831fdba";
+
+  public nombre_archivo_sumarizado: string = "detalle.pdf";
+  public texto_archivo_sumarizado: string = "";
 
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
@@ -33,16 +44,21 @@ export class ListCasdirectivosbComponent {
   public role_generals:any = [];
   public casdirectivosb_selected:any;
   public user:any;
+
   constructor(
     public casdirectivosbService: CasdirectivosbService,
-    private router: Router
+    public authService: AuthService,
+    private router: Router,
+    private dialog: MatDialog
   ){
 
   }
+
   ngOnInit() {
     this.getTableData();
     this.user = this.casdirectivosbService.authService.user;
   }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -197,6 +213,59 @@ export class ListCasdirectivosbComponent {
     const blob = new Blob([new Uint8Array(file)], { type: 'application/pdf' });
       const blobUrl = URL.createObjectURL(blob);
       window.open(blobUrl, '_blank');
+  }
+
+  extractTextFromPdf(data: any){
+
+    this.dialogRef = this.dialog.open(this.contenidoModal, {
+      width: '80%',
+      height: '70%'
+    });
+
+    const arrayBuffer = new Uint8Array(data).buffer;
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+
+    const formData = new FormData();
+    formData.append('file', blob);
+
+    this.authService.traducirPdfTexto(formData).subscribe((res:any) => {
+
+      if(res.success){
+        const resultado = res.data;
+        this.sumarizar(resultado);
+      }else{
+        console.log(`Error`);
+      }
+
+    });
+
+  }
+
+  sumarizar(data: any){
+    
+    this.authService.sumarizar(data).subscribe((res:any) => {
+
+      if(res.success){
+        this.texto_archivo_sumarizado = res.data;
+        this.modal_loading = true;
+        this.modal_txtarea = true;
+        console.log(`${res.data}`);
+      }else{
+        console.log(`Error`);
+      }
+
+    });
+
+  }
+
+  cerrarModal() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.modal_txtarea = false;
+      this.modal_loading = false;
+      this.texto_archivo_sumarizado = "";
+      //this.nombre_archivo_sumarizado = "";
+    }
   }
 
 }

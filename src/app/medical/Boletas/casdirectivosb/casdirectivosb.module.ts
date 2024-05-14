@@ -14,6 +14,13 @@ import { CasdirectivosbComponent } from './casdirectivosb.component';
 import { MatIconModule } from '@angular/material/icon';
 
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
+
+
 @NgModule({
   declarations: [
     AddCasdirectivosbComponent,
@@ -30,7 +37,11 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     RouterModule,
     MatDatepickerModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ]
 })
 export class CasdirectivosbModule { }
