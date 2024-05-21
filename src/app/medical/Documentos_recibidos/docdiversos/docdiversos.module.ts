@@ -12,6 +12,10 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
 import { DocdiversosComponent } from './docdiversos.component';
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -29,6 +33,11 @@ import { DocdiversosComponent } from './docdiversos.component';
     ReactiveFormsModule,
     RouterModule,
     MatDatepickerModule,
+
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ]
 })
 export class DocdiversosModule { }

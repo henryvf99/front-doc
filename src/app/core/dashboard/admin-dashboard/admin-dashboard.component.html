@@ -34,11 +34,13 @@
         <div class="row" *ngIf="user.rol.nombre.includes('ADMIN') || user.permissions.includes('admin_dashboard')">
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                 <div class="dash-widget">
+                    <!--
+                        
                     <div class="dash-boxs comman-flex-center">
                         <img src="assets/img/icons/calendar.svg" alt="">
-                    </div>
+                    </div>-->
                     <div class="dash-content dash-count">
-                        <h4>Appointments</h4>
+                        <h4>Trabajadores</h4>
                         <!-- [countUp]="250" [options]="{duration: 10}" -->
                         <h2><span class="counter-up">{{ num_appointments_current }}/ <small>{{ num_appointments_before
                                     }}</small> </span></h2>
@@ -53,11 +55,13 @@
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                 <div class="dash-widget">
+                    <!--
+                        
                     <div class="dash-boxs comman-flex-center">
                         <img src="assets/img/icons/profile-add.svg" alt="">
-                    </div>
+                    </div>-->
                     <div class="dash-content dash-count">
-                        <h4>New Patients</h4>
+                        <h4>Boletas</h4>
                         <!-- [countUp]="140" [options]="{duration: 10}" -->
                         <h2><span class="counter-up">{{ num_patients_current }}/ <small>{{ num_patients_before
                                     }}</small> </span></h2>
@@ -72,11 +76,13 @@
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                 <div class="dash-widget">
+                    <!--
+                        
                     <div class="dash-boxs comman-flex-center">
                         <img src="assets/img/icons/scissor.svg" alt="">
-                    </div>
+                    </div>-->
                     <div class="dash-content dash-count">
-                        <h4>Operations</h4>
+                        <h4>Planillas</h4>
                         <!-- [countUp]="56" [options]="{duration: 10}" -->
                         <h2><span class="counter-up">{{ num_appointments_attetion_current }}/ <small>{{
                                     num_appointments_attetion_before }}</small> </span></h2>
@@ -91,11 +97,13 @@
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                 <div class="dash-widget">
+                    <!--
                     <div class="dash-boxs comman-flex-center">
                         <img src="assets/img/icons/empty-wallet.svg" alt="">
                     </div>
+                    -->
                     <div class="dash-content dash-count">
-                        <h4>Earnings</h4>
+                        <h4>Documentos</h4>
                         <!-- [countUp]="20250" [options]="{duration: 10}" -->
                         <h2>$<span class="counter-up"> {{ appointments_total_current }}/ <small>{{
                                     appointments_total_before }}</small> </span></h2>
@@ -114,7 +122,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="chart-title patient-visit">
-                            <h4>Patient Visit by Gender</h4>
+                            <h4>Módulos</h4>
                             
                             <div class="form-group mb-0">
                                 <mat-select [(ngModel)]="selectedValue" class="form-control select" placeholder="2022"

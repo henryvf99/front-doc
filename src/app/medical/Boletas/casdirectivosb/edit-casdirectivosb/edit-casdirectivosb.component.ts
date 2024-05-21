@@ -38,6 +38,7 @@ export class EditCasdirectivosbComponent {
     }
   ]
   
+  public observacion: string = "";
   public selectedregimen: any = "";
   public boleta_id:any;
   public casdirectivosb_selected:any;
@@ -84,6 +85,7 @@ export class EditCasdirectivosbComponent {
       this.selectedtipotrabajador = this.casdirectivosb_selected.tipotrabajador.id;
       this.selectedtrabajador = this.casdirectivosb_selected.trabajador.id;
       this.selectedregimen = this.casdirectivosb_selected.regimen ;
+      this.observacion = this.casdirectivosb_selected.observacion ;
       this.selectedFileName = this.casdirectivosb_selected.nombrearchivo;
     })
     
@@ -120,6 +122,7 @@ export class EditCasdirectivosbComponent {
     formData.append("tipotrabajador",this.selectedtipotrabajador);
     formData.append("trabajador",this.selectedtrabajador);
     formData.append("regimen",this.selectedregimen);
+    formData.append("observacion",this.observacion || '-');
     formData.append("nombrearchivo",this.selectedFileName);
     if (this.buffer !== null) {
       formData.append("file", new Blob([this.buffer]));

@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '../../../../shared/auth/auth.service';
+
 import { DocdiversosService } from '../service/docdiversos.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-list-docdiversos',
@@ -9,6 +13,14 @@ import Swal from 'sweetalert2';
   styleUrl: './list-docdiversos.component.scss'
 })
 export class ListDocdiversosComponent {
+
+  @ViewChild('contenidoModal') contenidoModal!: TemplateRef<any>;
+  dialogRef: MatDialogRef<any> | undefined;
+
+  public modal_txtarea = false;
+  public modal_loading = false;
+  public nombre_archivo_sumarizado: string = "detalle.pdf";
+  public texto_archivo_sumarizado: string = "";
 
   private idtipodocumento = "6614e1a272fa497e6831fe12";
 
@@ -32,8 +44,11 @@ export class ListDocdiversosComponent {
   public role_generals:any = [];
   public docdiversos_selected:any;
   public user:any;
+
   constructor(
     public docdiversosService: DocdiversosService,
+    public authService: AuthService,
+    private dialog: MatDialog
   ){
 
   }
@@ -207,6 +222,61 @@ export class ListDocdiversosComponent {
       // 0 - 10
       // 2
       // 10 - 20
+    }
+  }
+
+  extractTextFromPdf(data: any, nombre_archivo: string){
+
+    this.dialogRef = this.dialog.open(this.contenidoModal, {
+      width: '80%',
+      height: '70%'
+    });
+
+    const arrayBuffer = new Uint8Array(data).buffer;
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+
+    const formData = new FormData();
+    formData.append('file', blob);
+
+    this.authService.traducirPdfTexto(formData).subscribe((res:any) => {
+
+      if(res.success){
+        const resultado = res.data;
+        console.log(resultado);
+        this.sumarizar(resultado, nombre_archivo);
+      }else{
+        console.log(`Error`);
+      }
+
+    });
+
+  }
+
+  sumarizar(data: any, nombre_archivo: string){
+    
+    this.authService.sumarizar(data).subscribe((res:any) => {
+
+      if(res.success){
+        this.texto_archivo_sumarizado = res.data;
+        this.nombre_archivo_sumarizado = nombre_archivo;
+        this.modal_loading = true;
+        this.modal_txtarea = true;
+        console.log(`${res.data}`);
+      }else{
+        console.log(`Error`);
+      }
+
+    });
+
+  }
+
+  cerrarModal() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.modal_txtarea = false;
+      this.modal_loading = false;
+      this.texto_archivo_sumarizado = "";
+      this.nombre_archivo_sumarizado = "";
     }
   }
 

@@ -38,18 +38,21 @@ export class AddCasdirectivosbComponent implements OnInit{
     }
   ]
   
+  public observacion: string = "";
   public selectedregimen: any = "";
   private idtipotrabajador = "6614ddc772fa497e6831fdba";
   public nombrearchivo: string = "";
 
   public text_success:string = '';
   public text_validation:string = '';
+
   constructor(
     public casdirectivosbService: CasdirectivosbService,
     private router: Router
   ) {
     
   }
+  
   ngOnInit(): void {
 
     this.casdirectivosbService.listYears().subscribe((resp:any) => {
@@ -103,6 +106,7 @@ export class AddCasdirectivosbComponent implements OnInit{
     formData.append("tipotrabajador",this.selectedtipotrabajador);
     formData.append("trabajador",this.selectedtrabajador);
     formData.append("regimen",this.selectedregimen);
+    formData.append("observacion",this.observacion || '-');
     formData.append("nombrearchivo",this.selectedFileName);
     if (this.buffer !== null) {
       formData.append("file", new Blob([this.buffer]));

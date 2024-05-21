@@ -109,6 +109,9 @@
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <!--  -->
+                                                    <a class="dropdown-item" *ngIf="isPermision('delete_casdirectivosb')"
+                                                        href="javascript:void(0);" (click)="extractTextFromPdf(data.file2.data, data.nombrearchivo2)">
+                                                        <i class="fa-brands fa-wpforms m-r-5"></i>Sumarizar</a>
                                                     <a class="dropdown-item" *ngIf="isPermision('edit_cartas')"
                                                         [routerLink]="[ '/cartas/list-cartas/edit-cartas/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i>Editar</a>
@@ -222,3 +225,23 @@
         </div>
     </div>
 </div>
+
+<ng-template #contenidoModal let-dialogRef>
+    <div class="modal-header">
+      <div class="modal-title">Archivo sumarizado: {{ nombre_archivo_sumarizado }}</div>
+      <button class="btn_close" (click)="cerrarModal()">
+        &#x274C;
+      </button>
+    </div>
+    <div *ngIf="modal_txtarea == true" id="modal_txtarea" class="modal-body">
+        <mat-form-field class="custom-form-field" appearance="fill">
+            <textarea class="custom-textarea" matInput placeholder="Contenido del modal..." rows="16">{{ texto_archivo_sumarizado }}</textarea>
+        </mat-form-field>
+    </div>
+    <div *ngIf="modal_loading == false" id="modal_loading" class="loading">
+        <div class="elements_loading">
+            <mat-spinner></mat-spinner>
+            <p style="margin-top: 1rem; font-size: 1rem;">Sumarizando archivo, espere ...</p>
+        </div>
+    </div>
+</ng-template>

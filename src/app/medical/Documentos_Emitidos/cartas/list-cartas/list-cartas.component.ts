@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '../../../../shared/auth/auth.service';
+
 import { CartasService } from '../service/cartas.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
@@ -9,6 +12,17 @@ import Swal from 'sweetalert2';
   styleUrl: './list-cartas.component.scss'
 })
 export class ListCartasComponent {
+
+  index: number = 0;
+  longitudFragmento: number = 0;
+
+  @ViewChild('contenidoModal') contenidoModal!: TemplateRef<any>;
+  dialogRef: MatDialogRef<any> | undefined;
+
+  public modal_txtarea = false;
+  public modal_loading = false;
+  public nombre_archivo_sumarizado: string = "";
+  public texto_archivo_sumarizado: string = "";
 
   private idtipodocumento = "6614df0872fa497e6831fdea";
 
@@ -32,15 +46,20 @@ export class ListCartasComponent {
   public role_generals:any = [];
   public cartas_selected:any;
   public user:any;
+
   constructor(
     public cartasService: CartasService,
+    public authService: AuthService,
+    private dialog: MatDialog
   ){
 
   }
+
   ngOnInit() {
     this.getTableData();
     this.user = this.cartasService.authService.user;
   }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -210,5 +229,69 @@ export class ListCartasComponent {
     }
   }
 
+  extractTextFromPdf(data: any, nombre_archivo: string){
+
+        this.dialogRef = this.dialog.open(this.contenidoModal, {
+      width: '80%',
+      height: '70%'
+    });
+
+    const arrayBuffer = new Uint8Array(data).buffer;
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+
+    const formData = new FormData();
+    formData.append('file', blob);
+
+    this.authService.traducirPdfTexto(formData).subscribe((res:any) => {
+
+      if(res.success){
+        const resultado = res.data;
+        this.nombre_archivo_sumarizado = nombre_archivo;
+        this.longitudFragmento = resultado.length;
+        for (let i = 0; i < resultado.length; i++) {
+          this.sumarizar(resultado[i]);
+        }
+
+      }else{
+        console.log(`Error`);
+      }
+
+    });
+
+  }
+
+  sumarizar(data: any){
+    
+    this.authService.sumarizar(data).subscribe((res:any) => {
+
+      if(res.success){
+        this.texto_archivo_sumarizado += res.data;
+        this.modal_loading = true;
+        this.modal_txtarea = true;
+        console.log(`${res.data}`);
+        this.index ++;
+        console.log(this.index);
+      }else{
+        console.log(`Error`);
+      }
+
+      if(this.index === this.longitudFragmento){
+        this.texto_archivo_sumarizado += "\n\nARCHIVO SUMARIZADO CORRECTAMENTE";
+      }
+
+    });
+
+  }
+
+  cerrarModal() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.modal_txtarea = false;
+      this.modal_loading = false;
+      this.texto_archivo_sumarizado = "";
+      this.nombre_archivo_sumarizado = "";
+    }
+  }
+  
 }
 

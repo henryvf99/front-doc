@@ -12,6 +12,11 @@ import { ListResogerencialComponent } from './list-resogerencial/list-resogerenc
 import { AddResogerencialComponent } from './add-resogerencial/add-resogerencial.component';
 import { EditResogerencialComponent } from './edit-resogerencial/edit-resogerencial.component';
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +35,10 @@ import { EditResogerencialComponent } from './edit-resogerencial/edit-resogerenc
     RouterModule,
     MatDatepickerModule,
 
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ]
 })
 export class ResogerencialModule { }

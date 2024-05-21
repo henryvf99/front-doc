@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartasService } from '../service/cartas.service';
 import Swal from 'sweetalert2';
 
@@ -7,89 +8,163 @@ import Swal from 'sweetalert2';
   templateUrl: './add-cartas.component.html',
   styleUrl: './add-cartas.component.scss'
 })
-export class AddCartasComponent {
-  public selectedValue !: string  ;
-  public ninforme:string = '';
-  public destinatario:string = '';
-  public asunto:string = '';
-  public referencia:string = '';
-  public fecha_emision:string = '';
+export class AddCartasComponent implements OnInit{
+  
+  public selectedFileName: string = ''; 
+  public buffer: ArrayBuffer | null = null;
 
+  public selectedFileName2: string = ''; 
+  public buffer2: ArrayBuffer | null = null;
 
-  public FILE_AVATAR:any;
-  public IMAGEN_PREVIZUALIZA:any = 'assets/img/user-06.jpg';
+  public years: any[] = [];
+  public selectedYear: any = "";
+
+  public months: any[] = [];
+  public selectedMonth: any = "";
+
+  public tipodocumentos: any[] = [];
+  public selectedtipodocumento: any = "";
+  
+  private idtipodocumento = "6614df0872fa497e6831fdea";
+
+  public codigo: string = "";
+  public destinatario: string = "";
+  public asunto: string = "";
+  public fechaemision: string = "";
+  
+
+  public nombrearchivo: string = " ";
+  public nombrearchivo2: string = " ";
 
   public text_success:string = '';
   public text_validation:string = '';
+
   constructor(
     public cartasService: CartasService,
+    private router: Router
   ) {
     
   }
+
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    this.cartasService.listConfig().subscribe((resp:any) => {
-      console.log(resp);
+    
+    this.cartasService.listYears().subscribe((resp:any) => {
+      this.years = resp.data;
     })
+
+    this.cartasService.listMonths().subscribe((resp:any) => {
+      this.months = resp.data;
+    })
+
+    this.cartasService.listTipoDocumento().subscribe((resp:any) => {
+      this.tipodocumentos = resp.data;
+    })
+
+    this.selectedtipodocumento = this.idtipodocumento;
+
+  }
+
+  loadFile($event: any, inputNumber: number) {
+    if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
+        this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
+        return;
+    }
+    this.text_validation = '';
+    
+    const file = $event.target.files[0];
+    const fileName = file.name;
+    
+    // Manejar el input 1
+    if (inputNumber === 1) {
+        this.selectedFileName = fileName;
+
+        let reader = new FileReader();
+        reader.onload = (event) => {
+            const arrayBuffer = (event.target as FileReader).result as ArrayBuffer;
+            this.buffer = arrayBuffer;
+        };
+        reader.readAsArrayBuffer(file);
+    }
+    // Manejar el input 2
+    else if (inputNumber === 2) {
+        this.selectedFileName2 = fileName;
+
+        let reader = new FileReader();
+        reader.onload = (event) => {
+            const arrayBuffer = (event.target as FileReader).result as ArrayBuffer;
+            this.buffer2 = arrayBuffer;
+        };
+        reader.readAsArrayBuffer(file);
+    }
   }
 
   save(){
     this.text_validation = '';
-    if(!this.ninforme || !this.referencia || !this.destinatario || !this.FILE_AVATAR ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (ninforme,destinatario,referencia,avatar)";
+    if( !this.selectedMonth  ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
       return;
     }
-    console.log(this.selectedValue);
 
     let formData = new FormData();
-    formData.append("ninforme",this.ninforme);
+    formData.append("anio",this.selectedYear);
+    formData.append("mes",this.selectedMonth);
+    formData.append("tipodocumento",this.selectedtipodocumento);
+
+    formData.append("codigo",this.codigo);
     formData.append("destinatario",this.destinatario);
-    formData.append("referencia",this.referencia);
     formData.append("asunto",this.asunto);
-    formData.append("fecha_emision",this.fecha_emision);
-    formData.append("imagen",this.FILE_AVATAR);
-    
-    this.cartasService.registerUser(formData).subscribe((resp:any) => {
-      console.log(resp);
+    formData.append("fechaemision",this.fechaemision);
 
-      if(resp.message == 403){
-        this.text_validation = resp.message_text;
+    formData.append("nombrearchivo",this.selectedFileName);
+    if (this.buffer !== null) {
+      formData.append("file", new Blob([this.buffer]));
+    }
+
+    formData.append("nombrearchivo2",this.selectedFileName2);
+    if (this.buffer2 !== null) {
+      formData.append("file2", new Blob([this.buffer2]));
+    }
+
+    this.cartasService.registrarEmitidos(formData).subscribe((res:any) => {
+
+      if(res.success){
+        this.text_validation = res.message_text;
+        this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'El usuario ha sido registrado correctamente';
-
-        this.ninforme = '';
-        this.destinatario = '';
-        this.referencia  = '';
-        this.asunto  = '';
-        this.fecha_emision  = '';
-        this.selectedValue  = '';
-        this.FILE_AVATAR = null;
-        this.IMAGEN_PREVIZUALIZA = null;
+        this.text_success = 'El documento no se registró correctamente';
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'El documento no se registró correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
 
-    });
+    },
+    (err: any) => {
+      var msj = err.error.message;
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: msj,
+        showConfirmButton: true
+      });
+    }
+    );
+    
+  }
+
+  mostrarMensajeDeExito() {
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'Se agregó Correctamente',
+      title: 'El documento se actualizó correctamente',
       showConfirmButton: false,
-      timer: 1500
+      timer: 1000
+    }).then(() => {
+      this.router.navigateByUrl('/cartas/list-cartas');
     });
-
-  }
-
-  loadFile($event:any){
-    if($event.target.files[0].type.indexOf("image") < 0){
-      // alert("SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO IMAGEN");
-      this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO IMAGEN";
-      return;
-    }
-    this.text_validation = '';
-    this.FILE_AVATAR = $event.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(this.FILE_AVATAR);
-    reader.onloadend = () => this.IMAGEN_PREVIZUALIZA = reader.result;
   }
 }
 

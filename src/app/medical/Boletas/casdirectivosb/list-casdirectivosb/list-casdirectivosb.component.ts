@@ -1,10 +1,10 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CasdirectivosbService } from '../service/casdirectivosb.service';
 import { AuthService } from '../../../../shared/auth/auth.service';
+
+import { CasdirectivosbService } from '../service/casdirectivosb.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-casdirectivosb',
@@ -18,11 +18,10 @@ export class ListCasdirectivosbComponent {
 
   public modal_txtarea = false;
   public modal_loading = false;
-
-  private idtipotrabajador = "6614ddc772fa497e6831fdba";
-
   public nombre_archivo_sumarizado: string = "detalle.pdf";
   public texto_archivo_sumarizado: string = "";
+
+  private idtipotrabajador = "6614ddc772fa497e6831fdba";
 
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
@@ -48,7 +47,6 @@ export class ListCasdirectivosbComponent {
   constructor(
     public casdirectivosbService: CasdirectivosbService,
     public authService: AuthService,
-    private router: Router,
     private dialog: MatDialog
   ){
 
@@ -264,7 +262,7 @@ export class ListCasdirectivosbComponent {
       this.modal_txtarea = false;
       this.modal_loading = false;
       this.texto_archivo_sumarizado = "";
-      //this.nombre_archivo_sumarizado = "";
+      this.nombre_archivo_sumarizado = "";
     }
   }
 
