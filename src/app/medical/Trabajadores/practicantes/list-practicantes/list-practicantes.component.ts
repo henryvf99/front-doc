@@ -30,30 +30,32 @@ export class ListPracticantesComponent {
   public role_generals:any = [];
   public practicantes_selected:any;
   public user:any;
+
   constructor(
     public practicantesService: PracticantesService,
   ){
 
   }
+
   ngOnInit() {
     this.getTableData();
     this.user = this.practicantesService.authService.user;
   }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.practicantesService.listUsers().subscribe((resp:any) => {
+    this.practicantesService.getPracticantes().subscribe((resp:any) => {
 
       console.log(resp);
 
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
-
   }
+
   isPermision(permission:string){
     if(this.user.rol.nombre.includes("ADMIN")){
       return true;
@@ -63,6 +65,7 @@ export class ListPracticantesComponent {
     }
     return false;
   }
+
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -83,31 +86,57 @@ export class ListPracticantesComponent {
     this.practicantes_selected = rol;
   }
 
-  deleteUser() {
-    this.practicantesService.deleteUser(this.practicantes_selected.id).subscribe((resp: any) => {
-      console.log(resp);
-      let INDEX = this.usersList.findIndex((item: any) => item.id == this.practicantes_selected.id);
-      if (INDEX != -1) {
-        this.usersList.splice(INDEX, 1);
-  
+  deleteDocumento(practicante_id: string) {
+    this.practicantesService.deletePracticante(practicante_id).subscribe((res: any) => {
+      console.log(res);
+      if(res.success){
+        this.mostrarMensajeDeExito();
+      }else{
         Swal.fire({
           position: 'center',
-          icon: 'success',
-          title: 'Se eliminó correctamente',
+          icon: 'error',
+          title: 'El practicante no se elimino correctamente',
           showConfirmButton: false,
           timer: 1500
         });
-  
-        $('#delete_patient').hide();
-        $('#delete_patient').removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass();
-        $('body').removeAttr('style');
-  
-        this.practicantes_selected = null;
       }
     })
   }
+
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'El practicante se eliminó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      window.location.reload();
+    });
+  }
+
+  public refresh(): void {
+    window.location.reload();
+  }
+
+  public mostrarFile(file: any[]){
+
+    if(file.length === 0){
+      console.log("vacio");
+      Swal.fire({
+        title: '¡Advertencia!',
+        text: 'No se ha agregado un documento de referencia.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+    });
+      return
+    }
+
+    const blob = new Blob([new Uint8Array(file)], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank');
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();

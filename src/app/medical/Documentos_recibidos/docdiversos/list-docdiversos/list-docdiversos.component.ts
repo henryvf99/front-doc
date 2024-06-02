@@ -241,27 +241,11 @@ export class ListDocdiversosComponent {
     this.authService.traducirPdfTexto(formData).subscribe((res:any) => {
 
       if(res.success){
-        const resultado = res.data;
-        console.log(resultado);
-        this.sumarizar(resultado, nombre_archivo);
-      }else{
-        console.log(`Error`);
-      }
-
-    });
-
-  }
-
-  sumarizar(data: any, nombre_archivo: string){
-    
-    this.authService.sumarizar(data).subscribe((res:any) => {
-
-      if(res.success){
-        this.texto_archivo_sumarizado = res.data;
         this.nombre_archivo_sumarizado = nombre_archivo;
+        this.texto_archivo_sumarizado = res.data;
         this.modal_loading = true;
         this.modal_txtarea = true;
-        console.log(`${res.data}`);
+        console.log(res.data);
       }else{
         console.log(`Error`);
       }

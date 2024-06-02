@@ -147,17 +147,6 @@ export class DataService {
             
           ],
         },
-            // SUMARIZACIÓN
-
-        {
-          menuValue: 'Sumarización',
-          hasSubRoute: true,
-          showSubRoute: false,
-          base: '',
-          icon: 'fa-columns',
-          faIcon:true,
-          subMenus: []
-        },
 
             // TRABAJADORES
 

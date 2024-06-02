@@ -159,12 +159,13 @@ export class AddCartasComponent implements OnInit{
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'El documento se actualizó correctamente',
+      title: 'El documento se registró correctamente',
       showConfirmButton: false,
       timer: 1000
     }).then(() => {
       this.router.navigateByUrl('/cartas/list-cartas');
     });
   }
+
 }
 

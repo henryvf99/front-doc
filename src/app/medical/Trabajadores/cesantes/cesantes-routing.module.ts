@@ -18,7 +18,7 @@ const routes: Routes = [{
       component: ListCesanteComponent
     },
     {
-      path: 'list-cesante/edit-cesante/:id',
+      path: 'edit-cesante/:id',
       component: EditCesanteComponent
     }
   ]

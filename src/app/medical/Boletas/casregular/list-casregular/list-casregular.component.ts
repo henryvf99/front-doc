@@ -32,6 +32,7 @@ export class ListCasregularComponent {
   public role_generals:any = [];
   public casregular_selected:any;
   public user:any;
+  
   constructor(
     public casregularService: CasregularService,
   ){
@@ -63,6 +64,7 @@ export class ListCasregularComponent {
     }
     return false;
   }
+
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];

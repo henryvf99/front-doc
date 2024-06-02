@@ -18,9 +18,19 @@
             <div class="col-sm-12">
             
                 <div class="card">
-                    <div class="card-body" *ngIf="activos_selected">
+                    <div class="card-body">
                         <form>
                             <div class="row">
+                                
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Tipo de trabajador <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedtipotrabajador" name="selectedtipotrabajador" disabled>
+                                            <option value="" disabled selected>Selecciona un tipo de trabajador</option> 
+                                            <option *ngFor="let tipotrabajador of tipotrabajadores" [value]="tipotrabajador.id">{{ tipotrabajador.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 
                                 <div class="col-12 col-md-6 col-xl-4">  
                                     <div class="form-group local-forms">
@@ -28,64 +38,70 @@
                                         <input class="form-control" [(ngModel)]="nombres" name="nombres" type="text"  >
                                     </div>
                                 </div>
+
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
                                         <label >Apellidos <span class="login-danger">*</span></label>
                                         <input class="form-control" [(ngModel)]="apellidos" name="apellidos" type="text"  >
                                     </div>
                                 </div>
+
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
                                         <label >DNI <span class="login-danger">*</span></label>
                                         <input class="form-control" [(ngModel)]="dni" name="dni" type="text"  >
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group local-forms">
-                                        <label >Área <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="area" name="area" type="text"  >
-                                    </div>
-                                </div>
-                                
+
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >Cargo <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="cargo" name="cargo"  type="text"  >
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group local-forms">
-                                        <label >Fecha Nacimiento  <span class="login-danger">*</span></label>
-                                        <input class="form-control datetimepicker" [(ngModel)]="fingreso" name="fingreso" type="text" matInput [matDatepicker]="picker"  >
-                                        <mat-datepicker #picker></mat-datepicker>
-                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group local-forms">
-                                        <label >Fecha de Ingreso  <span class="login-danger">*</span></label>
-                                        <input class="form-control datetimepicker" [(ngModel)]="fingreso" name="fingreso" type="text" matInput [matDatepicker]="picker"  >
-                                        <mat-datepicker #picker></mat-datepicker>
-                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <label>Área<span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedarea" name="selectedarea">
+                                            <option value="" disabled selected>Selecciona un área</option> 
+                                            <option *ngFor="let area of areas" [value]="area.id">{{ area.nombre }}</option>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >Regimen <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="regimen" name="regimen"  type="text"  >
+                                        <label>Cargo<span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedcargo" name="selectedcargo">
+                                            <option value="" disabled selected>Selecciona un cargo</option> 
+                                            <option *ngFor="let cargo of cargos" [value]="cargo.id">{{ cargo.nombre }}</option>
+                                        </select>
                                     </div>
                                 </div>
 
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group local-top-form">
-                                        <label class="local-top">Documento <span class="login-danger">*</span></label>
-                                        <div class="settings-btn upload-files-avator">
-                                            <input type="file" accept="image/*" name="image" id="file" (change)="loadFile($event)" class="hide-input">
-                                            <label for="file" class="upload">Subir Documento</label>
-                                        </div>
+                                <div class="col-12 col-md-6 col-xl-4">  
+                                    <div class="form-group local-forms">
+                                        <label>Fecha nacimiento<span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="fnacimiento" name="fnacimiento" type="date"  >
                                     </div>
-                                
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">  
+                                    <div class="form-group local-forms">
+                                        <label >Fecha de ingreso <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="fingreso" name="fingreso" type="date"  >
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">  
+                                    <div class="form-group local-forms">
+                                        <label >Fecha de salida <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="fsalida" name="fsalida" type="date"  >
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Regimen <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedregimen" name="selectedregimen">
+                                            <option value="" disabled selected>Selecciona un regimen</option> 
+                                            <option *ngFor="let regimen of regimenes" [value]="regimen.nombre">{{ regimen.nombre }}</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 
                                 <div class="col-12">

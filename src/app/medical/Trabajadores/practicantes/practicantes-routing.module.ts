@@ -18,7 +18,7 @@ const routes: Routes = [{
       component: ListPracticantesComponent
     },
     {
-      path: 'list-practicantes/edit-practicantes/:id',
+      path: 'edit-practicantes/:id',
       component: EditPracticantesComponent
     }
   ]

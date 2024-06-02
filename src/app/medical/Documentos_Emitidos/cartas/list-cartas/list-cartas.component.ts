@@ -13,9 +13,6 @@ import Swal from 'sweetalert2';
 })
 export class ListCartasComponent {
 
-  index: number = 0;
-  longitudFragmento: number = 0;
-
   @ViewChild('contenidoModal') contenidoModal!: TemplateRef<any>;
   dialogRef: MatDialogRef<any> | undefined;
 
@@ -231,7 +228,7 @@ export class ListCartasComponent {
 
   extractTextFromPdf(data: any, nombre_archivo: string){
 
-        this.dialogRef = this.dialog.open(this.contenidoModal, {
+    this.dialogRef = this.dialog.open(this.contenidoModal, {
       width: '80%',
       height: '70%'
     });
@@ -245,38 +242,13 @@ export class ListCartasComponent {
     this.authService.traducirPdfTexto(formData).subscribe((res:any) => {
 
       if(res.success){
-        const resultado = res.data;
         this.nombre_archivo_sumarizado = nombre_archivo;
-        this.longitudFragmento = resultado.length;
-        for (let i = 0; i < resultado.length; i++) {
-          this.sumarizar(resultado[i]);
-        }
-
-      }else{
-        console.log(`Error`);
-      }
-
-    });
-
-  }
-
-  sumarizar(data: any){
-    
-    this.authService.sumarizar(data).subscribe((res:any) => {
-
-      if(res.success){
-        this.texto_archivo_sumarizado += res.data;
+        this.texto_archivo_sumarizado = res.data;
         this.modal_loading = true;
         this.modal_txtarea = true;
-        console.log(`${res.data}`);
-        this.index ++;
-        console.log(this.index);
+        console.log(res.data);
       }else{
         console.log(`Error`);
-      }
-
-      if(this.index === this.longitudFragmento){
-        this.texto_archivo_sumarizado += "\n\nARCHIVO SUMARIZADO CORRECTAMENTE";
       }
 
     });

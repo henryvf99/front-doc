@@ -18,7 +18,7 @@ const routes: Routes = [{
       component: ListExfuncionariosComponent
     },
     {
-      path: 'list-exfuncionarios/edit-exfuncionarios/:id',
+      path: 'edit-exfuncionarios/:id',
       component: AditExfuncionariosComponent
     }
   ]

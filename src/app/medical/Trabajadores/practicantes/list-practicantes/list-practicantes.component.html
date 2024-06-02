@@ -37,7 +37,7 @@
                                                 <a routerLink="/practicantes/add-practicantes"
                                                     class="btn btn-primary add-pluss ms-2"><img
                                                         src="assets/img/icons/plus.svg" alt=""></a>
-                                                <a href="javascript:;" (click)="PageSize()"
+                                                <a href="javascript:;" (click)="refresh()"
                                                     class="btn btn-primary doctor-refresh ms-2"><img
                                                         src="assets/img/icons/re-fresh.svg" alt=""></a>
                                             </div>
@@ -63,25 +63,42 @@
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
                                     <tr>
-                                        <th mat-sort-header="name">Nombres</th>
-                                        <th mat-sort-header="surname">Apellidos</th>
-                                        <th mat-sort-header="dni">DNI</th>
-                                        <th mat-sort-header="ingreso_date">Fecha Ingreso</th>
-                                        <th mat-sort-header="practicantes_date">Fecha practicantes</th>
-                                        <th mat-sort-header="documento">Documento</th>
-
+                                        <th mat-sort-header="nombre">Nombre</th>
+                                        <th mat-sort-header="apellidos">Apellidos</th>
+                                        <th mat-sort-header="universidad">Universidad</th>
+                                        <th mat-sort-header="carrera">Carrera</th>
+                                        <th mat-sort-header="horapracticas">Hora practicas</th>
+                                        <th mat-sort-header="area">Área</th>
+                                        <th mat-sort-header="fingreso">Ingreso</th>
+                                        <th mat-sort-header="fsalida">Salida</th>
+                                        <th mat-sort-header="file">Carta</th>
+                                        <th mat-sort-header="file2">Certificado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let data of usersList">
 
-                                        <td>{{data.name}}</td>
-                                        <td>{{data.surname}}</td>
-                                        <td>{{data.dni}}</td>
-                                        <td>{{ data.ingreso_date }}</td>
-                                        <td>{{ data.practicantes_date }}</td>
-                                        <td>{{ data.documento }}</td>
+                                        <td>{{data.nombre }}</td>
+                                        <td>{{data.apellidos}}</td>
+                                        <td>{{data.universidad}}</td>
+                                        <td>{{data.carrera }}</td>
+                                        <td>{{data.horapracticas}}</td>
+                                        <td>{{data.area.nombre}}</td>
+                                        <td>{{data.fingreso}}</td>
+                                        <td>{{data.fsalida || "-"}}</td>
+                                        
+                                        <td>
+                                            <a href="javascript:;" class="me-2" (click)="mostrarFile(data.file?.data || [])">
+                                                <img src="assets/img/icons/pdf-icon-01.svg" alt="">
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="javascript:;" class="me-2" (click)="mostrarFile(data.file2?.data || [])">
+                                                <img src="assets/img/icons/pdf-icon-01.svg" alt="">
+                                            </a>
+                                        </td>
 
                                         <td class="text-end">
                                             <div class="dropdown dropdown-action" *ngIf="data.id != 1">
@@ -90,36 +107,17 @@
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" *ngIf="isPermision('edit_practicantes')"
-                                                        [routerLink]="[ '/practicantes/list-practicantes/edit-practicantes/', data.id ]"><i
+                                                        [routerLink]="[ '/practicantes/edit-practicantes/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i> Editar</a>
 
                                                     <a class="dropdown-item" *ngIf="isPermision('delete_practicantes')"
-                                                        href="javascript:void(0);" (click)="selectUser(data)"
+                                                        href="javascript:void(0);" (click)="deleteDocumento(data.id)"
                                                         data-bs-toggle="modal"
                                                         [attr.data-bs-target]="'#delete_practicantes-'+data.id"><i
                                                             class="fa fa-trash-alt m-r-5"></i> Eliminar</a>
                                                 </div>
                                             </div>
                                         </td>
-
-                                        <div [attr.id]="'delete_practicantes-'+data.id" class="modal fade delete-modal"
-                                            role="dialog">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-body text-center">
-                                                        <img src="assets/img/sent.png" alt="" width="50" height="46">
-                                                        <h3 *ngIf="practicantes_selected">Seguro que deseas eliminar 
-                                                            {{ practicantes_selected.email }}?</h3>
-                                                        <div class="m-t-20"> <a href="javascript:void(0);"
-                                                                class="btn btn-white me-1"
-                                                                data-bs-dismiss="modal">Cancelar</a>
-                                                            <button type="submit" class="btn btn-danger"
-                                                                (click)="deleteUser()">Eliminar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
                                     </tr>
                                 </tbody>

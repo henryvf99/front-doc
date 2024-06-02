@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 })
 export class ListCesanteComponent {
 
+  private idtipotrabajador = "66234c4676fc363243ddb9dc";
+
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
@@ -30,30 +32,29 @@ export class ListCesanteComponent {
   public role_generals:any = [];
   public cesante_selected:any;
   public user:any;
+
   constructor(
     public cesanteService: CesanteService,
   ){
 
   }
+
   ngOnInit() {
     this.getTableData();
     this.user = this.cesanteService.authService.user;
   }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.cesanteService.listUsers().subscribe((resp:any) => {
-
-      console.log(resp);
-
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
+    this.cesanteService.getTrabajadorTipoTrabajador(this.idtipotrabajador).subscribe((resp:any) => {
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
-
   }
+
   isPermision(permission:string){
     if(this.user.rol.nombre.includes("ADMIN")){
       return true;
@@ -83,31 +84,39 @@ export class ListCesanteComponent {
     this.cesante_selected = rol;
   }
 
-  deleteUser() {
-    this.cesanteService.deleteUser(this.cesante_selected.id).subscribe((resp: any) => {
-      console.log(resp);
-      let INDEX = this.usersList.findIndex((item: any) => item.id == this.cesante_selected.id);
-      if (INDEX != -1) {
-        this.usersList.splice(INDEX, 1);
-  
+  deleteTrabajador(trabajador_id: string) {
+    this.cesanteService.deleteTrabajador(trabajador_id).subscribe((res: any) => {
+      console.log(res);
+      if(res.success){
+        this.mostrarMensajeDeExito();
+      }else{
         Swal.fire({
           position: 'center',
-          icon: 'success',
-          title: 'Se eliminó correctamente',
+          icon: 'error',
+          title: 'El trabajador no se elimino correctamente',
           showConfirmButton: false,
           timer: 1500
         });
-  
-        $('#delete_patient').hide();
-        $('#delete_patient').removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass();
-        $('body').removeAttr('style');
-  
-        this.cesante_selected = null;
       }
     })
   }
+
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'El trabajador se eliminó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      window.location.reload();
+    });
+  }
+
+  public refresh(): void {
+    window.location.reload();
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();

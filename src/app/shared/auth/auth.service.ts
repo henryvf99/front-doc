@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { routes } from '../routes/routes';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, of } from 'rxjs';
-import { URL_TEXT } from '../../config/config';
+import { URL_SUMARIZACION } from '../../config/config';
 
 @Injectable({
   providedIn: 'root',
@@ -21,13 +21,8 @@ export class AuthService {
   }
 
   traducirPdfTexto(data: any){
-    const url_traduccion = URL_TEXT + "/convert";
+    const url_traduccion = URL_SUMARIZACION + "/convertir";
     return this.http.post(url_traduccion,data);
-  }
-
-  sumarizar(data: any){
-    const url_traduccion = URL_TEXT + "/predict?text=" + data;
-    return this.http.post(url_traduccion, {});
   }
 
   getLocalStorage(){

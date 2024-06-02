@@ -9,6 +9,9 @@ import Swal from 'sweetalert2';
   styleUrl: './list-funcionarios.component.scss'
 })
 export class ListFuncionariosComponent {
+
+  private idtipotrabajador = "665bf9e8ebd95110d2cd5e66";
+
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
@@ -29,30 +32,29 @@ export class ListFuncionariosComponent {
   public role_generals:any = [];
   public funcionarios_selected:any;
   public user:any;
+
   constructor(
     public funcionariosService: FuncionariosService,
   ){
 
   }
+
   ngOnInit() {
     this.getTableData();
     this.user = this.funcionariosService.authService.user;
   }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.funcionariosService.listUsers().subscribe((resp:any) => {
-
-      console.log(resp);
-
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
+    this.funcionariosService.getTrabajadorTipoTrabajador(this.idtipotrabajador).subscribe((resp:any) => {
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
-
   }
+
   isPermision(permission:string){
     if(this.user.rol.nombre.includes("ADMIN")){
       return true;
@@ -82,31 +84,39 @@ export class ListFuncionariosComponent {
     this.funcionarios_selected = rol;
   }
 
-  deleteUser() {
-    this.funcionariosService.deleteUser(this.funcionarios_selected.id).subscribe((resp: any) => {
-      console.log(resp);
-      let INDEX = this.usersList.findIndex((item: any) => item.id == this.funcionarios_selected.id);
-      if (INDEX != -1) {
-        this.usersList.splice(INDEX, 1);
-  
+  deleteTrabajador(trabajador_id: string) {
+    this.funcionariosService.deleteTrabajador(trabajador_id).subscribe((res: any) => {
+      console.log(res);
+      if(res.success){
+        this.mostrarMensajeDeExito();
+      }else{
         Swal.fire({
           position: 'center',
-          icon: 'success',
-          title: 'Se eliminó correctamente',
+          icon: 'error',
+          title: 'El trabajador no se elimino correctamente',
           showConfirmButton: false,
           timer: 1500
         });
-  
-        $('#delete_patient').hide();
-        $('#delete_patient').removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass();
-        $('body').removeAttr('style');
-  
-        this.funcionarios_selected = null;
       }
     })
   }
+
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'El trabajador se eliminó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      window.location.reload();
+    });
+  }
+
+  public refresh(): void {
+    window.location.reload();
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();

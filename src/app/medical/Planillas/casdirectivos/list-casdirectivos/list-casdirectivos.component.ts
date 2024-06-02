@@ -32,15 +32,18 @@ export class ListCasdirectivosComponent {
   public role_generals:any = [];
   public casdirectivos_selected:any;
   public user:any;
+
   constructor(
     public casdirectivosService: CasdirectivosService,
   ){
 
   }
+
   ngOnInit() {
     this.getTableData();
     this.user = this.casdirectivosService.authService.user;
   }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -52,6 +55,7 @@ export class ListCasdirectivosComponent {
     })
 
   }
+
   isPermision(permission:string){
     if(this.user.rol.nombre.includes("ADMIN")){
       return true;
@@ -61,6 +65,7 @@ export class ListCasdirectivosComponent {
     }
     return false;
   }
+  
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];

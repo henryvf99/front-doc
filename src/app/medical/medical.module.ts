@@ -9,7 +9,7 @@ import { PracticantesComponent } from './Trabajadores/practicantes/practicantes.
 @NgModule({
   declarations: [
     MedicalComponent,
-    PracticantesComponent,
+    PracticantesComponent
 
 
   ],

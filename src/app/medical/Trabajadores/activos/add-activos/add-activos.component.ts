@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ActivosService } from '../service/activos.service';
 
@@ -7,98 +8,124 @@ import { ActivosService } from '../service/activos.service';
   templateUrl: './add-activos.component.html',
   styleUrl: './add-activos.component.scss'
 })
-export class AddActivosComponent {
-  public selectedValue !: string  ;
+export class AddActivosComponent implements OnInit{
+
   public nombres:string = '';
   public apellidos:string = '';
   public dni:string = '';
-  public area:string = '';
-  public cargo:string = '';
-  public regimen:string='';
-
   public fnacimiento: string = '';
   public fingreso:string = '';
+  public fsalida:string = '';
 
-  public FILE_documento:any;
+  public tipotrabajadores: any[] = [];
+  public selectedtipotrabajador: any = "";
+  public areas: any[] = [];
+  public selectedarea: any = "";
+  public cargos: any[] = [];
+  public selectedcargo: any = "";
+
+  public regimenes: any[] = [
+    {
+      nombre: "276"
+    },
+    {
+      nombre: "728"
+    },
+    {
+      nombre: "1057"
+    }
+  ]
+
+  private idtipotrabajador = "6604ac0690957f98852eff37";
+  public selectedregimen: any = "";
 
   public text_success:string = '';
   public text_validation:string = '';
+
   constructor(
     public activosService: ActivosService,
+    private router: Router
   ) {
     
   }
+
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    this.activosService.listConfig().subscribe((resp:any) => {
-      console.log(resp);
+    
+    this.activosService.listTipoTrabajador().subscribe((resp:any) => {
+      this.tipotrabajadores = resp.data;
     })
+
+    this.activosService.listArea().subscribe((resp:any) => {
+      this.areas = resp.data;
+    })
+
+    this.activosService.listCargo().subscribe((resp:any) => {
+      this.cargos = resp.data;
+    })
+
+    this.selectedtipotrabajador = this.idtipotrabajador;
+
   }
 
   save(){
     this.text_validation = '';
-    if(!this.nombres || !this.area || !this.apellidos || !this.FILE_documento ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (nombres,apellidos,area,documento)";
+    if( !this.selectedarea  ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
       return;
     }
 
-    console.log(this.selectedValue);
+    const data = {
+      tipotrabajador : this.selectedtipotrabajador.toString(),
+      regimen : this.selectedregimen.toString(),
+      nombres : this.nombres.toString(),
+      apellidos : this.apellidos.toString(),
+      dni : this.dni.toString(),
+      fnacimiento : this.fnacimiento.toString(),
+      area : this.selectedarea.toString(),
+      cargo : this.selectedcargo.toString(),
+      fingreso : this.fingreso.toString(),
+      fsalida : this.fsalida.toString() || "-"
+    };
+    console.log(data);
+    this.activosService.registrarTrabajador(data).subscribe((res:any) => {
 
-    let formData = new FormData();
-    formData.append("nombres",this.nombres);
-    formData.append("apellidos",this.apellidos);
-    formData.append("dni",this.dni);
-    formData.append("area",this.area);
-    formData.append("cargo",this.cargo);
-    formData.append("regimen",this.cargo);
-
-    formData.append("fnacimiento",this.fnacimiento);
-    formData.append("fingreso",this.fingreso);
-    formData.append("imagen",this.FILE_documento);
-    
-    this.activosService.registerUser(formData).subscribe((resp:any) => {
-      console.log(resp);
-
-      if(resp.message == 403){
-        this.text_validation = resp.message_text;
+      if(res.success){
+        this.text_validation = res.message_text;
+        this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'El usuario ha sido registrado correctamente';
-
-        this.nombres = '';
-        this.apellidos = '';
-        this.dni  = '';
-        this.area  = '';
-        this.cargo  = '';
-        this.regimen  = '';
-
-        this.fnacimiento  = '';
-        this.fingreso  = '';
-        
-        this.selectedValue  = '';
-        this.FILE_documento = null;
+        this.text_success = 'El trabajador no se registro correctamente';
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'El trabajador no se registro correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
 
-    });
+    },
+    (err: any) => {
+      var msj = err.error.message;
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: msj,
+        showConfirmButton: true
+      });
+    }
+    );
+  }
+
+  mostrarMensajeDeExito() {
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'Se agregó Correctamente',
+      title: 'El trabajador  se agregó correctamente',
       showConfirmButton: false,
-      timer: 1500
+      timer: 1000
+    }).then(() => {
+      this.router.navigateByUrl('/activos/list-activos');
     });
-
   }
 
-  loadFile($event:any){
-    if($event.target.files[0].type.indexOf("image") < 0){
-      // alert("SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO IMAGEN");
-      this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO IMAGEN";
-      return;
-    }
-    this.text_validation = '';
-    this.FILE_documento = $event.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(this.FILE_documento);
-  }
 }

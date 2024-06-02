@@ -68,6 +68,7 @@ export class ListCasdirectivosbComponent {
     })
 
   }
+
   isPermision(permission:string){
     if(this.user.rol.nombre.includes('ADMIN')){
       return true;
@@ -77,6 +78,7 @@ export class ListCasdirectivosbComponent {
     }
     return false;
   }
+  
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -230,24 +232,6 @@ export class ListCasdirectivosbComponent {
 
       if(res.success){
         const resultado = res.data;
-        this.sumarizar(resultado);
-      }else{
-        console.log(`Error`);
-      }
-
-    });
-
-  }
-
-  sumarizar(data: any){
-    
-    this.authService.sumarizar(data).subscribe((res:any) => {
-
-      if(res.success){
-        this.texto_archivo_sumarizado = res.data;
-        this.modal_loading = true;
-        this.modal_txtarea = true;
-        console.log(`${res.data}`);
       }else{
         console.log(`Error`);
       }
