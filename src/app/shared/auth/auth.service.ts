@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 // import { BehaviorSubject } from 'rxjs';
 import { routes } from '../routes/routes';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, of } from 'rxjs';
-import { URL_SUMARIZACION } from '../../config/config';
+import { URL_SUMARIZACION, URL_BACKEND } from '../../config/config';
 
 @Injectable({
   providedIn: 'root',
@@ -60,6 +60,12 @@ export class AuthService {
       return true;
     }
     return false;
+  }
+
+  getProfile(permiso_id: string){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.token});
+    const url_profile = URL_BACKEND + "/permisos/" + permiso_id;
+    return this.http.get(url_profile, { headers: headers });
   }
 
   logout(){

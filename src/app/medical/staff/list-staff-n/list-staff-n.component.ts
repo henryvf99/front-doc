@@ -41,25 +41,23 @@ export class ListStaffNComponent {
   ) {
 
   }
+  
   ngOnInit() {
     this.getTableData();
     this.user = this.staffService.authService.user;
   }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.staffService.listUsers().subscribe((resp: any) => {
-
-      console.log(resp);
-
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
+    this.staffService.getUsers().subscribe((resp:any) => {
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
-
   }
+
   isPermision(permission: string) {
     if (this.user.rol.nombre.includes("ADMIN")) {
       return true;
@@ -69,6 +67,7 @@ export class ListStaffNComponent {
     }
     return false;
   }
+  
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -92,30 +91,37 @@ export class ListStaffNComponent {
     this.staff_selected = rol;
   }
 
-  deleteUser() {
-    this.staffService.deleteUser(this.staff_selected.id).subscribe((resp: any) => {
-      console.log(resp);
-      let INDEX = this.usersList.findIndex((item: any) => item.id == this.staff_selected.id);
-      if (INDEX != -1) {
-        this.usersList.splice(INDEX, 1);
-
+  deleteUser(trabajador_id: string) {
+    this.staffService.deleteUser(trabajador_id).subscribe((res: any) => {
+      console.log(res);
+      if(res.success){
+        this.mostrarMensajeDeExito();
+      }else{
         Swal.fire({
           position: 'center',
-          icon: 'success',
-          title: 'Se eliminó correctamente',
+          icon: 'error',
+          title: 'El usuario no se elimino correctamente',
           showConfirmButton: false,
           timer: 1500
         });
-
-        $('#delete_patient').hide();
-        $('#delete_patient').removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass();
-        $('body').removeAttr('style');
-
-        this.staff_selected = null;
       }
     })
+  }
+
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'El usuario se eliminó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      window.location.reload();
+    });
+  }
+
+  public refresh(): void {
+    window.location.reload();
   }
   
   public searchData(value: any): void {

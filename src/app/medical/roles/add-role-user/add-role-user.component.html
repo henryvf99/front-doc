@@ -21,7 +21,7 @@
                         <div class="form-group row">
                             <label class="col-form-label col-md-2">Nombre</label>
                             <div class="col-md-10">
-                                <input type="text" name="name" [(ngModel)]="name" class="form-control">
+                                <input type="text" name="nombre" [(ngModel)]="nombre" class="form-control">
                             </div>
                         </div>        
                         <div class="form-group row">
@@ -29,17 +29,6 @@
                                 <button class="btn btn-primary" (click)="save()">GUARDAR</button>
                             </div>
                         </div>   
-                        <div class="form-group row" *ngIf="valid_form">
-                            <div class="col-md-8">
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong>Error!</strong> ES NECESARIO LLENAR UN NOMBRE Y SELECCIONAR UN PERMISO.
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true"> </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
 
                         <div class="form-group row" *ngIf="text_validation">
                             <div class="col-md-8">
@@ -68,30 +57,221 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ng-container *ngFor="let side of sideBar">
+                                    <ng-container>
                                         <tr>
-                                            <td>{{ side.menuValue }}</td>
+                                            <td>Trabajadores</td>
                                             <td>
-                                                <div class="" *ngIf="side.subMenus && side.subMenus.length > 0">
-                                                    <ng-container *ngFor="let subMenu of side.subMenus">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" name="checkbox" (click)="addPermission(subMenu)"> {{ subMenu.menuValue }}
-                                                            </label>
-                                                        </div>
-                                                    </ng-container>
-                                                </div>
-                                                <div class="" *ngIf="side.subMenus && side.subMenus.length == 0">
+                                                <ng-container >
                                                     <div class="checkbox">
                                                         <label>
-                                                            <input type="checkbox" name="checkbox" (click)="addPermission(side)"> {{ side.menuValue }}
+                                                            <input id="gtrabajador" type="checkbox" name="gtrabajador" (change)="updateData('gtrabajador', $event)"> Listar
                                                         </label>
                                                     </div>
-                                                </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="ptrabajador" type="checkbox" name="ptrabajador" (change)="updateData('ptrabajador', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="utrabajador" type="checkbox" name="utrabajador" (change)="updateData('utrabajador', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="dtrabajador" type="checkbox" name="dtrabajador" (change)="updateData('dtrabajador', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
                                             </td>
                                         </tr>
                                     </ng-container>
                                     
+                                    <ng-container>
+                                        <tr>
+                                            <td>Practicantes</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="gpracticante" type="checkbox" name="gpracticante" (change)="updateData('gpracticante', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="ppracticante" type="checkbox" name="ppracticante" (change)="updateData('ppracticante', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="upracticante" type="checkbox" name="upracticante" (change)="updateData('upracticante', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="dpracticante" type="checkbox" name="dpracticante" (change)="updateData('dpracticante', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Boletas</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="gboleta" type="checkbox" name="gboleta" (change)="updateData('gboleta', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="pboleta" type="checkbox" name="pboleta" (change)="updateData('pboleta', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="uboleta" type="checkbox" name="uboleta" (change)="updateData('uboleta', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="dboleta" type="checkbox" name="dboleta" (change)="updateData('dboleta', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Planillas</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="gplanilla" type="checkbox" name="gplanilla" (change)="updateData('gplanilla', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="pplanilla" type="checkbox" name="pplanilla" (change)="updateData('pplanilla', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="uplanilla" type="checkbox" name="uplanilla" (change)="updateData('uplanilla', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="dplanilla" type="checkbox" name="dplanilla" (change)="updateData('dplanilla', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Documentos emitidos</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="gemitidos" type="checkbox" name="gemitidos" (change)="updateData('gemitidos', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="pemitidos" type="checkbox" name="pemitidos" (change)="updateData('pemitidos', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="uemitidos" type="checkbox" name="uemitidos" (change)="updateData('uemitidos', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="demitidos" type="checkbox" name="demitidos" (change)="updateData('demitidos', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Documentos recibidos</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="grecibidos" type="checkbox" name="grecibidos" (change)="updateData('grecibidos', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="precibidos" type="checkbox" name="precibidos" (change)="updateData('precibidos', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="urecibidos" type="checkbox" name="urecibidos" (change)="updateData('urecibidos', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="drecibidos" type="checkbox" name="drecibidos" (change)="updateData('drecibidos', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
                                     
                                 </tbody>
                             </table>

@@ -33,28 +33,25 @@ export class ListRoleUserComponent {
 
   public user:any;
   constructor(
-    public RoleService: RolesService,
+    public roleService: RolesService,
   ){
 
   }
+
   ngOnInit() {
-    this.user = this.RoleService.authService.user;
     this.getTableData();
+    this.user = this.roleService.authService.user;
   }
+
   private getTableData(): void {
     this.rolesList = [];
     this.serialNumberArray = [];
 
-    this.RoleService.listRoles().subscribe((resp:any) => {
-
-      console.log(resp);
-
-      this.totalData = resp.roles.length;
-      this.role_generals = resp.roles;
+    this.roleService.getPermisos().subscribe((resp:any) => {
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-
-
   }
 
   isPermision(permission:string){
@@ -87,31 +84,39 @@ export class ListRoleUserComponent {
     this.role_selected = rol;
   }
 
-  deleteRol(){
-
-    this.RoleService.deleteRoles(this.role_selected.id).subscribe((resp:any) => {
-      console.log(resp);
-      let INDEX = this.rolesList.findIndex((item:any) => item.id == this.role_selected.id);
-      if(INDEX != -1){
-        this.rolesList.splice(INDEX,1);
-
-        $('#delete_patient').hide();
-        $("#delete_patient").removeClass("show");
-        $(".modal-backdrop").remove();
-        $("body").removeClass();
-        $("body").removeAttr("style");
-
-        this.role_selected = null;
+  deletePermiso(permiso_id: string) {
+    this.roleService.deletePermisos(permiso_id).subscribe((res: any) => {
+      console.log(res);
+      if(res.success){
+        this.mostrarMensajeDeExito();
+      }else{
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'El permiso no se elimino correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     })
+  }
+
+  mostrarMensajeDeExito() {
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'Se eliminó Correctamente',
+      title: 'El permiso se eliminó correctamente',
       showConfirmButton: false,
-      timer: 1500
+      timer: 1000
+    }).then(() => {
+      window.location.reload();
     });
   }
+
+  public refresh(): void {
+    window.location.reload();
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();

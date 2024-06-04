@@ -19,7 +19,7 @@ const routes: Routes = [
         component: ListRoleUserComponent
       },
       {
-        path: 'list/edit/:id',
+        path: 'edit/:id',
         component: EditRoleUserComponent
       }
     ]

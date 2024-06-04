@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivosService } from '../service/activos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-adit-activos',
@@ -40,17 +42,26 @@ export class AditActivosComponent {
   public trabajador_id: any;
   public trabajador_data: any;
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   public text_success:string = '';
   public text_validation:string = '';
 
   constructor(
     public activosService: ActivosService,
     public activedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public service: AuthService,
+    public userService: StaffService
   ) {
     
   }
   ngOnInit(): void {
+
+    this.user_id = this.activosService.authService.user.id;
+    this.listUser(this.user_id);
 
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
@@ -83,6 +94,21 @@ export class AditActivosComponent {
       this.fsalida = this.trabajador_data.fsalida;
     })
 
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      console.log(resp);
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.service.getProfile(id).subscribe((resp:any) => {
+      console.log(resp);
+      this.permisos = resp.data;
+    })
   }
 
   save(){

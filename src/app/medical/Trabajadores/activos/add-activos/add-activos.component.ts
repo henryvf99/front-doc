@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ActivosService } from '../service/activos.service';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-add-activos',
@@ -39,17 +41,26 @@ export class AddActivosComponent implements OnInit{
   private idtipotrabajador = "6604ac0690957f98852eff37";
   public selectedregimen: any = "";
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   public text_success:string = '';
   public text_validation:string = '';
 
   constructor(
     public activosService: ActivosService,
-    private router: Router
+    private router: Router,
+    public service: AuthService,
+    public userService: StaffService
   ) {
     
   }
 
   ngOnInit(): void {
+
+    this.user_id = this.activosService.authService.user.id;
+    this.listUser(this.user_id);
     
     this.activosService.listTipoTrabajador().subscribe((resp:any) => {
       this.tipotrabajadores = resp.data;
@@ -65,6 +76,21 @@ export class AddActivosComponent implements OnInit{
 
     this.selectedtipotrabajador = this.idtipotrabajador;
 
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      console.log(resp);
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.service.getProfile(id).subscribe((resp:any) => {
+      console.log(resp);
+      this.permisos = resp.data;
+    })
   }
 
   save(){

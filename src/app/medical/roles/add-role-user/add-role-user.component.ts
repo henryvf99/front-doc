@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { RolesService } from '../service/roles.service';
 import { DataService } from '../../../shared/data/data.service';
 import Swal from 'sweetalert2';
@@ -8,73 +9,110 @@ import Swal from 'sweetalert2';
   templateUrl: './add-role-user.component.html',
   styleUrls: ['./add-role-user.component.scss']
 })
-export class AddRoleUserComponent {
+export class AddRoleUserComponent implements OnInit{
 
-  sideBar:any = [];
-  name:string = '';
-  permissions:any = [];
+  sideBar: any = [];
+  nombre: string = '';
+  permissions: any = [];
   valid_form: boolean = false;
   valid_form_success: boolean = false;
-  text_validation:any = null;
+  text_validation: any = null;
+
   constructor(
     public dataService: DataService,
     public roleService: RolesService,
+    private router: Router
   ) {
     
   }
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    this.sideBar = this.dataService.sideBar[0].menu;
+
+  ngOnInit() {
   }
 
-  addPermission(subMenu:any){
-    if(subMenu.permision){
-      let INDEX = this.permissions.findIndex((item:any) => item == subMenu.permision);
-      if(INDEX != -1){
-        this.permissions.splice(INDEX,1);
-      }else{
-        this.permissions.push(subMenu.permision);
-      }
-      console.log(this.permissions);
+  data: any = {
+    "gtrabajador": false,
+    "ptrabajador": false,
+    "utrabajador": false,
+    "dtrabajador": false,
+    "gpracticante": false,
+    "ppracticante": false,
+    "upracticante": false,
+    "dpracticante": false,
+    "gboleta": false,
+    "pboleta": false,
+    "uboleta": false,
+    "dboleta": false,
+    "gplanilla": false,
+    "pplanilla": false,
+    "uplanilla": false,
+    "dplanilla": false,
+    "gemitidos": false,
+    "pemitidos": false,
+    "uemitidos": false,
+    "demitidos": false,
+    "grecibidos": false,
+    "precibidos": false,
+    "urecibidos": false,
+    "drecibidos": false
+  };
+
+  updateData(checkboxName: string, event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target && target.type === 'checkbox') {
+      this.data[checkboxName] = target.checked;
     }
   }
 
   save(){
-    this.valid_form = false;
-    if(!this.name  || this.permissions.length == 0){
-      this.valid_form = true;
+    this.text_validation = '';
+    if( !this.nombre  ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (nombre)";
       return;
     }
-    let data = {
-      name: this.name,
-      permisions:this.permissions,
-    };
-    this.valid_form_success = false;
-    this.text_validation = null;
-    this.roleService.storeRoles(data).subscribe((resp:any) => {
-      console.log(resp);
-      if(resp.message == 403){
-        this.text_validation = resp.message_text;
+
+    this.data['nombre'] = this.nombre;
+
+    console.log(this.data);
+
+    this.roleService.registrarPermisos(this.data).subscribe((res:any) => {
+
+      if(res.success){
+        this.text_validation = res.message_text;
+        this.mostrarMensajeDeExito();
       }else{
-        this.name = '';
-        this.permissions = [];
-        this.valid_form_success = true;
-  
-        let SIDE_BAR = this.sideBar;
-        this.sideBar = [];
-        setTimeout(() => {
-          this.sideBar =SIDE_BAR;
-        }, 50);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'El permiso no se registro correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
 
-    })
+    },
+    (err: any) => {
+      var msj = err.error.message;
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: msj,
+        showConfirmButton: true
+      });
+    }
+    );
+    
+  }
+
+  mostrarMensajeDeExito() {
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'Se agregó Correctamente',
+      title: 'El permiso  se agregó correctamente',
       showConfirmButton: false,
-      timer: 1500
+      timer: 1000
+    }).then(() => {
+      this.router.navigateByUrl('/roles/list');
     });
   }
+
 }

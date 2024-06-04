@@ -16,12 +16,12 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card-box">
-                    <h4 class="card-title">Editar Rol : {{ name }}</h4>
+                    <h4 class="card-title">Editar Rol : {{ nombre }}</h4>
                     <form action="#">
                         <div class="form-group row">
                             <label class="col-form-label col-md-2">Nombre</label>
                             <div class="col-md-10">
-                                <input type="text" name="name" [(ngModel)]="name" class="form-control">
+                                <input type="text" name="nombre" [(ngModel)]="nombre" class="form-control">
                             </div>
                         </div>        
                         <div class="form-group row">
@@ -78,30 +78,222 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ng-container *ngFor="let side of sideBar">
+                                    
+                                    <ng-container>
                                         <tr>
-                                            <td>{{ side.menuValue }}</td>
+                                            <td>Trabajadores</td>
                                             <td>
-                                                <div class="" *ngIf="side.subMenus && side.subMenus.length > 0">
-                                                    <ng-container *ngFor="let subMenu of side.subMenus">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" [checked]="permissions.includes(subMenu.permision)" name="checkbox" (click)="addPermission(subMenu)"> {{ subMenu.menuValue }}
-                                                            </label>
-                                                        </div>
-                                                    </ng-container>
-                                                </div>
-                                                <div class="" *ngIf="side.subMenus && side.subMenus.length == 0">
+                                                <ng-container >
                                                     <div class="checkbox">
                                                         <label>
-                                                            <input type="checkbox" [checked]="permissions.includes(side.permision)" name="checkbox" (click)="addPermission(side)"> {{ side.menuValue }}
+                                                            <input id="gtrabajador" type="checkbox" name="gtrabajador" [checked]="role_data.gtrabajador" (change)="updateData('gtrabajador', $event)"> Listar
                                                         </label>
                                                     </div>
-                                                </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="ptrabajador" type="checkbox" name="ptrabajador" [checked]="role_data.ptrabajador" (change)="updateData('ptrabajador', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="utrabajador" type="checkbox" name="utrabajador" [checked]="role_data.utrabajador" (change)="updateData('utrabajador', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="dtrabajador" type="checkbox" name="dtrabajador" [checked]="role_data.dtrabajador" (change)="updateData('dtrabajador', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
                                             </td>
                                         </tr>
                                     </ng-container>
                                     
+                                    <ng-container>
+                                        <tr>
+                                            <td>Practicantes</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="gpracticante" type="checkbox" name="gpracticante" [checked]="role_data.gpracticante" (change)="updateData('gpracticante', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="ppracticante" type="checkbox" name="ppracticante" [checked]="role_data.ppracticante" (change)="updateData('ppracticante', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="upracticante" type="checkbox" name="upracticante" [checked]="role_data.upracticante" (change)="updateData('upracticante', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="dpracticante" type="checkbox" name="dpracticante" [checked]="role_data.dpracticante" (change)="updateData('dpracticante', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Boletas</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="gboleta" type="checkbox" name="gboleta" [checked]="role_data.gboleta" (change)="updateData('gboleta', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="pboleta" type="checkbox" name="pboleta" [checked]="role_data.pboleta" (change)="updateData('pboleta', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="uboleta" type="checkbox" name="uboleta" [checked]="role_data.uboleta" (change)="updateData('uboleta', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="dboleta" type="checkbox" name="dboleta" [checked]="role_data.dboleta" (change)="updateData('dboleta', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Planillas</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="gplanilla" type="checkbox" name="gplanilla" [checked]="role_data.gplanilla" (change)="updateData('gplanilla', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="pplanilla" type="checkbox" name="pplanilla" [checked]="role_data.pplanilla" (change)="updateData('pplanilla', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="uplanilla" type="checkbox" name="uplanilla" [checked]="role_data.uplanilla" (change)="updateData('uplanilla', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="dplanilla" type="checkbox" name="dplanilla" [checked]="role_data.dplanilla" (change)="updateData('dplanilla', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Documentos emitidos</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="gemitidos" type="checkbox" name="gemitidos" [checked]="role_data.gemitidos" (change)="updateData('gemitidos', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="pemitidos" type="checkbox" name="pemitidos" [checked]="role_data.pemitidos" (change)="updateData('pemitidos', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="uemitidos" type="checkbox" name="uemitidos" [checked]="role_data.uemitidos" (change)="updateData('uemitidos', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="demitidos" type="checkbox" name="demitidos" [checked]="role_data.demitidos" (change)="updateData('demitidos', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Documentos recibidos</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="grecibidos" type="checkbox" name="grecibidos" [checked]="role_data.grecibidos" (change)="updateData('grecibidos', $event)"> Listar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="precibidos" type="checkbox" name="precibidos" [checked]="role_data.precibidos" (change)="updateData('precibidos', $event)"> Registrar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="urecibidos" type="checkbox" name="urecibidos" [checked]="role_data.urecibidos" (change)="updateData('urecibidos', $event)"> Actualizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="drecibidos" type="checkbox" name="drecibidos" [checked]="role_data.drecibidos" (change)="updateData('drecibidos', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
                                     
                                 </tbody>
                             </table>

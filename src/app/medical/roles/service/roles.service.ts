@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { URL_SERVICIOS } from '../../../config/config';
+import { URL_SERVICIOS, URL_BACKEND } from '../../../config/config';
 import { AuthService } from '../../../shared/auth/auth.service';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -14,33 +15,33 @@ export class RolesService {
     public authService: AuthService,
   ) { }
 
-  listRoles(){
-    let headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
-    let URL = URL_SERVICIOS+"/roles";
-    return this.http.get(URL,{headers: headers});
+  listPermisosById(permiso_id: string){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
+    const url_permiso = URL_BACKEND + "/permisos/" + permiso_id;
+    return this.http.get(url_permiso, {headers: headers});
   }
 
-  showRoles(role_id:string){
-    let headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
-    let URL = URL_SERVICIOS+"/roles/"+role_id;
-    return this.http.get(URL,{headers: headers});
+  getPermisos(){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
+    const url_permiso = URL_BACKEND + "/permisos";
+    return this.http.get(url_permiso, {headers: headers});
   }
 
-  storeRoles(data:any){
-    let headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
-    let URL = URL_SERVICIOS+"/roles";
-    return this.http.post(URL,data,{headers: headers});
+  registrarPermisos(data:any){
+    const url_permiso = URL_BACKEND + "/permisos";
+    return this.http.post(url_permiso,data);
   }
 
-  editRoles(data:any,id_role:any){
-    let headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
-    let URL = URL_SERVICIOS+"/roles/"+id_role;
-    return this.http.put(URL,data,{headers: headers});
+  updatePermisos(permiso_id: string, data:any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
+    const url_permiso = URL_BACKEND + "/permisos/" + permiso_id;
+    return this.http.put(url_permiso, data, {headers: headers});
   }
 
-  deleteRoles(id_role:any){
-    let headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
-    let URL = URL_SERVICIOS+"/roles/"+id_role;
-    return this.http.delete(URL,{headers: headers});
+  deletePermisos(permiso_id: string):Observable<any> {
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
+    const url_permiso = URL_BACKEND + "/permisos/" + permiso_id;
+    return this.http.delete(url_permiso, {headers: headers});
   }
+
 }

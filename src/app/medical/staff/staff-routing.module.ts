@@ -18,7 +18,7 @@ const routes: Routes = [{
       component: ListStaffNComponent
     },
     {
-      path: 'list-staff/edit-staff/:id',
+      path: 'edit-staff/:id',
       component: EditStaffNComponent
     }
   ]
