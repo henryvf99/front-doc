@@ -58,7 +58,7 @@
                         </div>
                         <!-- /Table Header -->
 
-                        <div class="table-responsive">
+                        <div class="table-responsive" *ngIf="permisos.gemitidos">
                             <table matSort (matSortChange)="sortData($event)"
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
@@ -109,13 +109,13 @@
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <!--  -->
-                                                    <a class="dropdown-item" *ngIf="isPermision('delete_casdirectivosb')"
+                                                    <a class="dropdown-item" *ngIf="permisos.semitidos"
                                                         href="javascript:void(0);" (click)="extractTextFromPdf(data.file2.data, data.nombrearchivo2)">
                                                         <i class="fa-brands fa-wpforms m-r-5"></i>Sumarizar</a>
-                                                    <a class="dropdown-item" *ngIf="isPermision('edit_cartas')"
+                                                    <a class="dropdown-item" *ngIf="permisos.uemitidos"
                                                         [routerLink]="[ '/cartas/list-cartas/edit-cartas/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i>Editar</a>
-                                                    <a class="dropdown-item" *ngIf="isPermision('delete_cartas')"
+                                                    <a class="dropdown-item" *ngIf="permisos.demitidos"
                                                     href="javascript:void(0);" (click)="deleteDocumento(data.id)">
                                                     <i class="fa fa-trash-alt m-r-5"></i>Eliminar</a>
                                                 </div>

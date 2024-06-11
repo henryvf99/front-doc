@@ -7,6 +7,7 @@ import { routes } from '../../shared/routes/routes';
 import { SideBarService } from '../../shared/side-bar/side-bar.service';
 
 
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -35,37 +36,8 @@ export class SidebarComponent {
     const USER = localStorage.getItem("user");
     this.user = JSON.parse(USER ? USER : '');
     // INICIO
-    if(this.user && this.user.rol.nombre.includes("ADMIN")){
       this.sidebarData = this.data.sideBar;
-    }else{
-      // VAMOS A FILTRAR Y VALIDAR QUE OPCIONES PUEDE VER ESE ROL
-      const permissions = this.user.permissions;
-
-      const SIDE_BAR_G:any = [];
-      this.data.sideBar.forEach((side:any) => {
-        const SIDE_B:any = [];
-        side.menu.forEach((menu_s:any) => {
-          if(menu_s.subMenus.length > 0){
-            const SUB_MENUS = menu_s.subMenus.filter((submenu:any) => permissions.includes(submenu.permision) && submenu.show_nav);
-            if(SUB_MENUS.length > 0){
-              menu_s.subMenus = SUB_MENUS;
-              SIDE_B.push(menu_s);
-            }
-          }else{
-            if(permissions.includes(menu_s.permision)){
-              menu_s.subMenus = [];
-              SIDE_B.push(menu_s);
-            }
-          }
-        });
-        if(SIDE_B.length > 0){
-          side.menu = SIDE_B;
-          SIDE_BAR_G.push(side);
-        }
-      })
-      this.sidebarData = SIDE_BAR_G;
-    }
-
+    
     // FIN
     router.events.subscribe((event: object) => {
       if (event instanceof NavigationEnd) {
@@ -75,6 +47,9 @@ export class SidebarComponent {
     this.getRoutes(this.router);
   }
   
+  logout(){
+    this.authService.logout();
+  }
 
   public expandSubMenus(menu: MenuItem): void {
     sessionStorage.setItem('menuValue', menu.menuValue);

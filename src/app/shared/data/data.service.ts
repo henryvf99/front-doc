@@ -109,7 +109,7 @@ export class DataService {
             // STAFF
 
         {
-          menuValue: 'Staff',
+          menuValue: 'Usuarios',
           hasSubRoute: true,
           showSubRoute: false,
           base: 'staffs',
@@ -117,14 +117,14 @@ export class DataService {
           subMenus: [
 
             {
-              menuValue: 'Staff List',
+              menuValue: 'Listado',
               route: routes.staffList,
               base: routes.staffList,
               permision: 'list_staff',
               show_nav: true,
             },
             {
-              menuValue: 'Add Staff',
+              menuValue: 'Registrar usuario',
               route: routes.addStaff,
               base: routes.addStaff,
               permision: 'register_staff',

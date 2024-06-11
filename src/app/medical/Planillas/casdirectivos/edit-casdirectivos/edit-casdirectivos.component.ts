@@ -3,6 +3,8 @@ import { CasdirectivosService } from '../service/casdirectivos.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-edit-casdirectivos',
@@ -25,6 +27,10 @@ export class EditCasdirectivosComponent {
   public selectedFileName: string = ''; 
   public buffer: ArrayBuffer | null = null;
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   public regimenes: any[] = [
     {
       nombre: "276"
@@ -40,25 +46,28 @@ export class EditCasdirectivosComponent {
   public selectedregimen: any = "";
   public planilla_id:any;
   public planilla_data:any;
-
   public roles:any = [];
-
-  public FILE_AVATAR:any;
-  public IMAGEN_PREVIZUALIZA:any = 'assets/img/user-06.jpg';
 
   public text_success:string = '';
   public text_validation:string = '';
 
   public casdirectivos_id:any;
   public casdirectivos_selected:any;
+
   constructor(
     public casdirectivosService: CasdirectivosService,
     public activedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public authService: AuthService,
+    public userService: StaffService
   ) {
     
   }
+
   ngOnInit(): void {
+
+    this.user_id = this.casdirectivosService.authService.user.id;
+    this.listUser(this.user_id);
     
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
@@ -90,6 +99,19 @@ export class EditCasdirectivosComponent {
 
   }
 
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   loadFile($event: any) {
     if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
         this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
@@ -110,8 +132,8 @@ export class EditCasdirectivosComponent {
 
   save(){
     this.text_validation = '';
-    if(!this.selectedYear || !this.selectedMonth || !this.selectedregimen){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipotrabajador || !this.selectedregimen || !this.buffer ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de trabajador, Régimen y Planilla)";
       return;
     }
 
@@ -133,11 +155,11 @@ export class EditCasdirectivosComponent {
         this.text_validation = resp.message_text;
         this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'La boleta no se registro correctamente';
+        this.text_success = 'La planilla no se actualizó correctamente';
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'La boleta no se registro correctamente',
+          title: 'La planilla no se actualizó correctamente',
           showConfirmButton: false,
           timer: 1500
         });
@@ -159,7 +181,7 @@ export class EditCasdirectivosComponent {
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'La boleta se agregó correctamente',
+      title: 'La planilla se actualizó correctamente',
       showConfirmButton: false,
       timer: 1000
     }).then(() => {

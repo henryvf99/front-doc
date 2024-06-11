@@ -33,34 +33,34 @@ export class MemorandumeService {
     return this.http.get(url_mes, { headers: headers });
   }
 
-  listEmitidosById(boleta_id: string){
+  listEmitidosById(documento_id: string){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
-    const url_boleta = URL_BACKEND + "/emitidos/" + boleta_id;
-    return this.http.get(url_boleta, {headers: headers});
+    const url_documento = URL_BACKEND + "/emitidos/" + documento_id;
+    return this.http.get(url_documento, {headers: headers});
   }
 
   getEmitidosTipoDocumento(idtipotrabajador: string){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
-    const url_boleta = URL_BACKEND + "/emitidos/tipodocumento/" + idtipotrabajador;
-    return this.http.get(url_boleta, {headers: headers});
+    const url_documento = URL_BACKEND + "/emitidos/tipodocumento/" + idtipotrabajador;
+    return this.http.get(url_documento, {headers: headers});
   }
 
   registrarEmitidos(data:any){
     const headers = new HttpHeaders({'Authorization': 'Bearer '+this.authService.token});
-    const url_boleta = URL_BACKEND + "/emitidos";
-    return this.http.post(url_boleta,data,{headers: headers});
+    const url_documento = URL_BACKEND + "/emitidos";
+    return this.http.post(url_documento,data,{headers: headers});
   }
 
   updateEmitidos(boleta_id: string, data:any){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
-    const url_boleta = URL_BACKEND + "/emitidos/" + boleta_id;
-    return this.http.put(url_boleta, data, {headers: headers});
+    const url_documento = URL_BACKEND + "/emitidos/" + boleta_id;
+    return this.http.put(url_documento, data, {headers: headers});
   }
 
   deleteEmitidos(casdirectivosb_id: string):Observable<any> {
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.authService.token});
-    const url_boleta = URL_BACKEND + "/emitidos/" + casdirectivosb_id;
-    return this.http.delete(url_boleta, {headers: headers});
+    const url_documento = URL_BACKEND + "/emitidos/" + casdirectivosb_id;
+    return this.http.delete(url_documento, {headers: headers});
   }
 
   listUsers(){

@@ -13,7 +13,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" *ngIf="isPermision()">
             <div class="col-lg-8">
                 <div class="card-box">
                     <h4 class="card-title">Editar Rol : {{ nombre }}</h4>
@@ -230,6 +230,13 @@
                                                 <ng-container >
                                                     <div class="checkbox">
                                                         <label>
+                                                            <input id="semitidos" type="checkbox" name="semitidos" [checked]="role_data.semitidos" (change)="updateData('semitidos', $event)"> Sumarizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
                                                             <input id="gemitidos" type="checkbox" name="gemitidos" [checked]="role_data.gemitidos" (change)="updateData('gemitidos', $event)"> Listar
                                                         </label>
                                                     </div>
@@ -263,6 +270,13 @@
                                         <tr>
                                             <td>Documentos recibidos</td>
                                             <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="srecibidos" type="checkbox" name="srecibidos" [checked]="role_data.srecibidos" (change)="updateData('srecibidos', $event)"> Sumarizar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
                                                 <ng-container >
                                                     <div class="checkbox">
                                                         <label>

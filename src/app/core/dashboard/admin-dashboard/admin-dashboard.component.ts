@@ -127,6 +127,14 @@ export class AdminDashboardComponent {
   public query_patients_speciality_percentage:any = [];
   public query_income_year:any = [];
   public user:any;
+
+  public total_trabajadores: number = 0;
+  public total_practicantes: number = 0;
+  public total_boletas: number = 0;
+  public total_planillas: number = 0;
+  public total_emitidos: number = 0;
+  public total_recibidos: number = 0;
+
   constructor(public data : DataService,public dashboardService: DashboardService,) {
     this.chartOptionsOne = {
       chart: {
@@ -283,7 +291,7 @@ export class AdminDashboardComponent {
   ngOnInit(): void {
 
     this.user = this.dashboardService.authService.user;
-    if(this.user.rol.nombre.includes("ADMIN") || this.user.permissions.includes("admin_dashboard")){
+    if(this.user.rol.nombre.includes("ADMIN") || this.user.rol.nombre.includes("USER") || this.user.permissions.includes("admin_dashboard")){
       this.dashboardService.dashboardAdmin({}).subscribe((resp:any) => {
         console.log(resp);
         this.appointments = resp.appointments.data;
@@ -306,6 +314,31 @@ export class AdminDashboardComponent {
       })
       this.dashboardAdminYear();
     }
+
+    this.dashboardService.getTrabajadores().subscribe((resp:any) => {
+      this.total_trabajadores = resp.data.length;
+    })
+
+    this.dashboardService.getPracticantes().subscribe((resp:any) => {
+      this.total_practicantes = resp.data.length;
+    })
+
+    this.dashboardService.getBoletas().subscribe((resp:any) => {
+      this.total_boletas = resp.data.length;
+    })
+
+    this.dashboardService.getPlanillas().subscribe((resp:any) => {
+      this.total_planillas = resp.data.length;
+    })
+
+    this.dashboardService.getEmitidos().subscribe((resp:any) => {
+      this.total_emitidos = resp.data.length;
+    })
+
+    this.dashboardService.getRecibidos().subscribe((resp:any) => {
+      this.total_recibidos = resp.data.length;
+    })
+
   }
 
   dashboardAdminYear(){

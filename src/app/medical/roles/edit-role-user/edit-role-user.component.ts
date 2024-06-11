@@ -18,7 +18,7 @@ export class EditRoleUserComponent {
   valid_form: boolean = false;
   valid_form_success: boolean = false;
   text_validation:any = null;
-
+  public user:any;
   role_id: any;
   role_data: any;
   
@@ -32,6 +32,8 @@ export class EditRoleUserComponent {
   }
   ngOnInit() {
 
+    this.user = this.roleService.authService.user;
+
     this.activedRoute.params.subscribe((resp:any) => {
       this.role_id = resp.id;
     });
@@ -41,6 +43,13 @@ export class EditRoleUserComponent {
       this.nombre = resp.data.nombre;
     })
 
+  }
+
+  isPermision(){
+    if(this.user.rol.nombre.includes("ADMIN")){
+      return true;
+    }
+    return false;
   }
 
   updateData(checkboxName: string, event: Event) {

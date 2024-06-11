@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { DescjudicialesService } from '../service/descjudiciales.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-edit-descjudiciales',
@@ -10,135 +13,180 @@ import Swal from 'sweetalert2';
 })
 export class EditDescjudicialesComponent {
 
-  public selectedValue !: string  ;
-  public name:string = '';
-  public surname:string = '';
-  public mobile:string = '';
-  public email:string = '';
-  public password:string = '';
-  public password_confirmation:string = '';
+  public years: any[] = [];
+  public selectedYear: any = "";
 
-  public birth_date:string = '';
-  public gender:number = 1;
-  public education:string = '';
-  public designation:string = '';
-  public address:string = '';
+  public months: any[] = [];
+  public selectedMonth: any = "";
 
+  public tipotrabajadores: any[] = [];
+  public selectedtipotrabajador: any = "";
+
+  public observacion: string = ''; 
+
+  public selectedFileName: string = ''; 
+  public buffer: ArrayBuffer | null = null;
+
+  public regimenes: any[] = [
+    {
+      nombre: "276"
+    },
+    {
+      nombre: "728"
+    },
+    {
+      nombre: "1057"
+    }
+  ]
+
+  public selectedregimen: any = "";
+  public planilla_id:any;
+  public planilla_data:any;
   public roles:any = [];
-
-  public FILE_AVATAR:any;
-  public IMAGEN_PREVIZUALIZA:any = 'assets/img/user-06.jpg';
 
   public text_success:string = '';
   public text_validation:string = '';
 
   public descjudiciales_id:any;
   public descjudiciales_selected:any;
+
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public descjudicialesService: DescjudicialesService,
-    public activedRoute: ActivatedRoute
+    public activedRoute: ActivatedRoute,
+    private router: Router,
+    public authService: AuthService,
+    public userService: StaffService
   ) {
     
   }
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+
+   ngOnInit(): void {
+
+    this.user_id = this.descjudicialesService.authService.user.id;
+    this.listUser(this.user_id);
+    
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
-      this.descjudiciales_id = resp.id;
+      this.planilla_id = resp.id;
     })
+
+    this.descjudicialesService.listYears().subscribe((resp:any) => {
+      this.years = resp.data;
+    })
+
+    this.descjudicialesService.listMonths().subscribe((resp:any) => {
+      this.months = resp.data;
+    })
+
+    this.descjudicialesService.listTipoTrabajador().subscribe((resp:any) => {
+      this.tipotrabajadores = resp.data;
+    })
+
+    this.descjudicialesService.listPlanillaById(this.planilla_id).subscribe((resp:any) => {
+      console.log(resp);
+      this.planilla_data = resp.data;
+      this.selectedYear = this.planilla_data.anio.id;
+      this.selectedMonth = this.planilla_data.mes.id;
+      this.selectedtipotrabajador = this.planilla_data.tipotrabajador.id;
+      this.selectedregimen = this.planilla_data.regimen;
+      this.observacion = this.planilla_data.observacion;
+      this.selectedFileName = this.planilla_data.nombrearchivo;
+    })
+
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
+  loadFile($event: any) {
+    if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
+        this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
+        return;
+    }
+    this.text_validation = '';
     
-    this.descjudiciales_selected.showUser(this.descjudiciales_id).subscribe((resp:any) => {
-      console.log(resp);
-      this.descjudiciales_selected = resp.user;
+    const file = $event.target.files[0];
+    this.selectedFileName = file.name;
 
-      this.selectedValue = this.descjudiciales_selected.role.id;
-      this.name = this.descjudiciales_selected.name ;
-      this.surname = this.descjudiciales_selected.surname ;
-      this.mobile = this.descjudiciales_selected.mobile ;
-      this.email = this.descjudiciales_selected.email ;
-      this.birth_date = new Date(this.descjudiciales_selected.birth_date).toISOString();
-      this.gender = this.descjudiciales_selected.gender ;
-      this.education = this.descjudiciales_selected.education ;
-      this.designation = this.descjudiciales_selected.designation ;
-      this.address = this.descjudiciales_selected.address ;
-      this.IMAGEN_PREVIZUALIZA = this.descjudiciales_selected.avatar;
-    })
-
-    this.descjudiciales_selected.listConfig().subscribe((resp:any) => {
-      console.log(resp);
-      this.roles = resp.roles;
-    })
+    let reader = new FileReader();
+    reader.onload = (event) => {
+        const arrayBuffer = (event.target as FileReader).result as ArrayBuffer;
+        this.buffer = arrayBuffer;
+    };
+    reader.readAsArrayBuffer(file);
   }
 
   save(){
     this.text_validation = '';
-    if(!this.name || !this.email || !this.surname){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (name,surname,email)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipotrabajador || !this.selectedregimen || !this.buffer ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de trabajador, Régimen y Planilla)";
       return;
     }
-    if(this.password){
-      if(this.password != this.password_confirmation){
-        this.text_validation = "LAS CONTRASEÑA DEBEN SER IGUALES";
-        return;
-      }
-    }
-    console.log(this.selectedValue);
 
     let formData = new FormData();
-    formData.append("name",this.name);
-    formData.append("surname",this.surname);
-    formData.append("email",this.email);
-    formData.append("mobile",this.mobile);
-    formData.append("birth_date",this.birth_date);
-    formData.append("gender",this.gender+"");
-    if(this.education){
-      formData.append("education",this.education);
-    }
-    if(this.designation){
-      formData.append("designation",this.designation);
-    }
-    if(this.address){
-      formData.append("address",this.address);
-    }
-    if(this.password){
-      formData.append("password",this.password);
-    }
-    formData.append("role_id",this.selectedValue);
-    if(this.FILE_AVATAR){
-      formData.append("imagen",this.FILE_AVATAR);
+    formData.append("anio",this.selectedYear);
+    formData.append("mes",this.selectedMonth);
+    formData.append("tipotrabajador",this.selectedtipotrabajador);
+    formData.append("observacion",this.observacion);
+    formData.append("regimen",this.selectedregimen);
+    formData.append("nombrearchivo",this.selectedFileName);
+    if (this.buffer !== null) {
+      formData.append("file", new Blob([this.buffer]));
     }
     
-    this.descjudiciales_selected.updateUser(this.descjudiciales_id,formData).subscribe((resp:any) => {
+    this.descjudicialesService.updatePlanilla(this.planilla_id, formData).subscribe((resp:any) => {
       console.log(resp);
 
-      if(resp.message == 403){
+      if(resp.success){
         this.text_validation = resp.message_text;
+        this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'El usuario ha editado correctamente';
+        this.text_success = 'La planilla no se actualizó correctamente';
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'La planilla no se actualizó correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
 
-    });
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Se modificó Correctamente',
-      showConfirmButton: false,
-      timer: 1500
+    },
+    (err: any) => {
+      var msj = err.error.message;
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: msj,
+        showConfirmButton: true
+      });
     });
   }
 
-  loadFile($event:any){
-    if($event.target.files[0].type.indexOf("image") < 0){
-      // alert("SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO IMAGEN");
-      this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO IMAGEN";
-      return;
-    }
-    this.text_validation = '';
-    this.FILE_AVATAR = $event.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(this.FILE_AVATAR);
-    reader.onloadend = () => this.IMAGEN_PREVIZUALIZA = reader.result;
+  mostrarMensajeDeExito() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'La planilla se actualizó correctamente',
+      showConfirmButton: false,
+      timer: 1000
+    }).then(() => {
+      this.router.navigateByUrl('/descjudiciales/list-descjudiciales');
+    });
   }
 
 }

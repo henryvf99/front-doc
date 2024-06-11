@@ -113,8 +113,8 @@ export class AditActivosComponent {
 
   save(){
     this.text_validation = '';
-    if( !this.selectedarea  ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
+    if( !this.selectedtipotrabajador || !this.selectedregimen || !this.nombres || !this.apellidos || !this.dni || !this.fnacimiento || !this.selectedarea || !this.selectedcargo || !this.fingreso ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Tipo trabajador, Régimen, Nombres, Apellidos, DNI, Fecha de nacimiento, Área, Cargo y Fecha de ingreso)";
       return;
     }
 

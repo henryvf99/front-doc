@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { PermanentesService } from '../service/permanentes.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-list-permanentes',
@@ -32,15 +34,38 @@ export class ListPermanentesComponent {
   public role_generals:any = [];
   public permanentes_selected:any;
   public user:any;
+
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public permanentesService: PermanentesService,
+    public authService: AuthService,
+    public userService: StaffService
   ){
 
   }
   ngOnInit() {
-    this.getTableData();
     this.user = this.permanentesService.authService.user;
+    this.user_id = this.permanentesService.authService.user.id;
+    this.listUser(this.user_id);
+    this.getTableData();
   }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -52,15 +77,7 @@ export class ListPermanentesComponent {
     })
 
   }
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
-  }
+  
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];

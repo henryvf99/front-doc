@@ -58,7 +58,7 @@
                         </div>
                         <!-- /Table Header -->
 
-                        <div class="table-responsive">
+                        <div class="table-responsive" *ngIf="permisos.gpracticante">
                             <table matSort (matSortChange)="sortData($event)"
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
@@ -106,11 +106,11 @@
                                                     data-bs-toggle="dropdown" aria-expanded="false"><i
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" *ngIf="isPermision('edit_practicantes')"
+                                                    <a class="dropdown-item" *ngIf="permisos.upracticante"
                                                         [routerLink]="[ '/practicantes/edit-practicantes/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i> Editar</a>
 
-                                                    <a class="dropdown-item" *ngIf="isPermision('delete_practicantes')"
+                                                    <a class="dropdown-item" *ngIf="permisos.dpracticante"
                                                         href="javascript:void(0);" (click)="deleteDocumento(data.id)"
                                                         data-bs-toggle="modal"
                                                         [attr.data-bs-target]="'#delete_practicantes-'+data.id"><i

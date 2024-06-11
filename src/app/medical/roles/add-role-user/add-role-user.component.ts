@@ -17,6 +17,7 @@ export class AddRoleUserComponent implements OnInit{
   valid_form: boolean = false;
   valid_form_success: boolean = false;
   text_validation: any = null;
+  public user:any;
 
   constructor(
     public dataService: DataService,
@@ -27,6 +28,7 @@ export class AddRoleUserComponent implements OnInit{
   }
 
   ngOnInit() {
+    this.user = this.roleService.authService.user;
   }
 
   data: any = {
@@ -46,15 +48,24 @@ export class AddRoleUserComponent implements OnInit{
     "pplanilla": false,
     "uplanilla": false,
     "dplanilla": false,
+    "semitidos": false,
     "gemitidos": false,
     "pemitidos": false,
     "uemitidos": false,
     "demitidos": false,
+    "srecibidos": false,
     "grecibidos": false,
     "precibidos": false,
     "urecibidos": false,
     "drecibidos": false
   };
+
+  isPermision(){
+    if(this.user.rol.nombre.includes("ADMIN")){
+      return true;
+    }
+    return false;
+  }
 
   updateData(checkboxName: string, event: Event) {
     const target = event.target as HTMLInputElement;

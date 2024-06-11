@@ -67,7 +67,6 @@ export class ListActivosComponent {
 
   listUser(user_id: string){
     this.userService.listUserById(user_id).subscribe((resp:any) => {
-      console.log(resp);
       this.permiso_id = resp.data.permisos.id;
       this.listPermisos(this.permiso_id);
     })
@@ -75,19 +74,8 @@ export class ListActivosComponent {
 
   listPermisos(id: string){
     this.service.getProfile(id).subscribe((resp:any) => {
-      console.log(resp);
       this.permisos = resp.data;
     })
-  }
-
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
   }
 
   getTableDataGeneral() {

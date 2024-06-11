@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CesanteService } from '../service/cesante.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-list-cesante',
@@ -33,8 +35,14 @@ export class ListCesanteComponent {
   public cesante_selected:any;
   public user:any;
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public cesanteService: CesanteService,
+    public service: AuthService,
+    public userService: StaffService
   ){
 
   }
@@ -42,6 +50,8 @@ export class ListCesanteComponent {
   ngOnInit() {
     this.getTableData();
     this.user = this.cesanteService.authService.user;
+    this.user_id = this.cesanteService.authService.user.id;
+    this.listUser(this.user_id);
   }
 
   private getTableData(): void {
@@ -55,15 +65,19 @@ export class ListCesanteComponent {
     })
   }
 
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
   }
+
+  listPermisos(id: string){
+    this.service.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CasdirectivosbService {
-  url= "http://localhost:3000/api/boleta";
+  url= URL_BACKEND + "/boleta";
 
   constructor(
     public http: HttpClient,

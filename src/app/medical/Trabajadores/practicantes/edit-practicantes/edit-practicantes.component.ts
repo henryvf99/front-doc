@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { PracticantesService } from '../service/practicantes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-edit-practicantes',
@@ -33,15 +35,24 @@ export class EditPracticantesComponent {
   public text_success:string = '';
   public text_validation:string = '';
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public practicantesService: PracticantesService,
     public activedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public service: AuthService,
+    public userService: StaffService
   ) {
     
   }
 
   ngOnInit(): void {
+
+    this.user_id = this.practicantesService.authService.user.id;
+    this.listUser(this.user_id);
 
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
@@ -65,6 +76,19 @@ export class EditPracticantesComponent {
       this.fsalida = this.practicante_selected.fsalida;
       this.selectedFileName = this.practicante_selected.nombrearchivo || " ";
       this.selectedFileName2 = this.practicante_selected.nombrearchivo2 || " ";
+    })
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.service.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
     })
   }
 
@@ -104,8 +128,8 @@ export class EditPracticantesComponent {
 
   save(){
     this.text_validation = '';
-    if( !this.selectearea  ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
+    if( !this.nombre || !this.apellidos || !this.universidad || !this.horapracticas || !this.selectearea || !this.carrera || !this.fingreso ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Nombres, Apellidos, Universidad, Horas de practicas, Área, Carrera y Fecha de ingreso)";
       return;
     }
 

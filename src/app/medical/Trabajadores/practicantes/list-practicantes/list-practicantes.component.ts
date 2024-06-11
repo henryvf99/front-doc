@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { PracticantesService } from '../service/practicantes.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-list-practicantes',
@@ -31,15 +33,36 @@ export class ListPracticantesComponent {
   public practicantes_selected:any;
   public user:any;
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public practicantesService: PracticantesService,
+    public service: AuthService,
+    public userService: StaffService
   ){
 
   }
 
   ngOnInit() {
-    this.getTableData();
     this.user = this.practicantesService.authService.user;
+    this.user_id = this.practicantesService.authService.user.id;
+    this.listUser(this.user_id);
+    this.getTableData();
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.service.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
   }
 
   private getTableData(): void {
@@ -54,16 +77,6 @@ export class ListPracticantesComponent {
       this.role_generals = resp.data;
       this.getTableDataGeneral();
     })
-  }
-
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
   }
 
   getTableDataGeneral() {

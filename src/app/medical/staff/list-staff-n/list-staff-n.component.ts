@@ -58,11 +58,8 @@ export class ListStaffNComponent {
     })
   }
 
-  isPermision(permission: string) {
-    if (this.user.rol.nombre.includes("ADMIN")) {
-      return true;
-    }
-    if (this.user.permissions.includes(permission)) {
+  isPermision(){
+    if(this.user.rol.nombre.includes("ADMIN")){
       return true;
     }
     return false;

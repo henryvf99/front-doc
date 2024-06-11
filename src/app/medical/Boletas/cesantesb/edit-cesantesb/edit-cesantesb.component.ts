@@ -3,6 +3,8 @@ import { CesantesbService } from '../service/cesantesb.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-edit-cesantesb',
@@ -46,14 +48,24 @@ export class EditCesantesbComponent {
   public text_success:string = '';
   public text_validation:string = '';
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public cesantesbService: CesantesbService,
     public activedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public authService: AuthService,
+    public userService: StaffService
   ) {
     
   }
+
   ngOnInit(): void {
+
+    this.user_id = this.cesantesbService.authService.user.id;
+    this.listUser(this.user_id);
     
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
@@ -89,6 +101,19 @@ export class EditCesantesbComponent {
     
   }
 
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   loadFile($event: any) {
     if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
         this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
@@ -109,8 +134,8 @@ export class EditCesantesbComponent {
 
   save(){
     this.text_validation = '';
-    if(!this.selectedYear || !this.selectedMonth || !this.selectedregimen){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipotrabajador || !this.selectedtrabajador || !this.selectedregimen || !this.buffer ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de trabajador, Trabajador, Régimen y Boleta)";
       return;
     }
 

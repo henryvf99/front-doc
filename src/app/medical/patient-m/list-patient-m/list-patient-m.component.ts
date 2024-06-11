@@ -45,6 +45,9 @@ export class ListPatientMComponent {
     if(this.user.rol.nombre.includes("ADMIN")){
       return true;
     }
+    if(this.user.rol.nombre.includes("USER")){
+      return true;
+    }
     if(this.user.permissions.includes(permission)){
       return true;
     }

@@ -18,7 +18,7 @@ const routes: Routes = [{
       component: ListNombradosComponent
     },
     {
-      path: 'list-nombrados/edit-nombrados/:id',
+      path: 'edit-nombrados/:id',
       component: EditNombradosComponent
     }
   ]

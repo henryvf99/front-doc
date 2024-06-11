@@ -3,6 +3,8 @@ import { MemorandumService } from '../service/memorandum.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-edit-memorandum',
@@ -38,14 +40,23 @@ export class EditMemorandumComponent {
   public memorandum_id:any;
   public memorandum_selected:any;
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public memorandumService: MemorandumService,
     public activedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public authService: AuthService,
+    public userService: StaffService
   ) {
     
   }
   ngOnInit(): void {
+
+    this.user_id = this.memorandumService.authService.user.id;
+    this.listUser(this.user_id);
     
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
@@ -78,6 +89,19 @@ export class EditMemorandumComponent {
 
   }
 
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   loadFile($event: any) {
     if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
         this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
@@ -98,8 +122,8 @@ export class EditMemorandumComponent {
 
   save(){
     this.text_validation = '';
-    if(!this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.asunto || !this.fecharecepcion || !this.buffer ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de documento, Código, Asunto, Fecha de recepción y Documento)";
       return;
     }
 

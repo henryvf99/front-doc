@@ -21,7 +21,7 @@ export class AddStaffNComponent implements OnInit{
   public selectedarea: any = "";
   public roles: any[] = [];
   public selectedrol: any = "";
-  
+  public user: any;
   public text_success:string = '';
   public text_validation:string = '';
 
@@ -34,6 +34,8 @@ export class AddStaffNComponent implements OnInit{
 
   ngOnInit(): void {
     
+    this.user = this.staffService.authService.user;
+
     this.staffService.listPermisos().subscribe((resp:any) => {
       this.permisos = resp.data;
     })
@@ -48,10 +50,17 @@ export class AddStaffNComponent implements OnInit{
 
   }
 
+  isPermision(){
+    if(this.user.rol.nombre.includes("ADMIN")){
+      return true;
+    }
+    return false;
+  }
+
   save(){
     this.text_validation = '';
-    if( !this.selectedarea  ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
+    if( !this.email || !this.password || !this.nombres || !this.apellidos || !this.selectedarea || !this.selectedrol || !this.selectedpermisos ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Nombres, Apellidos, Email, Contraseña, Área, Rol y Permisos)";
       return;
     }
 

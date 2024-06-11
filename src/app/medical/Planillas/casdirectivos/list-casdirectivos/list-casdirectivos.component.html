@@ -58,7 +58,7 @@
                         </div>
                         <!-- /Table Header -->
 
-                        <div class="table-responsive">
+                        <div class="table-responsive" *ngIf="permisos.gplanilla">
                             <table matSort (matSortChange)="sortData($event)"
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
@@ -96,10 +96,10 @@
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <!--  -->
-                                                    <a class="dropdown-item" *ngIf="isPermision('edit_casdirectivos')"
+                                                    <a class="dropdown-item" *ngIf="permisos.uplanilla"
                                                         [routerLink]="[ '/casdirectivos/list-casdirectivos/edit-casdirectivos/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i>Editar</a>
-                                                    <a class="dropdown-item" *ngIf="isPermision('delete_casdirectivos')"
+                                                    <a class="dropdown-item" *ngIf="permisos.dplanilla"
                                                         href="javascript:void(0);" (click)="deletePlanilla(data.id)">
                                                         <i class="fa fa-trash-alt m-r-5"></i>Eliminar</a>
                                                 </div>

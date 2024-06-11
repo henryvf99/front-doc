@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MemorandumeComponent } from './memorandume.component';
 import { AddMemorandumeComponent } from './add-memorandume/add-memorandume.component';
 import { ListMemorandumeComponent } from './list-memorandume/list-memorandume.component';
-import { EditMemorandumComponent } from '../../Documentos_recibidos/memorandum/edit-memorandum/edit-memorandum.component';
+import { EditMemorandumeComponent } from './edit-memorandume/edit-memorandume.component';
 
 const routes: Routes = [{
   path: '',
@@ -18,8 +18,8 @@ const routes: Routes = [{
       component: ListMemorandumeComponent
     },
     {
-      path: 'list-memorandume/edit-memorandume/:id',
-      component: EditMemorandumComponent
+      path: 'edit-memorandume/:id',
+      component: EditMemorandumeComponent
     }
   ]
 }];

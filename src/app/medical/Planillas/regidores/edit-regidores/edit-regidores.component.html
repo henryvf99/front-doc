@@ -14,120 +14,72 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row">
+        <div class="row" *ngIf="permisos.uplanilla">
             <div class="col-sm-12">
             
                 <div class="card">
-                    <div class="card-body" *ngIf="regidores_selected">
+                    <div class="card-body">
                         <form>
                             <div class="row">
                                 
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Año <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedYear" name="selectedYear">
+                                            <option value="" disabled selected>Selecciona un año</option> 
+                                            <option *ngFor="let year of years" [value]="year.id">{{ year.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Mes <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedMonth" name="selectedMonth">
+                                            <option value="" disabled selected>Selecciona un mes</option> 
+                                            <option *ngFor="let month of months" [value]="month.id">{{ month.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Tipo de trabajador <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedtipotrabajador" name="selectedtipotrabajador">
+                                            <option value="" disabled selected>Selecciona un tipo de trabajador</option> 
+                                            <option *ngFor="let tipotrabajador of tipotrabajadores" [value]="tipotrabajador.id">{{ tipotrabajador.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Regimen <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedregimen" name="selectedregimen">
+                                            <option value="" disabled selected>Selecciona un regimen</option> 
+                                            <option *ngFor="let regimen of regimenes" [value]="regimen.nombre">{{ regimen.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="col-12 col-md-6 col-xl-4">  
                                     <div class="form-group local-forms">
-                                        <label >First Name <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="name" name="name" type="text"  >
+                                        <label >Observación <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="observacion" name="observacion" type="text"  >
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6 col-xl-4">
-                                    <div class="form-group local-forms">
-                                        <label >Surname <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="surname" name="surname" type="text"  >
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-4">
-                                    <div class="form-group local-forms">
-                                        <label >Mobile <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="mobile" name="mobile" type="text"  >
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group local-forms">
-                                        <label >Email <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="email" name="email" type="email"  >
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group local-forms">
-                                        <label >Password <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="password" name="password" type="password"  >
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group local-forms">
-                                        <label >Confirm Password <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="password_confirmation" name="password_confirmation" type="password"  >
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group local-forms">
-                                        <label >Date Of Birth  <span class="login-danger">*</span></label>
-                                        <input class="form-control datetimepicker" [(ngModel)]="birth_date" name="birth_date" type="text" matInput [matDatepicker]="picker"  >
-                                        <mat-datepicker #picker></mat-datepicker>
-                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group select-gender">
-                                        <label class="gen-label">Gender<span class="login-danger">*</span></label>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" name="gender" [value]="1" [(ngModel)]="gender" class="form-check-input">Male
-                                            </label>
-                                        </div>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" name="gender" [value]="2" [(ngModel)]="gender" class="form-check-input">Female
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-4">
-                                    <div class="form-group local-forms">
-                                        <label >Education <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="education" name="education"  type="text"  >
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-4">
-                                    <div class="form-group local-forms">
-                                        <label >Designation <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="designation" name="designation" type="text"  >
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12 col-sm-12">
-                                    <div class="form-group local-forms">
-                                        <label>Address  <span class="login-danger">*</span></label>
-                                        <textarea class="form-control" [(ngModel)]="address" name="address" rows="3" cols="30"></textarea>
-                                    </div>
-                                </div>
-                                
+
                                 <div class="col-12 col-md-6 col-xl-6">
                                     <div class="form-group local-top-form">
-                                        <label class="local-top">Avatar <span class="login-danger">*</span></label>
+                                        <label class="local-top">Archivo <span class="login-danger">*</span></label>
                                         <div class="settings-btn upload-files-avator">
-                                            <input type="file" accept="image/*" name="image" id="file" (change)="loadFile($event)" class="hide-input">
-                                            <label for="file" class="upload">Choose File</label>
+                                            <input type="text" style="border: none; position: relative; top: -6px;" [value]="selectedFileName" readonly>
+                                            <input type="file" accept=".pdf" name="pdfFile" (change)="loadFile($event)" id="pdfFile" class="hide-input">
+                                            <label for="pdfFile" class="upload">Escoge un archivo</label>
                                         </div>
-                                    </div>
-                                    <div class="" *ngIf="IMAGEN_PREVIZUALIZA">
-                                        <img [src]="IMAGEN_PREVIZUALIZA" width="250" alt="" srcset="">
                                     </div>
                                 </div>
-                                <!-- <div class="col-12 col-md-6 col-xl-6">
-                                    <div class="form-group select-gender">
-                                        <label class="gen-label">Status <span class="login-danger">*</span></label>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" name="gender" class="form-check-input">Active
-                                            </label>
-                                        </div>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" name="gender" class="form-check-input">In Active
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div> -->
+
                                 <div class="col-12">
                                     <div class="form-group row my-4" *ngIf="text_success">
                                         <div class="col-md-8">
@@ -151,6 +103,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div class="col-12">
                                     <div class="doctor-submit text-end">
                                         <button type="button" (click)="save()" class="btn btn-primary submit-form me-2">Guardar</button>

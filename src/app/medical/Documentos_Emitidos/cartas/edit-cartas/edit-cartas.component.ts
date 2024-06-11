@@ -3,6 +3,8 @@ import { CartasService } from '../service/cartas.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-edit-cartas',
@@ -44,14 +46,25 @@ export class EditCartasComponent {
 
   public cartas_id:any;
   public cartas_selected:any;
+
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public cartasService: CartasService,
     public activedRoute: ActivatedRoute,
+    public authService: AuthService,
+    public userService: StaffService,
     private router: Router
   ) {
     
   }
+  
   ngOnInit(): void {
+
+    this.user_id = this.cartasService.authService.user.id;
+    this.listUser(this.user_id);
 
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
@@ -84,6 +97,19 @@ export class EditCartasComponent {
       this.selectedFileName2 = this.documento_selected.nombrearchivo2 || " ";
     })
 
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
   }
 
   loadFile($event: any, inputNumber: number) {
@@ -122,8 +148,8 @@ export class EditCartasComponent {
 
   save(){
     this.text_validation = '';
-    if(!this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.destinatario || !this.asunto || !this.fechaemision || !this.buffer2 ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de documento, Código, Destinatario, Asunto, Fecha de emisión y Documento)";
       return;
     }
 
@@ -184,7 +210,7 @@ export class EditCartasComponent {
       showConfirmButton: false,
       timer: 1000
     }).then(() => {
-      this.router.navigateByUrl('/cartas/list-cartas');
+      this.router.navigateByUrl('/proveidos/list-proveidos');
     });
   }
 

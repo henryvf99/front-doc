@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NombradosbComponent } from '../nombradosb.component';
 import { NombradosbService } from '../service/nombradosb.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-list-nombradosb',
@@ -33,15 +34,39 @@ export class ListNombradosbComponent {
   public role_generals:any = [];
   public nombradosb_selected:any;
   public user:any;
+
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public nombradosbService: NombradosbService,
+    public authService: AuthService,
+    public userService: StaffService
   ){
 
   }
+
   ngOnInit() {
-    this.getTableData();
     this.user = this.nombradosbService.authService.user;
+    this.user_id = this.nombradosbService.authService.user.id;
+    this.listUser(this.user_id);
+    this.getTableData();
   }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -54,15 +79,7 @@ export class ListNombradosbComponent {
 
 
   }
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
-  }
+  
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];

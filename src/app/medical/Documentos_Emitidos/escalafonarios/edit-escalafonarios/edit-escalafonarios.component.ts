@@ -3,6 +3,8 @@ import { EscalafonariosService } from '../service/escalafonarios.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-edit-escalafonarios',
@@ -44,14 +46,24 @@ export class EditEscalafonariosComponent {
 
   public escalafonarios_id:any;
   public escalafonarios_selected:any;
+
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public escalafonariosService: EscalafonariosService,
     public activedRoute: ActivatedRoute,
+    public authService: AuthService,
+    public userService: StaffService,
     private router: Router
   ) {
     
   }
   ngOnInit(): void {
+
+    this.user_id = this.escalafonariosService.authService.user.id;
+    this.listUser(this.user_id);
     
     this.activedRoute.params.subscribe((resp:any) => {
       console.log(resp);
@@ -84,6 +96,19 @@ export class EditEscalafonariosComponent {
       this.selectedFileName2 = this.documento_selected.nombrearchivo2 || " ";
     })
 
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
   }
 
   loadFile($event: any, inputNumber: number) {
@@ -122,8 +147,8 @@ export class EditEscalafonariosComponent {
 
   save(){
     this.text_validation = '';
-    if(!this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.destinatario || !this.asunto || !this.fechaemision || !this.buffer2 ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de documento, Código, Destinatario, Asunto, Fecha de emisión y Documento)";
       return;
     }
 

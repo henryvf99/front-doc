@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ExfuncionariosService } from '../service/exfuncionarios.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-adit-exfuncionarios',
@@ -43,15 +45,24 @@ export class AditExfuncionariosComponent {
   public text_success:string = '';
   public text_validation:string = '';
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public exfuncionariosService: ExfuncionariosService,
     public activedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public service: AuthService,
+    public userService: StaffService
   ) {
     
   }
 
   ngOnInit(): void {
+
+    this.user_id = this.exfuncionariosService.authService.user.id;
+    this.listUser(this.user_id);
 
     this.activedRoute.params.subscribe((resp:any) => { 
       this.trabajador_id = resp.id;
@@ -86,10 +97,23 @@ export class AditExfuncionariosComponent {
 
   }
 
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.service.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   save(){
     this.text_validation = '';
-    if( !this.selectedarea  ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
+    if( !this.selectedtipotrabajador || !this.selectedregimen || !this.nombres || !this.apellidos || !this.dni || !this.fnacimiento || !this.selectedarea || !this.selectedcargo || !this.fingreso ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Tipo trabajador, Régimen, Nombres, Apellidos, DNI, Fecha de nacimiento, Área, Cargo y Fecha de ingreso)";
       return;
     }
 

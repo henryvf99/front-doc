@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
+
 import { ResogerencialService } from '../service/resogerencial.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
@@ -9,6 +13,14 @@ import Swal from 'sweetalert2';
   styleUrl: './list-resogerencial.component.scss'
 })
 export class ListResogerencialComponent {
+
+  @ViewChild('contenidoModal') contenidoModal!: TemplateRef<any>;
+  dialogRef: MatDialogRef<any> | undefined;
+
+  public modal_txtarea = false;
+  public modal_loading = false;
+  public nombre_archivo_sumarizado: string = "detalle.pdf";
+  public texto_archivo_sumarizado: string = "";
 
   private idtipodocumento = "6614e18d72fa497e6831fe0e";
 
@@ -32,15 +44,40 @@ export class ListResogerencialComponent {
   public role_generals:any = [];
   public resogerencial_selected:any;
   public user:any;
+
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public resogerencialService: ResogerencialService,
+    public authService: AuthService,
+    public userService: StaffService,
+    private dialog: MatDialog
   ){
 
   }
+  
   ngOnInit() {
-    this.getTableData();
     this.user = this.resogerencialService.authService.user;
+    this.user_id = this.resogerencialService.authService.user.id;
+    this.listUser(this.user_id);
+    this.getTableData();
   }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -52,15 +89,7 @@ export class ListResogerencialComponent {
     })
 
   }
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
-  }
+  
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -207,6 +236,45 @@ export class ListResogerencialComponent {
       // 0 - 10
       // 2
       // 10 - 20
+    }
+  }
+
+  extractTextFromPdf(data: any, nombre_archivo: string){
+
+    this.dialogRef = this.dialog.open(this.contenidoModal, {
+      width: '80%',
+      height: '70%'
+    });
+
+    const arrayBuffer = new Uint8Array(data).buffer;
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+
+    const formData = new FormData();
+    formData.append('file', blob);
+
+    this.authService.traducirPdfTexto(formData).subscribe((res:any) => {
+
+      if(res.success){
+        this.nombre_archivo_sumarizado = nombre_archivo;
+        this.texto_archivo_sumarizado = res.data;
+        this.modal_loading = true;
+        this.modal_txtarea = true;
+        console.log(res.data);
+      }else{
+        console.log(`Error`);
+      }
+
+    });
+
+  }
+
+  cerrarModal() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.modal_txtarea = false;
+      this.modal_loading = false;
+      this.texto_archivo_sumarizado = "";
+      this.nombre_archivo_sumarizado = "";
     }
   }
 

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartasService } from '../service/cartas.service';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-add-cartas',
@@ -39,14 +41,23 @@ export class AddCartasComponent implements OnInit{
   public text_success:string = '';
   public text_validation:string = '';
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public cartasService: CartasService,
+    public authService: AuthService,
+    public userService: StaffService,
     private router: Router
   ) {
     
   }
 
   ngOnInit(): void {
+
+    this.user_id = this.cartasService.authService.user.id;
+    this.listUser(this.user_id);
     
     this.cartasService.listYears().subscribe((resp:any) => {
       this.years = resp.data;
@@ -62,6 +73,19 @@ export class AddCartasComponent implements OnInit{
 
     this.selectedtipodocumento = this.idtipodocumento;
 
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
   }
 
   loadFile($event: any, inputNumber: number) {
@@ -100,8 +124,8 @@ export class AddCartasComponent implements OnInit{
 
   save(){
     this.text_validation = '';
-    if( !this.selectedMonth  ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.destinatario || !this.asunto || !this.fechaemision || !this.buffer2 ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de documento, Código, Destinatario, Asunto, Fecha de emisión y Documento)";
       return;
     }
 

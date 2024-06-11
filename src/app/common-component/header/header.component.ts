@@ -47,9 +47,11 @@ export class HeaderComponent {
       mainWrapper.classList.remove('open-msg-box');
     }
   }
+  
   logout(){
     this.auth.logout();
   }
+
   public toggleSideBar(): void {
     this.sideBar.switchSideMenuPosition();
   }

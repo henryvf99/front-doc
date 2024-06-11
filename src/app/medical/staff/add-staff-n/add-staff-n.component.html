@@ -6,15 +6,15 @@
             <div class="row">
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a routerLink="/staffs/list-staff">Staffs </a></li>
+                        <li class="breadcrumb-item"><a routerLink="/staffs/list-staff">Usuarios</a></li>
                         <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
-                        <li class="breadcrumb-item active">Add Staffs</li>
+                        <li class="breadcrumb-item active">Registrar usuario</li>
                     </ul>
                 </div>
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row">
+        <div class="row" *ngIf="isPermision()">
             <div class="col-sm-12">
 
                 <div class="card">
@@ -99,8 +99,7 @@
                                 
                                 <div class="col-12">
                                     <div class="doctor-submit text-end">
-                                        <button type="button" (click)="save()"
-                                            class="btn btn-primary submit-form me-2">Guardar</button>
+                                        <button type="button" (click)="save()" class="btn btn-primary submit-form me-2">Guardar</button>
                                     </div>
                                 </div>
                             </div>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReposijudicialbService } from '../service/reposijudicialb.service';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-add-reposijudicialb',
@@ -43,13 +45,23 @@ export class AddReposijudicialbComponent implements OnInit{
 
   public text_success:string = '';
   public text_validation:string = '';
+
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public reposijudicialbService: ReposijudicialbService,
-    private router: Router
+    private router: Router,
+    public authService: AuthService,
+    public userService: StaffService
   ) {
     
   }
   ngOnInit(): void {
+
+    this.user_id = this.reposijudicialbService.authService.user.id;
+    this.listUser(this.user_id);
 
     this.reposijudicialbService.listYears().subscribe((resp:any) => {
       this.years = resp.data;
@@ -69,6 +81,19 @@ export class AddReposijudicialbComponent implements OnInit{
 
     this.selectedtipotrabajador = this.idtipotrabajador;
 
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
   }
 
   loadFile($event: any) {
@@ -91,8 +116,8 @@ export class AddReposijudicialbComponent implements OnInit{
 
   save(){
     this.text_validation = '';
-    if( !this.selectedMonth  ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipotrabajador || !this.selectedtrabajador || !this.selectedregimen || !this.buffer ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de trabajador, Trabajador, Régimen y Boleta)";
       return;
     }
 

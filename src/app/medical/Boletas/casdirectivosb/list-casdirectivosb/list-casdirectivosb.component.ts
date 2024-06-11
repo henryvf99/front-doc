@@ -1,10 +1,9 @@
-import { Component, ViewChild, TemplateRef } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '../../../../shared/auth/auth.service';
-
+import { Component } from '@angular/core';
 import { CasdirectivosbService } from '../service/casdirectivosb.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-list-casdirectivosb',
@@ -12,14 +11,6 @@ import Swal from 'sweetalert2';
   styleUrl: './list-casdirectivosb.component.scss'
 })
 export class ListCasdirectivosbComponent {
-
-  @ViewChild('contenidoModal') contenidoModal!: TemplateRef<any>;
-  dialogRef: MatDialogRef<any> | undefined;
-
-  public modal_txtarea = false;
-  public modal_loading = false;
-  public nombre_archivo_sumarizado: string = "detalle.pdf";
-  public texto_archivo_sumarizado: string = "";
 
   private idtipotrabajador = "6614ddc772fa497e6831fdba";
 
@@ -44,17 +35,36 @@ export class ListCasdirectivosbComponent {
   public casdirectivosb_selected:any;
   public user:any;
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public casdirectivosbService: CasdirectivosbService,
     public authService: AuthService,
-    private dialog: MatDialog
+    public userService: StaffService
   ){
 
   }
 
   ngOnInit() {
-    this.getTableData();
     this.user = this.casdirectivosbService.authService.user;
+    this.user_id = this.casdirectivosbService.authService.user.id;
+    this.listUser(this.user_id);
+    this.getTableData();
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
   }
 
   private getTableData(): void {
@@ -67,16 +77,6 @@ export class ListCasdirectivosbComponent {
       this.getTableDataGeneral();
     })
 
-  }
-
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes('ADMIN')){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
   }
   
   getTableDataGeneral() {
@@ -213,41 +213,6 @@ export class ListCasdirectivosbComponent {
     const blob = new Blob([new Uint8Array(file)], { type: 'application/pdf' });
       const blobUrl = URL.createObjectURL(blob);
       window.open(blobUrl, '_blank');
-  }
-
-  extractTextFromPdf(data: any){
-
-    this.dialogRef = this.dialog.open(this.contenidoModal, {
-      width: '80%',
-      height: '70%'
-    });
-
-    const arrayBuffer = new Uint8Array(data).buffer;
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
-    const formData = new FormData();
-    formData.append('file', blob);
-
-    this.authService.traducirPdfTexto(formData).subscribe((res:any) => {
-
-      if(res.success){
-        const resultado = res.data;
-      }else{
-        console.log(`Error`);
-      }
-
-    });
-
-  }
-
-  cerrarModal() {
-    if (this.dialogRef) {
-      this.dialogRef.close();
-      this.modal_txtarea = false;
-      this.modal_loading = false;
-      this.texto_archivo_sumarizado = "";
-      this.nombre_archivo_sumarizado = "";
-    }
   }
 
 }

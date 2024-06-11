@@ -58,7 +58,7 @@
                         </div>
                         <!-- /Table Header -->
 
-                        <div class="table-responsive">
+                        <div class="table-responsive" *ngIf="permisos.gboleta">
                             <table matSort (matSortChange)="sortData($event)"
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
@@ -94,10 +94,10 @@
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <!--  -->
-                                                    <a class="dropdown-item" *ngIf="isPermision('edit_cautelares')"
+                                                    <a class="dropdown-item" *ngIf="permisos.uboleta"
                                                         [routerLink]="[ '/cautelares/list-cautelares/edit-cautelares/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i>Editar</a>
-                                                    <a class="dropdown-item" *ngIf="isPermision('delete_cautelares')"
+                                                    <a class="dropdown-item" *ngIf="permisos.dboleta"
                                                         href="javascript:void(0);" (click)="deleteBoleta(data.id)">
                                                         <i class="fa fa-trash-alt m-r-5"></i> Eliminar</a>
                                                 </div>

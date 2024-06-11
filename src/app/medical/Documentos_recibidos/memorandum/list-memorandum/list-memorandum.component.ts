@@ -1,6 +1,7 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 import { MemorandumService } from '../service/memorandum.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -44,16 +45,36 @@ export class ListMemorandumComponent {
   public memorandum_selected:any;
   public user:any;
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public memorandumService: MemorandumService,
     public authService: AuthService,
+    public userService: StaffService,
     private dialog: MatDialog
   ){
 
   }
   ngOnInit() {
-    this.getTableData();
     this.user = this.memorandumService.authService.user;
+    this.user_id = this.memorandumService.authService.user.id;
+    this.listUser(this.user_id);
+    this.getTableData();
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
   }
 
   private getTableData(): void {
@@ -68,15 +89,6 @@ export class ListMemorandumComponent {
 
   }
 
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
-  }
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];

@@ -38,7 +38,7 @@ export class AuthService {
 
   login(email:string,password:string) {
 
-    let URL = "http://localhost:3000/api/auth/login";
+    let URL = URL_BACKEND + "/auth/login";
     return this.http.post(URL,{email: email,password: password}).pipe(
       map((auth:any) => {
         console.log(auth.user.rol.nombre);

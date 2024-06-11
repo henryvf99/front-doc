@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CastransitoriosService } from '../service/castransitorios.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 @Component({
   selector: 'app-add-castransitorios',
@@ -45,13 +47,24 @@ export class AddCastransitoriosComponent implements OnInit{
 
   public text_success:string = '';
   public text_validation:string = '';
+
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public castransitoriosService: CastransitoriosService,
-    private router: Router
+    private router: Router,
+    public authService: AuthService,
+    public userService: StaffService
   ) {
     
   }
+
   ngOnInit(): void {
+
+    this.user_id = this.castransitoriosService.authService.user.id;
+    this.listUser(this.user_id);
     
     this.castransitoriosService.listYears().subscribe((resp:any) => {
       this.years = resp.data;
@@ -67,6 +80,19 @@ export class AddCastransitoriosComponent implements OnInit{
 
     this.selectedtipotrabajador = this.idtipotrabajador;
 
+  }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
   }
 
   loadFile($event: any) {
@@ -89,8 +115,8 @@ export class AddCastransitoriosComponent implements OnInit{
 
   save(){
     this.text_validation = '';
-    if( !this.selectedMonth  ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipotrabajador || !this.selectedregimen || !this.buffer ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de trabajador, Régimen y Planilla)";
       return;
     }
 

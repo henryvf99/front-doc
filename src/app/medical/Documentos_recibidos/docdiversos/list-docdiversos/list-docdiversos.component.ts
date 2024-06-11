@@ -1,6 +1,7 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../../shared/auth/auth.service';
+import { StaffService } from '../../../staff/service/staff.service';
 
 import { DocdiversosService } from '../service/docdiversos.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -45,17 +46,39 @@ export class ListDocdiversosComponent {
   public docdiversos_selected:any;
   public user:any;
 
+  public permisos: any;
+  public user_id: string = "";
+  public permiso_id: string = "";
+
   constructor(
     public docdiversosService: DocdiversosService,
     public authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public userService: StaffService
   ){
 
   }
+
   ngOnInit() {
-    this.getTableData();
     this.user = this.docdiversosService.authService.user;
+    this.user_id = this.docdiversosService.authService.user.id;
+    this.listUser(this.user_id);
+    this.getTableData();
   }
+
+  listUser(user_id: string){
+    this.userService.listUserById(user_id).subscribe((resp:any) => {
+      this.permiso_id = resp.data.permisos.id;
+      this.listPermisos(this.permiso_id);
+    })
+  }
+
+  listPermisos(id: string){
+    this.authService.getProfile(id).subscribe((resp:any) => {
+      this.permisos = resp.data;
+    })
+  }
+
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -67,15 +90,7 @@ export class ListDocdiversosComponent {
     })
 
   }
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
-  }
+  
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];

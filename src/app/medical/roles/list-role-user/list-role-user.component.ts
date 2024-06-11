@@ -54,11 +54,8 @@ export class ListRoleUserComponent {
     })
   }
 
-  isPermision(permission:string){
+  isPermision(){
     if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
       return true;
     }
     return false;

@@ -26,7 +26,7 @@ export class EditStaffNComponent {
 
   public user_id: any;
   public user_data: any;
-  
+  public user: any;
   public text_success:string = '';
   public text_validation:string = '';
 
@@ -39,6 +39,8 @@ export class EditStaffNComponent {
   }
 
  ngOnInit(): void {
+
+  this.user = this.staffService.authService.user;
 
   this.activedRoute.params.subscribe((resp:any) => {
     console.log(resp);
@@ -70,10 +72,17 @@ export class EditStaffNComponent {
 
   }
 
+  isPermision(){
+    if(this.user.rol.nombre.includes("ADMIN")){
+      return true;
+    }
+    return false;
+  }
+
   async save(){
     this.text_validation = '';
-    if( !this.selectedarea  ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (anio,mes,regimen,avatar)";
+    if( !this.email && !this.password && !this.nombres && !this.apellidos && !this.selectedarea && !this.selectedrol && !this.selectedpermisos ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Nombres, Apellidos, Email, Contraseña, Área, Rol y Permisos)";
       return;
     }
 

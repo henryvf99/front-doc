@@ -14,7 +14,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row">
+        <div class="row" *ngIf="permisos.pemitidos">
             <div class="col-sm-12">
 
                 <div class="card">
@@ -22,56 +22,87 @@
                         <form>
                             <div class="row">
 
-                                <div class="col-12 col-md-6 col-xl-4">  
+                                <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >N° informe <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="ninforme" name="ninforme" type="text"  >
+                                        <label>Año <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedYear" name="selectedYear">
+                                            <option value="" disabled selected>Selecciona un año</option> 
+                                            <option *ngFor="let year of years" [value]="year.id">{{ year.nombre }}</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-5 col-xl-5">
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Mes <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedMonth" name="selectedMonth">
+                                            <option value="" disabled selected>Selecciona un mes</option> 
+                                            <option *ngFor="let month of months" [value]="month.id">{{ month.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <label>Tipo de documento <span class="login-danger">*</span></label>
+                                        <select class="form-control" [(ngModel)]="selectedtipodocumento" name="selectedtipodocumento" disabled>
+                                            <option value="" disabled selected>Selecciona un tipo de documento</option> 
+                                            <option *ngFor="let tipodocumento of tipodocumentos" [value]="tipodocumento.id">{{ tipodocumento.nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">  
+                                    <div class="form-group local-forms">
+                                        <label >Código <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="codigo" name="codigo" type="text"  >
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">  
                                     <div class="form-group local-forms">
                                         <label >Destinatario <span class="login-danger">*</span></label>
                                         <input class="form-control" [(ngModel)]="destinatario" name="destinatario" type="text"  >
                                     </div>
                                 </div>
-                                <div class="col-3 col-md-3 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label >Fecha de Emisión  <span class="login-danger">*</span></label>
-                                        <input class="form-control datetimepicker" [(ngModel)]="fecha_emision" name="fecha_emision" type="text" matInput [matDatepicker]="picker"  >
-                                        <mat-datepicker #picker></mat-datepicker>
-                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-6">
+
+                                <div class="col-12 col-md-6 col-xl-4">  
                                     <div class="form-group local-forms">
                                         <label >Asunto <span class="login-danger">*</span></label>
-                                        <textarea class="form-control" [(ngModel)]="asunto" name="asunto" rows="3" cols="30"></textarea>
+                                        <input class="form-control" [(ngModel)]="asunto" name="asunto" type="text"  >
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6 col-xl-6">
+
+                                <div class="col-12 col-md-6 col-xl-4">  
                                     <div class="form-group local-forms">
-                                        <label >Referencia <span class="login-danger">*</span></label>
-                                        <textarea class="form-control" [(ngModel)]="referencia" name="referencia" rows="3" cols="30"></textarea>
+                                        <label >Fecha emisión <span class="login-danger">*</span></label>
+                                        <input class="form-control" [(ngModel)]="fechaemision" name="fechaemision" type="date"  >
                                     </div>
                                 </div>
 
                                 <div class="col-12 col-md-6 col-xl-6">
                                     <div class="form-group local-top-form">
-                                        <label class="local-top">Avatar <span class="login-danger">*</span></label>
+                                        <label class="local-top">Referencia <span class="login-danger">*</span></label>
                                         <div class="settings-btn upload-files-avator">
-                                            <input type="file" accept="image/*" name="image" id="file"
-                                                (change)="loadFile($event)" class="hide-input">
-                                            <label for="file" class="upload">Choose File</label>
+                                            <input type="text" style="border: none; position: relative; top: -6px;" [value]="selectedFileName" readonly>
+                                            <input type="file" accept=".pdf" name="pdfFile" (change)="loadFile($event, 1)" id="pdfFile" class="hide-input">
+                                            <label for="pdfFile" class="upload">Escoge un archivo</label>
                                         </div>
                                     </div>
-                                    <div class="" *ngIf="FILE_AVATAR">
-                                        <img [src]="IMAGEN_PREVIZUALIZA" width="250" alt="" srcset="">
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-6">
+                                    <div class="form-group local-top-form">
+                                        <label class="local-top">Archivo <span class="login-danger">*</span></label>
+                                        <div class="settings-btn upload-files-avator">
+                                            <input type="text" style="border: none; position: relative; top: -6px;" [value]="selectedFileName2" readonly>
+                                            <input type="file" accept=".pdf" name="pdfFile2" (change)="loadFile($event, 2)" id="pdfFile2" class="hide-input">
+                                            <label for="pdfFile2" class="upload">Escoge un archivo</label>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-12">
-
-
                                     <div class="form-group row my-4" *ngIf="text_validation">
                                         <div class="col-md-8">
                                             <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -89,8 +120,7 @@
                                         <button 
                                         type="button" 
                                         (click)="save()"
-                                        class="btn btn-primary submit-form me-2"
-                                        routerLink="/informes/list-informes">Guardar</button>
+                                        class="btn btn-primary submit-form me-2">Guardar</button>
                                     </div>
                                 </div>
                             </div>
