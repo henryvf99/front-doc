@@ -149,8 +149,8 @@ export class EditProveidosComponent {
 
   save(){
     this.text_validation = '';
-    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.destinatario || !this.asunto || !this.fechaemision || !this.buffer2 ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de documento, Código, Destinatario, Asunto, Fecha de emisión y Documento)";
+    if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.destinatario || !this.asunto || !this.fechaemision ){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (Año, Mes, Tipo de documento, Código, Destinatario, Asunto y Fecha de emisión)";
       return;
     }
 
@@ -211,7 +211,7 @@ export class EditProveidosComponent {
       showConfirmButton: false,
       timer: 1000
     }).then(() => {
-      this.router.navigateByUrl('/cartas/list-cartas');
+      this.router.navigateByUrl('/proveidos/list-proveidos');
     });
   }
 

@@ -136,11 +136,11 @@ export class AddPracticantesComponent implements OnInit{
         this.text_validation = res.message_text;
         this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'El practicante no se registró correctamente';
+        this.text_success = 'El practicante no se agregó correctamente';
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'El practicante no se registró correctamente',
+          title: 'El practicante no se agregó correctamente',
           showConfirmButton: false,
           timer: 1500
         });

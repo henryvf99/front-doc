@@ -126,11 +126,11 @@ export class AddDocdiversosComponent implements OnInit{
         this.text_validation = res.message_text;
         this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'El documento no se registró correctamente';
+        this.text_success = 'El documento no se agregó correctamente';
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'El documento no se registró correctamente',
+          title: 'El documento no se agregó correctamente',
           showConfirmButton: false,
           timer: 1500
         });
@@ -154,7 +154,7 @@ export class AddDocdiversosComponent implements OnInit{
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'El documento se actualizó correctamente',
+      title: 'El documento se agregó correctamente',
       showConfirmButton: false,
       timer: 1000
     }).then(() => {

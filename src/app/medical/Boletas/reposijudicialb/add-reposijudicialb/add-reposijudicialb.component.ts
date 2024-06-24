@@ -138,11 +138,11 @@ export class AddReposijudicialbComponent implements OnInit{
         this.text_validation = res.message_text;
         this.mostrarMensajeDeExito();
       }else{
-        this.text_success = 'La boleta no se registró correctamente';
+        this.text_success = 'La boleta no se agregó correctamente';
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'La boleta no se registró correctamente',
+          title: 'La boleta no se agregó correctamente',
           showConfirmButton: false,
           timer: 1500
         });
@@ -165,7 +165,7 @@ export class AddReposijudicialbComponent implements OnInit{
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'La boleta se registró correctamente',
+      title: 'La boleta se agregó correctamente',
       showConfirmButton: false,
       timer: 1000
     }).then(() => {
