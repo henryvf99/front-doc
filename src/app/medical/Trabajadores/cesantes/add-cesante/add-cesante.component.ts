@@ -110,7 +110,7 @@ export class AddCesanteComponent implements OnInit{
       fingreso : this.fingreso.toString(),
       fsalida : this.fsalida.toString() || "-"
     };
-    console.log(data);
+    
     this.cesanteService.registrarTrabajador(data).subscribe((res:any) => {
 
       if(res.success){

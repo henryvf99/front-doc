@@ -70,7 +70,7 @@ export class EditReposijudicialComponent {
     this.listUser(this.user_id);
     
     this.activedRoute.params.subscribe((resp:any) => {
-      console.log(resp);
+      
       this.planilla_id = resp.id;
     })
 
@@ -87,7 +87,7 @@ export class EditReposijudicialComponent {
     })
 
     this.reposijudicialService.listPlanillaById(this.planilla_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.planilla_data = resp.data;
       this.selectedYear = this.planilla_data.anio.id;
       this.selectedMonth = this.planilla_data.mes.id;
@@ -113,18 +113,20 @@ export class EditReposijudicialComponent {
   }
 
   loadFile($event: any) {
-    if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
-        this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
-        return;
+    if ($event.target.files.length === 0 || 
+      $event.target.files[0].type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO EXCEL (.xlsx)";
+      return;
     }
+    
     this.text_validation = '';
     
     const file = $event.target.files[0];
     this.selectedFileName = file.name;
 
-    let reader = new FileReader();
-    reader.onload = (event) => {
-        const arrayBuffer = (event.target as FileReader).result as ArrayBuffer;
+    const reader = new FileReader();
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+        const arrayBuffer = event.target?.result as ArrayBuffer;
         this.buffer = arrayBuffer;
     };
     reader.readAsArrayBuffer(file);
@@ -149,7 +151,7 @@ export class EditReposijudicialComponent {
     }
     
     this.reposijudicialService.updatePlanilla(this.planilla_id, formData).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       if(resp.success){
         this.text_validation = resp.message_text;

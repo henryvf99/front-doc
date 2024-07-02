@@ -68,8 +68,6 @@ export class EditRoleUserComponent {
 
     this.role_data['nombre'] = this.nombre;
 
-    console.log(this.role_data);
-
     this.roleService.updatePermisos(this.role_id, this.role_data).subscribe((res:any) => {
 
       if(res.success){
@@ -79,7 +77,7 @@ export class EditRoleUserComponent {
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'El permiso no se registro correctamente',
+          title: 'El permiso no se actualizó correctamente',
           showConfirmButton: false,
           timer: 1500
         });
@@ -103,7 +101,7 @@ export class EditRoleUserComponent {
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'El permiso  se agregó correctamente',
+      title: 'El permiso  se actualizó correctamente',
       showConfirmButton: false,
       timer: 1000
     }).then(() => {

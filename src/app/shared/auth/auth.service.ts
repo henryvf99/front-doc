@@ -41,7 +41,6 @@ export class AuthService {
     let URL = URL_BACKEND + "/auth/login";
     return this.http.post(URL,{email: email,password: password}).pipe(
       map((auth:any) => {
-        console.log(auth.user.rol.nombre);
         const result = this.saveLocalStorage(auth);
         return result;
       }),
@@ -66,6 +65,12 @@ export class AuthService {
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.token});
     const url_profile = URL_BACKEND + "/permisos/" + permiso_id;
     return this.http.get(url_profile, { headers: headers });
+  }
+
+  listYearById(anio_id: string) {
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.token});
+    const url_anio = URL_BACKEND + "/anio/" + anio_id;
+    return this.http.get(url_anio, { headers: headers });
   }
 
   logout(){

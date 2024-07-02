@@ -57,7 +57,8 @@ export class AddRoleUserComponent implements OnInit{
     "grecibidos": false,
     "precibidos": false,
     "urecibidos": false,
-    "drecibidos": false
+    "drecibidos": false,
+    "sotros": false
   };
 
   isPermision(){
@@ -83,8 +84,6 @@ export class AddRoleUserComponent implements OnInit{
 
     this.data['nombre'] = this.nombre;
 
-    console.log(this.data);
-
     this.roleService.registrarPermisos(this.data).subscribe((res:any) => {
 
       if(res.success){
@@ -94,7 +93,7 @@ export class AddRoleUserComponent implements OnInit{
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'El permiso no se registro correctamente',
+          title: 'El permiso no se agregó correctamente',
           showConfirmButton: false,
           timer: 1500
         });

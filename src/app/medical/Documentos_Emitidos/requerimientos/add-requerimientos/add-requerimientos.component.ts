@@ -40,7 +40,7 @@ export class AddRequerimientosComponent implements OnInit{
 
   public text_success:string = '';
   public text_validation:string = '';
-
+  public year: any;
   public permisos: any;
   public user_id: string = "";
   public permiso_id: string = "";
@@ -120,6 +120,19 @@ export class AddRequerimientosComponent implements OnInit{
         };
         reader.readAsArrayBuffer(file);
     }
+  }
+
+  updateDateRange(){
+      
+    this.authService.listYearById(this.selectedYear).subscribe((resp:any) => {
+      
+      if(resp.success){
+        this.year = resp.data;
+        this.fechaemision = `${this.year.nombre}-01-01`;
+      }
+      
+    });
+      
   }
 
   save(){

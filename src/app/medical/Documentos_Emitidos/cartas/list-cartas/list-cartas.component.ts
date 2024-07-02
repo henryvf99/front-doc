@@ -89,18 +89,7 @@ export class ListCartasComponent {
     })
 
   }
-  isPermision(permission:string){
-    if(this.user.rol.nombre.includes("ADMIN")){
-      return true;
-    }
-    if(this.user.rol.nombre.includes("USER")){
-      return true;
-    }
-    if(this.user.permissions.includes(permission)){
-      return true;
-    }
-    return false;
-  }
+  
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];
@@ -123,7 +112,7 @@ export class ListCartasComponent {
 
   deleteDocumento(documento_id: string) {
     this.cartasService.deleteEmitidos(documento_id).subscribe((res: any) => {
-      console.log(res);
+  
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{
@@ -148,28 +137,6 @@ export class ListCartasComponent {
     }).then(() => {
       window.location.reload();
     });
-  }
-
-  public refresh(): void {
-    window.location.reload();
-  }
-
-  public mostrarFile(file: any[]){
-
-    if(file.length === 0){
-      console.log("vacio");
-      Swal.fire({
-        title: '¡Advertencia!',
-        text: 'No se ha agregado un documento de referencia.',
-        icon: 'warning',
-        confirmButtonText: 'OK'
-    });
-      return
-    }
-
-    const blob = new Blob([new Uint8Array(file)], { type: 'application/pdf' });
-    const blobUrl = URL.createObjectURL(blob);
-    window.open(blobUrl, '_blank');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -250,6 +217,28 @@ export class ListCartasComponent {
     }
   }
 
+  public refresh(): void {
+    window.location.reload();
+  }
+
+  public mostrarFile(file: any[]){
+
+    if(file.length === 0){
+      
+      Swal.fire({
+        title: '¡Advertencia!',
+        text: 'No se ha agregado un documento de referencia.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+    });
+      return
+    }
+
+    const blob = new Blob([new Uint8Array(file)], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank');
+  }
+
   extractTextFromPdf(data: any, nombre_archivo: string){
 
     this.dialogRef = this.dialog.open(this.contenidoModal, {
@@ -270,7 +259,7 @@ export class ListCartasComponent {
         this.texto_archivo_sumarizado = res.data;
         this.modal_loading = true;
         this.modal_txtarea = true;
-        console.log(res.data);
+        
       }else{
         console.log(`Error`);
       }

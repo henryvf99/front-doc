@@ -64,7 +64,6 @@ export class AditActivosComponent {
     this.listUser(this.user_id);
 
     this.activedRoute.params.subscribe((resp:any) => {
-      console.log(resp);
       this.trabajador_id = resp.id;
     })
     
@@ -98,7 +97,7 @@ export class AditActivosComponent {
 
   listUser(user_id: string){
     this.userService.listUserById(user_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.permiso_id = resp.data.permisos.id;
       this.listPermisos(this.permiso_id);
     })
@@ -106,7 +105,7 @@ export class AditActivosComponent {
 
   listPermisos(id: string){
     this.service.getProfile(id).subscribe((resp:any) => {
-      console.log(resp);
+      (resp);
       this.permisos = resp.data;
     })
   }

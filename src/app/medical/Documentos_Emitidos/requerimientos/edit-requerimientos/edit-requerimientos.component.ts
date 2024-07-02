@@ -35,7 +35,7 @@ export class EditRequerimientosComponent {
   public destinatario: string = "";
   public asunto: string = "";
   public fechaemision: string = "";
-  
+  public year: any;
 
   public nombrearchivo: string = "";
   public nombrearchivo2: string = "";
@@ -66,7 +66,7 @@ export class EditRequerimientosComponent {
     this.listUser(this.user_id);
 
     this.activedRoute.params.subscribe((resp:any) => {
-      console.log(resp);
+      
       this.documento_id = resp.id;
     })
    
@@ -83,7 +83,7 @@ export class EditRequerimientosComponent {
     })
 
     this.requerimientosService.listEmitidosById(this.documento_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.documento_selected = resp.data;
       this.selectedYear = this.documento_selected.anio.id;
       this.selectedMonth = this.documento_selected.mes.id;
@@ -145,6 +145,19 @@ export class EditRequerimientosComponent {
     }
   }
 
+  updateDateRange(){
+      
+    this.authService.listYearById(this.selectedYear).subscribe((resp:any) => {
+      
+      if(resp.success){
+        this.year = resp.data;
+        this.fechaemision = `${this.year.nombre}-01-01`;
+      }
+      
+    });
+      
+  }
+
   save(){
     this.text_validation = '';
     if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.destinatario || !this.asunto || !this.fechaemision ){
@@ -173,7 +186,7 @@ export class EditRequerimientosComponent {
     }
     
     this.requerimientosService.updateEmitidos(this.documento_id,formData).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       if(resp.success){
         this.text_validation = resp.message_text;

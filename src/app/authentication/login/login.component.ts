@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit {
       this.ERROR = false;
       this.auth.login(this.form.value.email ? this.form.value.email : '' ,this.form.value.password ? this.form.value.password: '')
       .subscribe((resp:any) => {
-        console.log(resp);
         if(resp){
           // EL LOGIN ES EXITOSO
           setTimeout(() => {
@@ -52,7 +51,7 @@ export class LoginComponent implements OnInit {
       },error => {
         console.log(error);
       })
-      ;
+  
     }
   }
   togglePassword() {

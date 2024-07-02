@@ -72,7 +72,7 @@ export class EditCasregularComponent {
     this.listUser(this.user_id);
     
     this.activedRoute.params.subscribe((resp:any) => {
-      console.log(resp);
+      
       this.casdirectivosb_id = resp.id;
     })
 
@@ -93,7 +93,7 @@ export class EditCasregularComponent {
     })
 
     this.casregularService.listBoletaById(this.casdirectivosb_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.casdirectivosb_selected = resp.data;
       this.selectedYear = this.casdirectivosb_selected.anio.id;
       this.selectedMonth = this.casdirectivosb_selected.mes.id;
@@ -155,7 +155,7 @@ export class EditCasregularComponent {
     }
     
     this.casregularService.updateBoleta(this.casdirectivosb_id,formData).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       if(resp.success){
         this.text_validation = resp.message_text;

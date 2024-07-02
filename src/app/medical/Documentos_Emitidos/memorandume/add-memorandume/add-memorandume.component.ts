@@ -14,7 +14,7 @@ export class AddMemorandumeComponent implements OnInit{
   
   public selectedFileName: string = ''; 
   public buffer: ArrayBuffer | null = null;
-
+  public year: any;
   public selectedFileName2: string = ''; 
   public buffer2: ArrayBuffer | null = null;
 
@@ -120,6 +120,19 @@ export class AddMemorandumeComponent implements OnInit{
         };
         reader.readAsArrayBuffer(file);
     }
+  }
+
+  updateDateRange(){
+      
+    this.authService.listYearById(this.selectedYear).subscribe((resp:any) => {
+      
+      if(resp.success){
+        this.year = resp.data;
+        this.fechaemision = `${this.year.nombre}-01-01`;
+      }
+      
+    });
+      
   }
 
   save(){

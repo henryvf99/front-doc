@@ -40,7 +40,6 @@ export class AddPatientMComponent {
       this.text_validation = "LOS CAMPOS SON NECESARIOS (Nombre,Apellido,° n de document, telefono)";
       return;
     }
-    console.log(this.selectedValue);
 
     const formData = new FormData();
     formData.append("name",this.name);
@@ -64,7 +63,7 @@ export class AddPatientMComponent {
     }
     
     this.patientService.registerPatient(formData).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       if(resp.message == 403){
         this.text_validation = resp.message_text;

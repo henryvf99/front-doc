@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for municipalidad-de-huanchaco on 2024-06-11T12:09:29-05:00
+# fly.toml app configuration file generated for municipalidadhuanchaco on 2024-07-02T15:27:45-05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'municipalidad-de-huanchaco'
+app = 'municipalidadhuanchaco'
 primary_region = 'mia'
 
 [build]
@@ -17,6 +17,6 @@ primary_region = 'mia'
   processes = ['app']
 
 [[vm]]
-  memory = '2gb'
+  memory = '4gb'
   cpu_kind = 'shared'
   cpus = 2

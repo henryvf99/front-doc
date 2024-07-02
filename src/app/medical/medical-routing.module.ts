@@ -201,6 +201,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./Documentos_recibidos/resogerencial/resogerencial.module').then((m) => m.ResogerencialModule),
       },
+      {
+        path: 'sumarizacion',
+        loadChildren: () =>
+          import('./sumarizacion/sumarizacion.module').then((m) => m.SumarizacionModule),
+      }
       
     ]
   }

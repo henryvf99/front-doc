@@ -59,7 +59,7 @@ export class ListPatientMComponent {
 
     this.patientService.listPatients(page,this.searchDataValue).subscribe((resp:any) => {
 
-      console.log(resp);
+      
 
       this.totalData = resp.total;
       this.patientsList = resp.patients.data;
@@ -91,7 +91,7 @@ export class ListPatientMComponent {
 
   deletePatient() {
     this.patientService.deletePatient(this.patient_selected.id).subscribe((resp: any) => {
-      console.log(resp);
+      
       let INDEX = this.patientsList.findIndex((item: any) => item.id == this.patient_selected.id);
       if (INDEX != -1) {
         this.patientsList.splice(INDEX, 1);

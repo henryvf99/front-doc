@@ -93,18 +93,20 @@ export class AddLeyservirComponent implements OnInit{
   }
 
   loadFile($event: any) {
-    if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
-        this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
-        return;
+    if ($event.target.files.length === 0 || 
+      $event.target.files[0].type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO EXCEL (.xlsx)";
+    return;
     }
+
     this.text_validation = '';
     
     const file = $event.target.files[0];
     this.selectedFileName = file.name;
 
-    let reader = new FileReader();
-    reader.onload = (event) => {
-        const arrayBuffer = (event.target as FileReader).result as ArrayBuffer;
+    const reader = new FileReader();
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+        const arrayBuffer = event.target?.result as ArrayBuffer;
         this.buffer = arrayBuffer;
     };
     reader.readAsArrayBuffer(file);

@@ -71,8 +71,6 @@ export class ListPracticantesComponent {
 
     this.practicantesService.getPracticantes().subscribe((resp:any) => {
 
-      console.log(resp);
-
       this.totalData = resp.data.length;
       this.role_generals = resp.data;
       this.getTableDataGeneral();
@@ -101,7 +99,7 @@ export class ListPracticantesComponent {
 
   deleteDocumento(practicante_id: string) {
     this.practicantesService.deletePracticante(practicante_id).subscribe((res: any) => {
-      console.log(res);
+      
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{
@@ -135,7 +133,6 @@ export class ListPracticantesComponent {
   public mostrarFile(file: any[]){
 
     if(file.length === 0){
-      console.log("vacio");
       Swal.fire({
         title: '¡Advertencia!',
         text: 'No se ha agregado un documento de referencia.',

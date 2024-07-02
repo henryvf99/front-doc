@@ -100,7 +100,7 @@ export class ListExfuncionariosComponent {
 
   deleteTrabajador(trabajador_id: string) {
     this.exfuncionariosService.deleteTrabajador(trabajador_id).subscribe((res: any) => {
-      console.log(res);
+      
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{

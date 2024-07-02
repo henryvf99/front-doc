@@ -12,6 +12,8 @@ import { StaffService } from '../../../staff/service/staff.service';
 })
 export class AddMemorandumComponent implements OnInit{
 
+  public year: any;
+
   public selectedFileName: string = ''; 
   public buffer: ArrayBuffer | null = null;
 
@@ -96,6 +98,19 @@ export class AddMemorandumComponent implements OnInit{
         this.buffer = arrayBuffer;
     };
     reader.readAsArrayBuffer(file);
+  }
+
+  updateDateRange(){
+      
+    this.authService.listYearById(this.selectedYear).subscribe((resp:any) => {
+      
+      if(resp.success){
+        this.year = resp.data;
+        this.fecharecepcion = `${this.year.nombre}-01-01`;
+      }
+      
+    });
+      
   }
 
   save(){

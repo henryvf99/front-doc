@@ -90,7 +90,6 @@ export class ListStaffNComponent {
 
   deleteUser(trabajador_id: string) {
     this.staffService.deleteUser(trabajador_id).subscribe((res: any) => {
-      console.log(res);
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{

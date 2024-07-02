@@ -5,6 +5,9 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../../shared/auth/auth.service';
 import { StaffService } from '../../../staff/service/staff.service';
 
+import * as ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
+
 @Component({
   selector: 'app-list-pensionistas',
   templateUrl: './list-pensionistas.component.html',
@@ -99,9 +102,45 @@ export class ListPensionistasComponent {
     this.pensionistas_selected = rol;
   }
 
+  async downloadExcel(buffer2: any, filename: string) {
+    try {
+      if (buffer2) {
+        // Create a new workbook
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(buffer2);
+
+        // Adding basic styles and data
+        const worksheet = workbook.worksheets[0]; // Assuming data is in the first sheet
+        worksheet.eachRow((row, rowNumber) => {
+          row.eachCell((cell, colNumber) => {
+            cell.font = { name: 'Arial', size: 12, color: { argb: 'FF0000FF' } };
+            cell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'FFFFAA00' }
+            };
+          });
+        });
+
+        // Write the workbook to a buffer
+        const buffer = await workbook.xlsx.writeBuffer();
+
+        // Create a Blob from the buffer
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        // Use FileSaver to save the Blob as a file
+        saveAs(blob, filename);
+      } else {
+        console.error("No buffer data available to download.");
+      }
+    } catch (error) {
+      console.error("Error while downloading Excel:", error);
+    }
+  }
+
   deletePlanilla(casdirectivosb_id: string) {
     this.pensionistasService.deletePlanilla(casdirectivosb_id).subscribe((res: any) => {
-      console.log(res);
+  
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{

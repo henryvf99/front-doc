@@ -74,8 +74,6 @@ export class AddStaffNComponent implements OnInit{
       permisos : this.selectedpermisos.toString()
     };
 
-    console.log(data);
-
     this.staffService.registrarUser(data).subscribe((res:any) => {
 
       if(res.success){

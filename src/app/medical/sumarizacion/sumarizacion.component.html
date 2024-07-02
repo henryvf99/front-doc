@@ -1,0 +1,91 @@
+<div class="page-wrapper">
+    <div class="content">
+  
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="row">
+          <div class="col-sm-12">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="">Sumarización </a></li>
+              <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
+              <li class="breadcrumb-item active">Sumarizar un archivo</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- /Page Header -->
+  
+      <div class="row" *ngIf="permisos.sotros">
+        <div class="col-sm-12">
+  
+          <div class="card card-table show-entire">
+            <div class="card-body">
+
+              <div class="page-table-header mb-2">
+                <div class="row align-items-center">
+                  <h1>Ingrese documento a sumarizar:</h1>
+
+                  <div class="col-12 col-md-12 col-xl-12">
+                    <div class="form-group local-top-form">
+                        <label class="local-top">Documento: <span class="login-danger">*</span></label>
+                        <div class="settings-btn upload-files-avator">
+                            <input #fileInput type="text" [value]="selectedFileName" style="border: none; position: relative; top: -6px;" readonly>
+                            <input type="file" (change)="loadFile($event)" accept=".pdf" name="pdfFile" id="pdfFile" class="hide-input">
+                            <label for="pdfFile" class="upload">Escoge un archivo</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group row my-4" *ngIf="text_validation">
+                            <div class="col-md-8">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>!</strong> {{ text_validation }}.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true"> </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="doctor-submit text-end">
+                            <button 
+                            type="button" 
+                            (click)="extractTextFromPdf()"
+                            [disabled]="isButtonDisabled"
+                            class="btn btn-primary submit-form me-2">Guardar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #contenidoModal let-dialogRef>
+    <div class="modal-header">
+      <div class="modal-title">Archivo sumarizado: {{ nombre_archivo_sumarizado }}</div>
+      <button class="btn_close" (click)="cerrarModal()">
+        &#x274C;
+      </button>
+    </div>
+    <div *ngIf="modal_txtarea == true" id="modal_txtarea" class="modal-body">
+        <mat-form-field class="custom-form-field" appearance="fill">
+            <textarea class="custom-textarea" matInput placeholder="Contenido del modal..." rows="16">{{ texto_archivo_sumarizado }}</textarea>
+        </mat-form-field>
+    </div>
+    <div *ngIf="modal_loading == false" id="modal_loading" class="loading">
+        <div class="elements_loading">
+            <mat-spinner></mat-spinner>
+            <p style="margin-top: 1rem; font-size: 1rem;">Sumarizando archivo, espere ...</p>
+        </div>
+    </div>
+</ng-template>

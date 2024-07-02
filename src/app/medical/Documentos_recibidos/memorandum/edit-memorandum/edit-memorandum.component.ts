@@ -12,6 +12,8 @@ import { StaffService } from '../../../staff/service/staff.service';
   styleUrl: './edit-memorandum.component.scss'
 })
 export class EditMemorandumComponent {
+
+  public year: any;
   
   public selectedFileName: string = ''; 
   public buffer: ArrayBuffer | null = null;
@@ -59,7 +61,7 @@ export class EditMemorandumComponent {
     this.listUser(this.user_id);
     
     this.activedRoute.params.subscribe((resp:any) => {
-      console.log(resp);
+      
       this.documento_id = resp.id;
     })
     
@@ -76,7 +78,7 @@ export class EditMemorandumComponent {
     })
 
     this.memorandumService.listRecibidosById(this.documento_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.documento_selected = resp.data;
       this.selectedYear = this.documento_selected.anio.id;
       this.selectedMonth = this.documento_selected.mes.id;
@@ -120,6 +122,19 @@ export class EditMemorandumComponent {
     reader.readAsArrayBuffer(file);
   }
 
+  updateDateRange(){
+      
+    this.authService.listYearById(this.selectedYear).subscribe((resp:any) => {
+      
+      if(resp.success){
+        this.year = resp.data;
+        this.fecharecepcion = `${this.year.nombre}-01-01`;
+      }
+      
+    });
+      
+  }
+
   save(){
     this.text_validation = '';
     if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.asunto || !this.fecharecepcion ){
@@ -142,7 +157,7 @@ export class EditMemorandumComponent {
     }
     
     this.memorandumService.updateRecibidos(this.documento_id,formData).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       if(resp.success){
         this.text_validation = resp.message_text;

@@ -102,7 +102,7 @@ export class ListPermanentesbComponent {
 
   deleteBoleta(casdirectivosb_id: string) {
     this.permanentesbService.deleteBoleta(casdirectivosb_id).subscribe((res: any) => {
-      console.log(res);
+  
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{

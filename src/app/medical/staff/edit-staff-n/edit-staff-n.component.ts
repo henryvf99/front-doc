@@ -43,7 +43,7 @@ export class EditStaffNComponent {
   this.user = this.staffService.authService.user;
 
   this.activedRoute.params.subscribe((resp:any) => {
-    console.log(resp);
+    
     this.user_id = resp.id;
   })
     

@@ -66,7 +66,6 @@ export class EditCesanteComponent {
 
     this.activedRoute.params.subscribe((resp:any) => { 
       this.trabajador_id = resp.id;
-      console.log(this.trabajador_id);
     })
     
     this.cesanteService.listTipoTrabajador().subscribe((resp:any) => {

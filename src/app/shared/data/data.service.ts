@@ -898,7 +898,27 @@ export class DataService {
               show_nav: false,
             },
           ]
-        }
+        },
+
+            // ROLES Y PERMISOS
+
+            {
+              menuValue: 'Sumarización',
+              hasSubRoute: true,
+              showSubRoute: false,
+              base: '',
+              img: 'assets/sidebar/recibidos.svg',
+              subMenus: [
+                {
+                  menuValue: 'Sumarizar doc.',
+                  route: routes.sumarizacion,
+                  base: routes.sumarizacion,
+                  permision: 'sumarizacion',
+                  show_nav: true,
+                }
+              ],
+            }
+
       ],
     },
   ]

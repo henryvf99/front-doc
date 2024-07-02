@@ -74,7 +74,7 @@ export class ListCasregularComponent {
     this.casregularService.getBoletaTipoTrabajador(this.idtipotrabajador).subscribe((resp:any) => {
       this.totalData = resp.data.length;
       this.role_generals = resp.data;
-      console.log(resp.data);
+      
       this.getTableDataGeneral();
     })
 
@@ -103,7 +103,7 @@ export class ListCasregularComponent {
 
   deleteBoleta(casdirectivosb_id: string) {
     this.casregularService.deleteBoleta(casdirectivosb_id).subscribe((res: any) => {
-      console.log(res);
+  
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{

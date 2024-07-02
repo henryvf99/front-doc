@@ -83,7 +83,7 @@ export class ListRoleUserComponent {
 
   deletePermiso(permiso_id: string) {
     this.roleService.deletePermisos(permiso_id).subscribe((res: any) => {
-      console.log(res);
+  
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{

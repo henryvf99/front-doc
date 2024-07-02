@@ -252,4 +252,10 @@ export class routes {
     return this.baseUrl + '/resogerencial/list-resogerencial'
   }
 
+  //SUMARIZACION
+
+  public static get sumarizacion(): string {
+    return this.baseUrl + '/sumarizacion'
+  }
+
 }

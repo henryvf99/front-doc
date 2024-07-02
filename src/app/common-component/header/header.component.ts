@@ -27,7 +27,6 @@ export class HeaderComponent {
     });
     let USER = localStorage.getItem("user");
     this.user = JSON.parse(USER ? USER : '');
-    console.log(this.user);
   }
   getRole(){
     let RoleName = "";

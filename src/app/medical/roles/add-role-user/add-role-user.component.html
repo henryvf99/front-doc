@@ -21,7 +21,7 @@
                         <div class="form-group row">
                             <label class="col-form-label col-md-2">Nombre</label>
                             <div class="col-md-10">
-                                <input type="text" name="nombre" [(ngModel)]="nombre" class="form-control">
+                                <input type="text" name="nombre" [(ngModel)]="nombre" autocomplete="off" class="form-control">
                             </div>
                         </div>        
                         <div class="form-group row">
@@ -280,6 +280,21 @@
                                                     <div class="checkbox">
                                                         <label>
                                                             <input id="drecibidos" type="checkbox" name="drecibidos" (change)="updateData('drecibidos', $event)"> Eliminar
+                                                        </label>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td>Sumarización otros documentos</td>
+                                            <td>
+                                                <ng-container >
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input id="sotros" type="checkbox" name="sotros" (change)="updateData('sotros', $event)"> Sumarizar otros
                                                         </label>
                                                     </div>
                                                 </ng-container>

@@ -293,7 +293,7 @@ export class AdminDashboardComponent {
     this.user = this.dashboardService.authService.user;
     if(this.user.rol.nombre.includes("ADMIN") || this.user.rol.nombre.includes("USER") || this.user.permissions.includes("admin_dashboard")){
       this.dashboardService.dashboardAdmin({}).subscribe((resp:any) => {
-        console.log(resp);
+        
         this.appointments = resp.appointments.data;
   
         this.num_appointments_current = resp.num_appointments_current;
@@ -348,7 +348,7 @@ export class AdminDashboardComponent {
     }
     this.query_income_year = null;
     this.dashboardService.dashboardAdminYear(data).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       // START
       this.query_patient_by_genders = resp.query_patient_by_genders;
@@ -468,7 +468,6 @@ export class AdminDashboardComponent {
   }
 
   public selectedYear(){
-    console.log(this.selectedValue); 
     this.dashboardAdminYear();
   }
 

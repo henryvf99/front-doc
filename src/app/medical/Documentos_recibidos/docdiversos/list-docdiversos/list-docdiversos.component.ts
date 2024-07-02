@@ -113,7 +113,7 @@ export class ListDocdiversosComponent {
 
   deleteDocumento(documento_id: string) {
     this.docdiversosService.deleteRecibidos(documento_id).subscribe((res: any) => {
-      console.log(res);
+  
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{
@@ -147,7 +147,7 @@ export class ListDocdiversosComponent {
   public mostrarFile(file: any[]){
 
     if(file.length === 0){
-      console.log("vacio");
+      
       Swal.fire({
         title: '¡Advertencia!',
         text: 'No se ha agregado un documento de referencia.',
@@ -260,7 +260,7 @@ export class ListDocdiversosComponent {
         this.texto_archivo_sumarizado = res.data;
         this.modal_loading = true;
         this.modal_txtarea = true;
-        console.log(res.data);
+        
       }else{
         console.log(`Error`);
       }

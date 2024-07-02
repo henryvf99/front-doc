@@ -55,7 +55,7 @@ export class EditPracticantesComponent {
     this.listUser(this.user_id);
 
     this.activedRoute.params.subscribe((resp:any) => {
-      console.log(resp);
+      
       this.practicante_id = resp.id;
     })
 
@@ -64,7 +64,7 @@ export class EditPracticantesComponent {
     })
     
     this.practicantesService.listPracticanteById(this.practicante_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.practicante_selected = resp.data;
       this.nombre = this.practicante_selected.nombre;
       this.apellidos = this.practicante_selected.apellidos;

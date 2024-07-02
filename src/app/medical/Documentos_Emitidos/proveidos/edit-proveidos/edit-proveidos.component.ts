@@ -47,7 +47,7 @@ export class EditProveidosComponent {
 
   public proveidos_id:any;
   public proveidos_selected:any;
-
+  public year: any;
   public permisos: any;
   public user_id: string = "";
   public permiso_id: string = "";
@@ -68,7 +68,7 @@ export class EditProveidosComponent {
     this.listUser(this.user_id);
 
     this.activedRoute.params.subscribe((resp:any) => {
-      console.log(resp);
+      
       this.documento_id = resp.id;
     })
    
@@ -85,7 +85,7 @@ export class EditProveidosComponent {
     })
 
     this.proveidosService.listEmitidosById(this.documento_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.documento_selected = resp.data;
       this.selectedYear = this.documento_selected.anio.id;
       this.selectedMonth = this.documento_selected.mes.id;
@@ -147,6 +147,19 @@ export class EditProveidosComponent {
     }
   }
 
+  updateDateRange(){
+      
+    this.authService.listYearById(this.selectedYear).subscribe((resp:any) => {
+      
+      if(resp.success){
+        this.year = resp.data;
+        this.fechaemision = `${this.year.nombre}-01-01`;
+      }
+      
+    });
+      
+  }
+
   save(){
     this.text_validation = '';
     if( !this.selectedYear || !this.selectedMonth || !this.selectedtipodocumento || !this.codigo || !this.destinatario || !this.asunto || !this.fechaemision ){
@@ -175,7 +188,7 @@ export class EditProveidosComponent {
     }
     
     this.proveidosService.updateEmitidos(this.documento_id,formData).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       if(resp.success){
         this.text_validation = resp.message_text;

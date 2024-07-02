@@ -66,7 +66,6 @@ export class AditExfuncionariosComponent {
 
     this.activedRoute.params.subscribe((resp:any) => { 
       this.trabajador_id = resp.id;
-      console.log(this.trabajador_id);
     })
     
     this.exfuncionariosService.listTipoTrabajador().subscribe((resp:any) => {

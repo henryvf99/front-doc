@@ -113,7 +113,7 @@ export class ListCautelaresComponent {
   
   deleteBoleta(casdirectivosb_id: string) {
     this.cautelaresService.deleteBoleta(casdirectivosb_id).subscribe((res: any) => {
-      console.log(res);
+  
       if(res.success){
         this.mostrarMensajeDeExito();
       }else{

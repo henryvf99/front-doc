@@ -80,7 +80,7 @@ export class AddActivosComponent implements OnInit{
 
   listUser(user_id: string){
     this.userService.listUserById(user_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.permiso_id = resp.data.permisos.id;
       this.listPermisos(this.permiso_id);
     })
@@ -88,7 +88,7 @@ export class AddActivosComponent implements OnInit{
 
   listPermisos(id: string){
     this.service.getProfile(id).subscribe((resp:any) => {
-      console.log(resp);
+     
       this.permisos = resp.data;
     })
   }
@@ -112,7 +112,7 @@ export class AddActivosComponent implements OnInit{
       fingreso : this.fingreso.toString(),
       fsalida : this.fsalida.toString() || "-"
     };
-    console.log(data);
+
     this.activosService.registrarTrabajador(data).subscribe((res:any) => {
 
       if(res.success){

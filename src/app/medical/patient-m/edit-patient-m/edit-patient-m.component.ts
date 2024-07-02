@@ -62,14 +62,14 @@ export class EditPatientMComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     // this.patientService.listConfig().subscribe((resp:any) => {
-    //   console.log(resp);
+    //   
     //   this.roles = resp.roles;
     // })
     this.activedRoute.params.subscribe((resp:any) => {
       this.patient_id = resp.id;
     })
     this.patientService.showPatient(this.patient_id).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       this.name = resp.patient.name;
       this.surname = resp.patient.surname;
@@ -119,7 +119,6 @@ export class EditPatientMComponent {
       return;
     }
 
-    console.log(this.selectedValue);
 
     let formData = new FormData();
     formData.append("name",this.name);
@@ -182,7 +181,7 @@ export class EditPatientMComponent {
     formData.append("fr",this.fr+"");
     formData.append("peso",this.peso+"");
     this.patientService.updatePatient(this.patient_id,formData).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       if(resp.message == 403){
         this.text_validation = resp.message_text;

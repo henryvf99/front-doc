@@ -16,6 +16,7 @@ export class AddDocdiversosComponent implements OnInit{
   public buffer: ArrayBuffer | null = null;
 
   public years: any[] = [];
+  public year: any;
   public selectedYear: any = "";
 
   public months: any[] = [];
@@ -66,6 +67,19 @@ export class AddDocdiversosComponent implements OnInit{
 
     this.selectedtipodocumento = this.idtipodocumento;
 
+  }
+
+  updateDateRange(){
+      
+    this.authService.listYearById(this.selectedYear).subscribe((resp:any) => {
+      
+      if(resp.success){
+        this.year = resp.data;
+        this.fecharecepcion = `${this.year.nombre}-01-01`;
+      }
+      
+    });
+      
   }
 
   listUser(user_id: string){

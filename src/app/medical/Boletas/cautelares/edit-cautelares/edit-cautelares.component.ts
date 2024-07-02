@@ -68,7 +68,7 @@ export class EditCautelaresComponent {
     this.listUser(this.user_id);
     
     this.activedRoute.params.subscribe((resp:any) => {
-      console.log(resp);
+      
       this.boleta_id = resp.id;
     })
 
@@ -89,7 +89,7 @@ export class EditCautelaresComponent {
     })
 
     this.cautelaresService.listBoletaById(this.boleta_id).subscribe((resp:any) => {
-      console.log(resp);
+      
       this.casdirectivosb_selected = resp.data;
       this.selectedYear = this.casdirectivosb_selected.anio.id;
       this.selectedMonth = this.casdirectivosb_selected.mes.id;
@@ -151,7 +151,7 @@ export class EditCautelaresComponent {
     }
     
     this.cautelaresService.updateBoleta(this.boleta_id,formData).subscribe((resp:any) => {
-      console.log(resp);
+      
 
       if(resp.success){
         this.text_validation = resp.message_text;
