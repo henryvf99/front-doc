@@ -14,6 +14,10 @@ export class ListExfuncionariosComponent {
 
   private idtipotrabajador = "665bf9d2ebd95110d2cd5e62";
 
+  public searchDniValue = '';
+  public searchNombreValue = '';
+  public searchApellidosValue = '';
+
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
@@ -135,6 +139,27 @@ export class ListExfuncionariosComponent {
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.usersList = this.dataSource.filteredData;
+  }
+
+  public buscarPorDni(value: string): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.dni.toLowerCase().includes(value)
+    );
+  }
+  
+  public buscarPorNombre(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.nombres.toLowerCase().includes(value)
+    );
+  }
+  
+  public buscarPorApellido(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.apellidos.toLowerCase().includes(value)
+    );
   }
 
   public sortData(sort: any) {

@@ -15,6 +15,9 @@ export class ListPracticantesComponent {
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
+  public searchNombreValue = '';
+  public searchApellidosValue = '';
+
   public showFilter = false;
   public searchDataValue = '';
   public lastIndex = 0;
@@ -70,7 +73,6 @@ export class ListPracticantesComponent {
     this.serialNumberArray = [];
 
     this.practicantesService.getPracticantes().subscribe((resp:any) => {
-
       this.totalData = resp.data.length;
       this.role_generals = resp.data;
       this.getTableDataGeneral();
@@ -151,6 +153,20 @@ export class ListPracticantesComponent {
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.usersList = this.dataSource.filteredData;
+  }
+
+  public buscarPorNombre(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.nombre.toLowerCase().includes(value)
+    );
+  }
+  
+  public buscarPorApellido(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.apellidos.toLowerCase().includes(value)
+    );
   }
 
   public sortData(sort: any) {

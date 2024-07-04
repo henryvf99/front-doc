@@ -29,20 +29,20 @@
 
                     <div class="doctor-search-blk">
                       <div class="top-nav-search table-search-blk">
-                        <input class="form-control" placeholder="Nombres,apellido" [(ngModel)]="searchDataValue"
-                          (ngModelChange)="searchData(searchDataValue)">
+                        <input class="form-control" placeholder="Buscar por nombres" [(ngModel)]="searchNombresValue"
+                          (ngModelChange)="buscarPorNombre(searchNombresValue)">
                         <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
                       </div>
 
                       <div class="top-nav-search table-search-blk">
-                        <input class="form-control" placeholder="roles" [(ngModel)]="searchRoleValue"
-                          (ngModelChange)="searchByRole(searchRoleValue)">
+                        <input class="form-control" placeholder="Buscar por apellidos" [(ngModel)]="searchApellidosValue"
+                          (ngModelChange)="buscarPorApellido(searchApellidosValue)">
                         <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
                       </div>
 
                       <div class="top-nav-search table-search-blk">
-                        <input class="form-control" placeholder="Año, mes, día" [(ngModel)]="searchDateValue"
-                          (ngModelChange)="searchByDate(searchDateValue)">
+                        <input class="form-control" placeholder="Buscar por área" [(ngModel)]="searchAreaValue"
+                          (ngModelChange)="buscarPorArea(searchAreaValue)">
                         <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
                       </div>
                     </div>

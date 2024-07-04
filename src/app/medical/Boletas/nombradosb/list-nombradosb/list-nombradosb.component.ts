@@ -17,6 +17,11 @@ export class ListNombradosbComponent {
 
   private idtipotrabajador = "6614de1572fa497e6831fdce";
 
+  public searchAnioValue = '';
+  public searchMesValue = '';
+  public searchNombreValue = '';
+  public searchApellidosValue = '';
+
   public showFilter = false;
   public searchDataValue = '';
   public lastIndex = 0;
@@ -133,6 +138,34 @@ export class ListNombradosbComponent {
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.usersList = this.dataSource.filteredData;
+  }
+
+  public buscarPorAnio(anio: string): void {
+    anio = anio.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.anio.nombre.toLowerCase().includes(anio)
+    );
+  }
+  
+  public buscarPorMes(mes: string): void {
+      mes = mes.trim().toLowerCase();
+      this.usersList = this.role_generals.filter((data:any) =>
+          data.mes.nombre.toLowerCase().includes(mes)
+      );
+  }
+
+  public buscarPorNombre(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.trabajador.nombres.toLowerCase().includes(value)
+    );
+  }
+
+  public buscarPorApellido(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.trabajador.apellidos.toLowerCase().includes(value)
+    );
   }
 
   public sortData(sort: any) {

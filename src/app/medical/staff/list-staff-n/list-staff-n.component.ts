@@ -17,9 +17,10 @@ export class ListStaffNComponent {
   dataSource!: MatTableDataSource<any>;
 
   public showFilter = false;
-  public searchDataValue = '';
-  public searchRoleValue = '';
-  public searchDateValue = '';
+
+  public searchNombresValue = '';
+  public searchApellidosValue = '';
+  public searchAreaValue = '';
 
   public lastIndex = 0;
   public pageSize = 10;
@@ -54,6 +55,7 @@ export class ListStaffNComponent {
     this.staffService.getUsers().subscribe((resp:any) => {
       this.totalData = resp.data.length;
       this.role_generals = resp.data;
+      console.log(resp.data);
       this.getTableDataGeneral();
     })
   }
@@ -72,10 +74,6 @@ export class ListStaffNComponent {
     this.role_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-
-        res.aceptacion = res.aceptacion ? res.aceptacion : null;
-        res.certificado = res.certificado ? res.certificado : null;
-
         this.usersList.push(res);
         this.serialNumberArray.push(serialNumber);
       }
@@ -120,29 +118,26 @@ export class ListStaffNComponent {
     window.location.reload();
   }
   
-  public searchData(value: any): void {
-    const searchTerm = value.trim().toLowerCase();
-    this.usersList = this.role_generals.filter((user: any) =>
-    (`${user.name} ${user.surname}`.toLowerCase().includes(searchTerm) ||
-        user.role.name.toLowerCase().includes(searchTerm)) &&
-      (!this.searchRoleValue || user.role.name.toLowerCase().includes(this.searchRoleValue.trim().toLowerCase()))
+  public buscarPorArea(value: string): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.area.nombre.toLowerCase().includes(value)
     );
   }
   
-  public searchByRole(value: any): void {
-    this.searchRoleValue = value.trim().toLowerCase();
-    const searchTerm = this.searchDataValue.trim().toLowerCase();
-    this.usersList = this.role_generals.filter((user: any) =>
-      (`${user.name} ${user.surname}`.toLowerCase().includes(searchTerm) ||
-        user.role.name.toLowerCase().includes(searchTerm)) &&
-      (!this.searchRoleValue || user.role.name.toLowerCase().includes(this.searchRoleValue))
-      );
-    }
-    public searchByDate(value: any): void {
-      this.dataSource.filter = value.trim().toLowerCase();
-      this.usersList = this.dataSource.filteredData;
-    }
-    
+  public buscarPorNombre(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.nombres.toLowerCase().includes(value)
+    );
+  }
+  
+  public buscarPorApellido(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.apellidos.toLowerCase().includes(value)
+    );
+  }    
 
   public sortData(sort: any) {
     const data = this.usersList.slice();
@@ -193,9 +188,9 @@ export class ListStaffNComponent {
     this.limit = this.pageSize;
     this.skip = 0;
     this.currentPage = 1;
-    this.searchDataValue = '';
-    this.searchRoleValue = '';
-    this.searchDateValue = '';
+    this.searchNombresValue = '';
+    this.searchApellidosValue = '';
+    this.searchAreaValue = '';
 
     this.getTableDataGeneral();
   }

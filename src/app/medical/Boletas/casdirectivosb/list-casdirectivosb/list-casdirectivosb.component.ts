@@ -19,6 +19,12 @@ export class ListCasdirectivosbComponent {
 
   public showFilter = false;
   public searchDataValue = '';
+
+  public searchAnioValue = '';
+  public searchMesValue = '';
+  public searchNombreValue = '';
+  public searchApellidosValue = '';
+
   public lastIndex = 0;
   public pageSize = 10;
   public totalData = 0;
@@ -86,7 +92,6 @@ export class ListCasdirectivosbComponent {
     this.role_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-        
         this.usersList.push(res);
         this.serialNumberArray.push(serialNumber);
       }
@@ -132,6 +137,34 @@ export class ListCasdirectivosbComponent {
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.usersList = this.dataSource.filteredData;
+  }
+
+  public buscarPorAnio(anio: string): void {
+    anio = anio.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.anio.nombre.toLowerCase().includes(anio)
+    );
+  }
+  
+  public buscarPorMes(mes: string): void {
+      mes = mes.trim().toLowerCase();
+      this.usersList = this.role_generals.filter((data:any) =>
+          data.mes.nombre.toLowerCase().includes(mes)
+      );
+  }
+
+  public buscarPorNombre(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.trabajador.nombres.toLowerCase().includes(value)
+    );
+  }
+
+  public buscarPorApellido(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.trabajador.apellidos.toLowerCase().includes(value)
+    );
   }
 
   public sortData(sort: any) {

@@ -20,6 +20,10 @@ export class ListPensionistasComponent {
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
+  public searchAnioValue = '';
+  public searchMesValue = '';
+  public searchRegimenValue = '';
+
   public showFilter = false;
   public searchDataValue = '';
   public lastIndex = 0;
@@ -171,6 +175,27 @@ export class ListPensionistasComponent {
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.usersList = this.dataSource.filteredData;
+  }
+
+  public buscarPorAnio(anio: string): void {
+    anio = anio.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.anio.nombre.toLowerCase().includes(anio)
+    );
+  }
+
+  public buscarPorRegimen(value: string): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.regimen.toLowerCase().includes(value)
+    );
+  }
+  
+  public buscarPorMes(mes: string): void {
+      mes = mes.trim().toLowerCase();
+      this.usersList = this.role_generals.filter((data:any) =>
+          data.mes.nombre.toLowerCase().includes(mes)
+      );
   }
 
   public sortData(sort: any) {

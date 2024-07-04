@@ -28,9 +28,21 @@
                                     <div class="doctor-table-blk">
                                         <div class="doctor-search-blk">
                                             <div class="top-nav-search table-search-blk">
-                                                <input class="form-control" placeholder="Search here"
-                                                    [(ngModel)]="searchDataValue"
-                                                    (ngModelChange)="searchData(searchDataValue)">
+                                                <input class="form-control" placeholder="Buscar por año"
+                                                    [(ngModel)]="searchAnioValue"
+                                                    (ngModelChange)="buscarPorAnio(searchAnioValue)">
+                                                <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
+                                            </div>
+                                            <div class="top-nav-search table-search-blk">
+                                                <input class="form-control" placeholder="Buscar por mes"
+                                                    [(ngModel)]="searchMesValue"
+                                                    (ngModelChange)="buscarPorMes(searchMesValue)">
+                                                <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
+                                            </div>
+                                            <div class="top-nav-search table-search-blk">
+                                                <input class="form-control" placeholder="Buscar por regimen"
+                                                    [(ngModel)]="searchRegimenValue"
+                                                    (ngModelChange)="buscarPorRegimen(searchRegimenValue)">
                                                 <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
                                             </div>
                                             <div class="add-group">

@@ -27,6 +27,10 @@ export class ListRequerimientosComponent {
   public usersList:any = [];
   dataSource!: MatTableDataSource<any>;
 
+  public searchAnioValue = '';
+  public searchMesValue = '';
+  public searchCodigoValue = '';
+
   public showFilter = false;
   public searchDataValue = '';
   public lastIndex = 0;
@@ -164,6 +168,27 @@ export class ListRequerimientosComponent {
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.usersList = this.dataSource.filteredData;
+  }
+
+  public buscarPorAnio(anio: string): void {
+    anio = anio.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.anio.nombre.toLowerCase().includes(anio)
+    );
+  }
+
+  public buscarPorCodigo(value: string): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.codigo.toLowerCase().includes(value)
+    );
+  }
+  
+  public buscarPorMes(mes: string): void {
+      mes = mes.trim().toLowerCase();
+      this.usersList = this.role_generals.filter((data:any) =>
+          data.mes.nombre.toLowerCase().includes(mes)
+      );
   }
 
   public sortData(sort: any) {

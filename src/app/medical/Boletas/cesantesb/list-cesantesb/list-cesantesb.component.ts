@@ -17,6 +17,11 @@ export class ListCesantesbComponent {
 
   private idtipotrabajador = "66234c4676fc363243ddb9dc";
 
+  public searchAnioValue = '';
+  public searchMesValue = '';
+  public searchNombreValue = '';
+  public searchApellidosValue = '';
+
   public showFilter = false;
   public searchDataValue = '';
   public lastIndex = 0;
@@ -144,6 +149,34 @@ export class ListCesantesbComponent {
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.usersList = this.dataSource.filteredData;
+  }
+
+  public buscarPorAnio(anio: string): void {
+    anio = anio.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.anio.nombre.toLowerCase().includes(anio)
+    );
+  }
+  
+  public buscarPorMes(mes: string): void {
+      mes = mes.trim().toLowerCase();
+      this.usersList = this.role_generals.filter((data:any) =>
+          data.mes.nombre.toLowerCase().includes(mes)
+      );
+  }
+
+  public buscarPorNombre(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.trabajador.nombres.toLowerCase().includes(value)
+    );
+  }
+
+  public buscarPorApellido(value: any): void {
+    value = value.trim().toLowerCase();
+    this.usersList = this.role_generals.filter((data:any) =>
+        data.trabajador.apellidos.toLowerCase().includes(value)
+    );
   }
 
   public sortData(sort: any) {
