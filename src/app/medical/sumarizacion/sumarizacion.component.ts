@@ -17,9 +17,12 @@ export class SumarizacionComponent {
   dialogRef: MatDialogRef<any> | undefined;
 
   public buffer: ArrayBuffer | null = null;
-  public selectedFileName: string = ''; 
+  public selectedFileName: string = '';
+  public buffer2: ArrayBuffer | null = null;
+  public selectedFileName2: string = ''; 
   public text_validation:string = '';
-  isButtonDisabled: boolean = true;
+  public isButtonDisabled: boolean = true;
+  public isButtonDisabled2: boolean = true;
   public modal_txtarea = false;
   public modal_loading = false;
   public nombre_archivo_sumarizado: string = "";
@@ -77,6 +80,25 @@ export class SumarizacionComponent {
     this.isButtonDisabled = false;
   }
 
+  loadFile2($event: any) {
+    if ($event.target.files.length === 0 || $event.target.files[0].type !== 'application/pdf') {
+        this.text_validation = "SOLAMENTE PUEDEN SER ARCHIVOS DE TIPO PDF";
+        return;
+    }
+    this.text_validation = '';
+    
+    const file = $event.target.files[0];
+    this.selectedFileName2 = file.name;
+
+    let reader = new FileReader();
+    reader.onload = (event) => {
+        const arrayBuffer = (event.target as FileReader).result as ArrayBuffer;
+        this.buffer2 = arrayBuffer;
+    };
+    reader.readAsArrayBuffer(file);
+    this.isButtonDisabled2 = false;
+  }
+
   extractTextFromPdf(){
 
     this.modal_txtarea = false;
@@ -112,6 +134,41 @@ export class SumarizacionComponent {
 
   }
 
+  extractTextFromPdf2(){
+
+    this.modal_txtarea = false;
+    this.modal_loading = false;
+    this.texto_archivo_sumarizado = "";
+    this.nombre_archivo_sumarizado = "";
+
+    this.dialogRef = this.dialog.open(this.contenidoModal, {
+      width: '80%',
+      height: '70%'
+    });
+
+    let formData = new FormData();
+    if (this.buffer2 !== null) {
+      formData.append("file", new Blob([this.buffer2]));
+    }
+
+    this.authService.traducirPdfTextoOcr(formData).subscribe((res:any) => {
+
+      if(res.success){
+        this.nombre_archivo_sumarizado = this.selectedFileName;
+        this.texto_archivo_sumarizado = res.data;
+        this.modal_loading = true;
+        this.modal_txtarea = true;
+
+        this.resetFileInput();
+        
+      }else{
+        console.log(`Error`);
+      }
+
+    });
+
+  }
+
   cerrarModal() {
     if (this.dialogRef) {
       this.dialogRef.close();
@@ -120,6 +177,7 @@ export class SumarizacionComponent {
       this.texto_archivo_sumarizado = "";
       this.nombre_archivo_sumarizado = "";
       this.isButtonDisabled = true;
+      this.isButtonDisabled2 = true;
     }
   }
 
@@ -128,6 +186,8 @@ export class SumarizacionComponent {
       this.fileInput.nativeElement.value = '';
       this.isButtonDisabled = true;
       this.selectedFileName = '';
+      this.isButtonDisabled2 = true;
+      this.selectedFileName2 = '';
     }
   }
 

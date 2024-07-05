@@ -25,6 +25,11 @@ export class AuthService {
     return this.http.post(url_traduccion,data);
   }
 
+  traducirPdfTextoOcr(data: any){
+    const url_ocr = URL_SUMARIZACION + "/ocr";
+    return this.http.post(url_ocr,data);
+  }
+
   getLocalStorage(){
     if(localStorage.getItem("token") && localStorage.getItem("user")){
       let USER = localStorage.getItem("user");

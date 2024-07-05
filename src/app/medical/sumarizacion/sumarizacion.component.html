@@ -23,13 +23,13 @@
 
               <div class="page-table-header mb-2">
                 <div class="row align-items-center">
-                  <h1>Ingrese documento a sumarizar:</h1>
+                  <h1>Para documentos tipeados:</h1>
 
                   <div class="col-12 col-md-12 col-xl-12">
                     <div class="form-group local-top-form">
                         <label class="local-top">Documento: <span class="login-danger">*</span></label>
                         <div class="settings-btn upload-files-avator">
-                            <input #fileInput type="text" [value]="selectedFileName" style="border: none; position: relative; top: -6px;" readonly>
+                            <input #fileInput type="text" [value]="selectedFileName" style="border: none; position: relative; top: -6px; width: 100%;" readonly>
                             <input type="file" (change)="loadFile($event)" accept=".pdf" name="pdfFile" id="pdfFile" class="hide-input">
                             <label for="pdfFile" class="upload">Escoge un archivo</label>
                         </div>
@@ -54,7 +54,7 @@
                             type="button" 
                             (click)="extractTextFromPdf()"
                             [disabled]="isButtonDisabled"
-                            class="btn btn-primary submit-form me-2">Guardar</button>
+                            class="btn btn-primary submit-form me-2">Sumarizar</button>
                         </div>
                     </div>
 
@@ -67,6 +67,60 @@
           </div>
         </div>
       </div>
+
+      <div class="row" *ngIf="permisos.sotros">
+        <div class="col-sm-12">
+  
+          <div class="card card-table show-entire">
+            <div class="card-body">
+
+              <div class="page-table-header mb-2">
+                <div class="row align-items-center">
+                  <h1>Para documentos escaneados:</h1>
+
+                  <div class="col-12 col-md-12 col-xl-12">
+                    <div class="form-group local-top-form">
+                        <label class="local-top">Documento: <span class="login-danger">*</span></label>
+                        <div class="settings-btn upload-files-avator">
+                            <input #fileInput type="text" [value]="selectedFileName2" style="border: none; position: relative; top: -6px; width: 100%;" readonly>
+                            <input type="file" (change)="loadFile2($event)" accept=".pdf" name="pdfFile2" id="pdfFile2" class="hide-input">
+                            <label for="pdfFile2" class="upload">Escoge un archivo</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group row my-4" *ngIf="text_validation">
+                            <div class="col-md-8">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>!</strong> {{ text_validation }}.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true"> </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="doctor-submit text-end">
+                            <button 
+                            type="button" 
+                            (click)="extractTextFromPdf2()"
+                            [disabled]="isButtonDisabled2"
+                            class="btn btn-primary submit-form me-2">Sumarizar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
