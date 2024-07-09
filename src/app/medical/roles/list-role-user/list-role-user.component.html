@@ -8,7 +8,7 @@
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Roles y Permisos </a></li>
                         <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
-                        <li class="breadcrumb-item active">Role List</li>
+                        <li class="breadcrumb-item active">Lista Roles</li>
                     </ul>
                 </div>
             </div>
@@ -26,10 +26,10 @@
                             <div class="row align-items-center">
                                 <div class="col">
                                     <div class="doctor-table-blk">
-                                        <h3>Role List</h3>
+                                        <h3>Lista Roles</h3>
                                         <div class="doctor-search-blk">
                                             <div class="top-nav-search table-search-blk">
-                                                    <input  class="form-control" placeholder="Search here" [(ngModel)]="searchDataValue"
+                                                    <input  class="form-control" placeholder="Buscar rol" [(ngModel)]="searchDataValue"
                                                     (ngModelChange)="searchData(searchDataValue)">
                                                     <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
                                             </div>
@@ -76,9 +76,9 @@
                             <div class="table_footer">
                                 <div class="col-sm-12 col-md-5">
                                   <div class="dataTables_info">
-                                    Showing {{ serialNumberArray[0] }} to
-                                    {{ serialNumberArray[serialNumberArray.length - 1] }} of
-                                    {{ totalData }} entries
+                                    Mostrando {{ serialNumberArray[0] }} a
+                                    {{ serialNumberArray[serialNumberArray.length - 1] }} de
+                                    {{ totalData }} entradas
                                   </div>
                                 </div>
                 

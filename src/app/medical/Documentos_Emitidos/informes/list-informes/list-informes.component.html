@@ -124,24 +124,7 @@
                                             </div>
                                         </td>
 
-                                        <div [attr.id]="'delete_informes-'+data.id" class="modal fade delete-modal"
-                                            role="dialog">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-body text-center">
-                                                        <img src="assets/img/sent.png" alt="" width="50" height="46">
-                                                        <h3 *ngIf="informes_selected">Seguro que deseas eliminar 
-                                                            {{ informes_selected.email }}?</h3>
-                                                        <div class="m-t-20"> <a href="javascript:void(0);"
-                                                                class="btn btn-white me-1"
-                                                                data-bs-dismiss="modal">Close</a>
-                                                            <button type="submit" class="btn btn-danger"
-                                                                (click)="deleteDocumento(data.id)">Eliminar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
 
                                     </tr>
                                 </tbody>
@@ -149,9 +132,9 @@
                             <div class="table_footer">
                                 <div class="col-sm-12 col-md-5">
                                     <div class="dataTables_info">
-                                        Showing {{ serialNumberArray[0] }} to
-                                        {{ serialNumberArray[serialNumberArray.length - 1] }} of
-                                        {{ totalData }} entries
+                                        Mostrando {{ serialNumberArray[0] }} a
+                                    {{ serialNumberArray[serialNumberArray.length - 1] }} de
+                                    {{ totalData }} entradas
                                     </div>
                                 </div>
 
