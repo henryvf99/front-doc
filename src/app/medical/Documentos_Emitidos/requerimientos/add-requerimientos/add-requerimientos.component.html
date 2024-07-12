@@ -14,7 +14,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row" *ngIf="permisos.pemitidos">
+        <div class="row" *ngIf="permisos?.pemitidos">
             <div class="col-sm-12">
             
                 <div class="card">
@@ -119,8 +119,7 @@
                                         <button 
                                         type="button" 
                                         (click)="save()" 
-                                        class="btn btn-primary submit-form me-2"
-                                        routerLink="/requerimientos/list-requerimientos">Guardar</button>
+                                        class="btn btn-primary submit-form me-2">Guardar</button>
                                     </div>
                                 </div>
                             </div>

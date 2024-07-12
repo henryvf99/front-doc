@@ -17,6 +17,10 @@ export class ListInformesComponent {
   @ViewChild('contenidoModal') contenidoModal!: TemplateRef<any>;
   dialogRef: MatDialogRef<any> | undefined;
 
+  private anioFiltro: string = '';
+  private mesFiltro: string = '';
+  private codigoFiltro: string = '';
+
   public modal_txtarea = false;
   public modal_loading = false;
   public nombre_archivo_sumarizado: string = "";
@@ -113,6 +117,23 @@ export class ListInformesComponent {
     this.informes_selected = rol;
   }
 
+  confirmarEliminacion(object_id: string) {
+    Swal.fire({
+      title: '¿Está segur@ que desea eliminar?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteDocumento(object_id);
+      }
+    });
+  }
+
   deleteDocumento(documento_id: string) {
     this.informesService.deleteEmitidos(documento_id).subscribe((res: any) => {
   
@@ -171,24 +192,28 @@ export class ListInformesComponent {
   }
 
   public buscarPorAnio(anio: string): void {
-    anio = anio.trim().toLowerCase();
-    this.usersList = this.role_generals.filter((data:any) =>
-        data.anio.nombre.toLowerCase().includes(anio)
-    );
+    this.anioFiltro = anio.trim().toLowerCase();
+    this.applyFilters();
+  }
+
+  public buscarPorMes(mes: string): void {
+    this.mesFiltro = mes.trim().toLowerCase();
+    this.applyFilters();
   }
 
   public buscarPorCodigo(value: string): void {
-    value = value.trim().toLowerCase();
-    this.usersList = this.role_generals.filter((data:any) =>
-        data.codigo.toLowerCase().includes(value)
-    );
+    this.codigoFiltro = value.trim().toLowerCase();
+    this.applyFilters();
   }
-  
-  public buscarPorMes(mes: string): void {
-      mes = mes.trim().toLowerCase();
-      this.usersList = this.role_generals.filter((data:any) =>
-          data.mes.nombre.toLowerCase().includes(mes)
-      );
+
+  private applyFilters(): void {
+
+    this.usersList = this.role_generals.filter((data: any) => {
+      const anioMatch = this.anioFiltro ? data.anio.nombre.toLowerCase().includes(this.anioFiltro) : true;
+      const mesMatch = this.mesFiltro ? data.mes.nombre.toLowerCase().includes(this.mesFiltro) : true;
+      const codigoMatch = this.codigoFiltro ? data.codigo.toLowerCase().includes(this.codigoFiltro) : true;
+      return anioMatch && mesMatch && codigoMatch;
+    });
   }
 
   public sortData(sort: any) {

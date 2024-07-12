@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Proveidos </a></li>
+                        <li class="breadcrumb-item"><a routerLink="/proveidos/list-proveidos">Proveidos </a></li>
                         <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
                         <li class="breadcrumb-item active">Lista Proveidos</li>
                     </ul>
@@ -60,7 +60,7 @@
                         </div>
                         <!-- /Table Header -->
 
-                        <div class="table-responsive" *ngIf="permisos.gemitidos">
+                        <div class="table-responsive" *ngIf="permisos?.gemitidos">
                             <table matSort (matSortChange)="sortData($event)"
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
@@ -111,14 +111,14 @@
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <!--  -->
-                                                    <a class="dropdown-item" *ngIf="permisos.semitidos"
+                                                    <a class="dropdown-item" *ngIf="permisos?.semitidos"
                                                         href="javascript:void(0);" (click)="extractTextFromPdf(data.file2.data, data.nombrearchivo2)">
                                                         <i class="fa-brands fa-wpforms m-r-5"></i>Sumarizar</a>
-                                                    <a class="dropdown-item" *ngIf="permisos.uemitidos"
+                                                    <a class="dropdown-item" *ngIf="permisos?.uemitidos"
                                                         [routerLink]="[ '/proveidos/list-proveidos/edit-proveidos/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i>Editar</a>
-                                                    <a class="dropdown-item" *ngIf="permisos.demitidos"
-                                                        href="javascript:void(0);" (click)="deleteDocumento(data.id)">
+                                                    <a class="dropdown-item" *ngIf="permisos?.demitidos"
+                                                        href="javascript:void(0);" (click)="confirmarEliminacion(data.id)">
                                                     <i class="fa fa-trash-alt m-r-5"></i>Eliminar</a>
                                                 </div>
                                             </div>

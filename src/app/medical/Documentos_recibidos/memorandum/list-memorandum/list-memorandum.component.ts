@@ -113,6 +113,23 @@ export class ListMemorandumComponent {
     this.memorandum_selected = rol;
   }
 
+  confirmarEliminacion(object_id: string) {
+    Swal.fire({
+      title: '¿Está segur@ que desea eliminar?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteDocumento(object_id);
+      }
+    });
+  }
+
   deleteDocumento(documento_id: string) {
     this.memorandumService.deleteRecibidos(documento_id).subscribe((res: any) => {
   

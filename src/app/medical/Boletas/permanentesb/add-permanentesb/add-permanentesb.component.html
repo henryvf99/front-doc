@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Permanentes </a></li>
+                        <li class="breadcrumb-item"><a routerLink="/permanentesb/list-permanentesb">Permanentes </a></li>
                         <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
                         <li class="breadcrumb-item active">Agregar Permanentes</li>
                     </ul>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row" *ngIf="permisos.pboleta">
+        <div class="row" *ngIf="permisos?.pboleta">
             <div class="col-sm-12">
             
                 <div class="card">

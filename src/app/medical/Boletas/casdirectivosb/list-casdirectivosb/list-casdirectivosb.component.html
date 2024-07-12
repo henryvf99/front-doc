@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">CAS DIRECTIVOS </a></li>
+                        <li class="breadcrumb-item"><a routerLink="/casdirectivosb/list-casdirectivosb">CAS DIRECTIVOS </a></li>
                         <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
                         <li class="breadcrumb-item active">Lista CAS DIRECTIVOS</li>
                     </ul>
@@ -66,7 +66,7 @@
                         </div>
                         <!-- /Table Header -->
 
-                        <div class="table-responsive" *ngIf="permisos.gboleta">
+                        <div class="table-responsive" *ngIf="permisos?.gboleta">
                             <table matSort (matSortChange)="sortData($event)"
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
@@ -103,11 +103,11 @@
                                                     data-bs-toggle="dropdown" aria-expanded="false"><i
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" *ngIf="permisos.uboleta"
+                                                    <a class="dropdown-item" *ngIf="permisos?.uboleta"
                                                         [routerLink]="[ '/casdirectivosb/list-casdirectivosb/edit-casdirectivosb/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i>Editar</a>
-                                                    <a class="dropdown-item" *ngIf="permisos.dboleta"
-                                                        href="javascript:void(0);" (click)="deleteBoleta(data.id)">
+                                                    <a class="dropdown-item" *ngIf="permisos?.dboleta"
+                                                        href="javascript:void(0);" (click)="confirmarEliminacion(data.id)">
                                                         <i class="fa fa-trash-alt m-r-5"></i>Eliminar</a>
                                                 </div>
                                             </div>
@@ -121,9 +121,9 @@
                             <div class="table_footer">
                                 <div class="col-sm-12 col-md-5">
                                     <div class="dataTables_info">
-                                        Mostrando {{ serialNumberArray[0] }} a
-                                        {{ serialNumberArray[serialNumberArray.length - 1] }} de
-                                        {{ totalData }} entradas
+                                        Showing {{ serialNumberArray[0] }} to
+                                        {{ serialNumberArray[serialNumberArray.length - 1] }} of
+                                        {{ totalData }} entries
                                     </div>
                                 </div>
 

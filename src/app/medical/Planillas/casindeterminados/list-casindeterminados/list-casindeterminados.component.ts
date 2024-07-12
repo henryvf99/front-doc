@@ -141,6 +141,23 @@ export class ListCasindeterminadosComponent {
     }
   }
 
+  confirmarEliminacion(casdirectivosb_id: string) {
+    Swal.fire({
+      title: '¿Está segur@ que desea eliminar?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deletePlanilla(casdirectivosb_id);
+      }
+    });
+  }
+
   deletePlanilla(casdirectivosb_id: string) {
     this.casindeterminadosService.deletePlanilla(casdirectivosb_id).subscribe((res: any) => {
   

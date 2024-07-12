@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="">Activos </a></li>
+                        <li class="breadcrumb-item"><a routerLink="/activos/list-activos">Activos </a></li>
                         <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
                         <li class="breadcrumb-item active">Lista Activos</li>
                     </ul>
@@ -46,7 +46,7 @@
                                                 <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
                                             </div>
                                             <div class="add-group">
-                                                <a *ngIf="permisos.ptrabajador" routerLink="/activos/add-activos"
+                                                <a *ngIf="permisos?.ptrabajador" routerLink="/activos/add-activos"
                                                     class="btn btn-primary add-pluss ms-2"><img
                                                         src="assets/img/icons/plus.svg" alt=""></a>
                                                 <a href="javascript:;" (click)="refresh()"
@@ -60,7 +60,7 @@
                         </div>
                         <!-- /Table Header -->
 
-                        <div class="table-responsive" *ngIf="permisos.gtrabajador">
+                        <div class="table-responsive" *ngIf="permisos?.gtrabajador">
                             <table matSort (matSortChange)="sortData($event)"
                                 class="table border-0 custom-table comman-table datatable mb-0">
                                 <thead>
@@ -97,11 +97,11 @@
                                                         class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <!--  -->
-                                                    <a class="dropdown-item" *ngIf="permisos.utrabajador"
+                                                    <a class="dropdown-item" *ngIf="permisos?.utrabajador"
                                                         [routerLink]="[ '/activos/list-activos/edit-activos/', data.id ]"><i
                                                             class="fa-solid fa-pen-to-square m-r-5"></i> Editar</a>
-                                                    <a class="dropdown-item" *ngIf="permisos.dtrabajador"
-                                                        href="javascript:void(0);" (click)="deleteTrabajador(data.id)"
+                                                    <a class="dropdown-item" *ngIf="permisos?.dtrabajador"
+                                                        href="javascript:void(0);" (click)="confirmarEliminacion(data.id)"
                                                         data-bs-toggle="modal"
                                                         [attr.data-bs-target]="'#delete_activos-'+data.id"><i
                                                             class="fa fa-trash-alt m-r-5"></i> Eliminar</a>

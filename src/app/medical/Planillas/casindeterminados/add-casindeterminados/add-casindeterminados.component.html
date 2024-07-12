@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">CAS Inderterminados </a></li>
+                        <li class="breadcrumb-item"><a routerLink="/casindeterminados/list-casindeterminados">CAS Inderterminados </a></li>
                         <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
                         <li class="breadcrumb-item active">Agregar CAS Inderterminados</li>
                     </ul>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row" *ngIf="permisos.pplanilla">
+        <div class="row" *ngIf="permisos?.pplanilla">
             <div class="col-sm-12">
             
                 <div class="card">

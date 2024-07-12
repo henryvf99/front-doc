@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Regidores </a></li>
+                        <li class="breadcrumb-item"><a routerLink="/regidores/list-regidores">Regidores </a></li>
                         <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
                         <li class="breadcrumb-item active">Editar Regidores</li>
                     </ul>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row" *ngIf="permisos.uplanilla">
+        <div class="row" *ngIf="permisos?.uplanilla">
             <div class="col-sm-12">
             
                 <div class="card">
